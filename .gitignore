@@ -38,6 +38,3 @@ lerna-debug.log*
 Thumbs.db
 ehthumbs.db
 Desktop.ini
-
-# Raw asset staging
-produtos/
