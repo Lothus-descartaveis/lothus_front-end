@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /checkout
+Disallow: /carrinho
+
+Sitemap: https://lothusdescartaveis.com.br/sitemap.xml

@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 440" width="100%" height="100%">
+  <defs>
+    <linearGradient id="icDeep" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#0E4A7D"/>
+      <stop offset="100%" stop-color="#1863DC"/>
+    </linearGradient>
+    <linearGradient id="icMid" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#1A659E"/>
+      <stop offset="100%" stop-color="#3898B6"/>
+    </linearGradient>
+    <linearGradient id="icCyan" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#2B82A8"/>
+      <stop offset="100%" stop-color="#60B2CE"/>
+    </linearGradient>
+  </defs>
+
+  <g transform="translate(220, 220)">
+    <g style="mix-blend-mode: multiply;">
+      <!-- Pétalas Principais -->
+      <path d="M 0,-190 C -40,-125 -40,-25 0,0 C 40,-25 40,-125 0,-190 Z" fill="url(#icDeep)" opacity="0.95"/>
+      <path d="M 0,190 C -40,125 -40,25 0,0 C 40,25 40,125 0,190 Z" fill="url(#icDeep)" opacity="0.95"/>
+      <path d="M -190,0 C -125,-40 -25,-40 0,0 C -25,40 -125,40 -190,0 Z" fill="url(#icDeep)" opacity="0.95"/>
+      <path d="M 190,0 C 125,-40 25,-40 0,0 C 25,40 125,40 190,0 Z" fill="url(#icDeep)" opacity="0.95"/>
+
+      <!-- Pétalas 45 Graus -->
+      <g transform="rotate(45)">
+        <path d="M 0,-175 C -36,-115 -36,-22 0,0 C 36,-22 36,-115 0,-175 Z" fill="url(#icMid)" opacity="0.85"/>
+        <path d="M 0,175 C -36,115 -36,22 0,0 C 36,22 36,115 0,175 Z" fill="url(#icMid)" opacity="0.85"/>
+        <path d="M -175,0 C -115,-36 -22,-36 0,0 C -22,36 -115,36 -175,0 Z" fill="url(#icMid)" opacity="0.85"/>
+        <path d="M 175,0 C 115,-36 22,-36 0,0 C 22,36 115,36 175,0 Z" fill="url(#icMid)" opacity="0.85"/>
+      </g>
+
+      <!-- Pétalas Suaves 22.5 Graus -->
+      <g transform="rotate(22.5)">
+        <path d="M 0,-160 C -32,-100 -32,-20 0,0 C 32,-20 32,-100 0,-160 Z" fill="url(#icCyan)" opacity="0.7"/>
+        <path d="M 0,160 C -32,100 -32,20 0,0 C 32,20 32,100 0,160 Z" fill="url(#icCyan)" opacity="0.7"/>
+        <path d="M -160,0 C -100,-32 -20,-32 0,0 C -20,32 -100,32 -160,0 Z" fill="url(#icCyan)" opacity="0.7"/>
+        <path d="M 160,0 C 100,-32 20,-32 0,0 C 20,32 100,32 160,0 Z" fill="url(#icCyan)" opacity="0.7"/>
+      </g>
+      <g transform="rotate(67.5)">
+        <path d="M 0,-160 C -32,-100 -32,-20 0,0 C 32,-20 32,-100 0,-160 Z" fill="url(#icCyan)" opacity="0.7"/>
+        <path d="M 0,160 C -32,100 -32,20 0,0 C 32,20 32,100 0,160 Z" fill="url(#icCyan)" opacity="0.7"/>
+        <path d="M -160,0 C -100,-32 -20,-32 0,0 C -20,32 -100,32 -160,0 Z" fill="url(#icCyan)" opacity="0.7"/>
+        <path d="M 160,0 C 100,-32 20,-32 0,0 C 20,32 100,32 160,0 Z" fill="url(#icCyan)" opacity="0.7"/>
+      </g>
+    </g>
+    <!-- Centro harmônico -->
+    <circle cx="0" cy="0" r="14" fill="#0E4A7D"/>
+  </g>
+</svg>
