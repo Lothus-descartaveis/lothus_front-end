@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: #2A487A;
+  --color-navy: #041B38;
+  --color-royal: #1863DC;
+  --color-orange: #FB8C00;
+  --color-green: #16A34A;
+  --font-display: 'Montserrat', system-ui, sans-serif;
+  --font-sans: 'DM Sans', 'Inter', system-ui, sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: #F8FAFC;
+  color: #041B38;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* Glass effect for modern UI blocks */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+}
+
+/* Redundancy / High Contrast Mode */
+body.high-contrast {
+  filter: contrast(125%);
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+}
+body.high-contrast a,
+body.high-contrast button {
+  outline: 2px solid #FFD700 !important;
+}
