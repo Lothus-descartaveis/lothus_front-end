@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Trash2, Plus, Minus, ArrowRight, MessageCircle, ShoppingCart } from 'lucide-react';
+import { X, Trash2, Plus, Minus, ArrowRight, MessageCircle, ShoppingCart } from '../ui/Icon';
 import { useCart } from '../../context/CartContext';
 
 interface CartDrawerProps {

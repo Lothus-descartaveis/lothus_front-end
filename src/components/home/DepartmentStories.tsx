@@ -1,6 +1,6 @@
 import React from 'react';
 import { DEPARTMENTS } from '../../data/mockData';
-import { Sparkles, Utensils, Briefcase, Wrench, Palette } from 'lucide-react';
+import { Sparkles, Utensils, Briefcase, Wrench, Palette } from '../ui/Icon';
 
 interface DepartmentStoriesProps {
   onSelectDepartment?: (slug: string) => void;

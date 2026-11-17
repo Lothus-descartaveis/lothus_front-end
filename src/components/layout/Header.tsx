@@ -1,14 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import {
-  Search,
-  User,
-  ShoppingCart,
-  MapPin,
-  ChevronDown,
-  Menu,
-  X,
-  Check,
-} from 'lucide-react';
+import { Search, User, ShoppingCart, MapPin, ChevronDown, Menu, X, Check } from '../ui/Icon';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 

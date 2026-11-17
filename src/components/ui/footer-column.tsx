@@ -1,13 +1,4 @@
-import {
-  Dribbble,
-  Facebook,
-  Github,
-  Instagram,
-  Mail,
-  MapPin,
-  Phone,
-  Twitter,
-} from 'lucide-react';
+import { Dribbble, Facebook, Github, Instagram, Mail, MapPin, Phone, Twitter } from './Icon';
 import Link from 'next/link';
 
 const data = {

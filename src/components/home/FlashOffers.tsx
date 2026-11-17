@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Star, Heart, Zap } from 'lucide-react';
+import { ArrowRight, Star, Heart, Zap } from '../ui/Icon';
 import { FLASH_PRODUCTS } from '../../data/mockData';
 import { useCart } from '../../context/CartContext';
 import { Product } from '../../types';

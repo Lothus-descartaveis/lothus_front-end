@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { LayoutGrid, List, Filter, Star, Heart, ArrowUpDown, MessageCircle } from 'lucide-react';
+import { LayoutGrid, List, Filter, Star, Heart, ArrowUpDown, MessageCircle } from '../components/ui/Icon';
 import { FLASH_PRODUCTS, BEST_SELLER_PRODUCTS, DEPARTMENTS } from '../data/mockData';
 import { useCart } from '../context/CartContext';
 import { Product } from '../types';

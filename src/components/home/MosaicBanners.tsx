@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Sparkles, Building2, Briefcase } from 'lucide-react';
+import { ArrowRight, Sparkles, Building2, Briefcase } from '../ui/Icon';
 
 interface MosaicBannersProps {
   onNavigate?: (page: string) => void;

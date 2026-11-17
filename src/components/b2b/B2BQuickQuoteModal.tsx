@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Building2, Send, MessageCircle, FileText, CheckCircle2 } from 'lucide-react';
+import { X, Building2, Send, MessageCircle, FileText, CheckCircle2 } from '../ui/Icon';
 import { CustomSelect } from '../ui/CustomSelect';
 
 interface B2BQuickQuoteModalProps {

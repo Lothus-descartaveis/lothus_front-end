@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from '../ui/Icon';
 
 interface HeroBannerProps {
   onNavigate?: (page: string) => void;
