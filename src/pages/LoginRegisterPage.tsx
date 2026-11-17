@@ -1,18 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  ArrowLeft,
-  Building2,
-  CheckCircle2,
-  Eye,
-  EyeOff,
-  FileText,
-  Lock,
-  MapPin,
-  RotateCcw,
-  ShieldCheck,
-  Sparkles,
-  User,
-} from 'lucide-react';
+import { ArrowLeft, Building2, CheckCircle2, Eye, EyeOff, FileText, Lock, MapPin, RotateCcw, ShieldCheck, Sparkles, User } from '../components/ui/Icon';
 import { useAuth } from '../context/AuthContext';
 import { useSEO } from '../hooks/useSEO';
 import { CustomSelect } from '../components/ui/CustomSelect';
@@ -212,11 +199,6 @@ export const LoginRegisterPage: React.FC<LoginRegisterPageProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* COLUNA ESQUERDA: Benefícios B2B e Acesso Rápido Demo (Padronizado em Branco) */}
         <aside className="lg:col-span-5 bg-white text-[#041B38] rounded-2xl p-6 sm:p-8 shadow-xs border border-[#E2E8F0]">
-          <span className="inline-flex items-center gap-1.5 bg-blue-50 border border-blue-100 text-[#1863DC] text-[10px] font-display font-extrabold uppercase tracking-wider px-3 py-1 rounded-md mb-4">
-            <Building2 className="w-3.5 h-3.5" />
-            <span>Fornecimento para Empresas B2B</span>
-          </span>
-
           <h1 className="font-display font-black text-2xl sm:text-[26px] text-[#041B38] leading-tight mb-3">
             Sua operação abastecida com eficiência e faturamento PJ.
           </h1>
