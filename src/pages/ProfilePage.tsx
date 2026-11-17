@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   ArrowLeft,
   Building2,
@@ -7,21 +7,19 @@ import {
   Download,
   ExternalLink,
   FileText,
-  LayoutDashboard,
   LogOut,
   MapPin,
   MessageCircle,
-  Minus,
   Package,
-  Plus,
   RotateCcw,
   Search,
-  ShoppingCart,
-  Trash2,
+  ShieldCheck,
   Truck,
-  UserPlus,
-  Users,
-} from 'lucide-react';
+  User,
+  Phone,
+  Mail,
+  Briefcase
+} from '../components/ui/Icon';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { BEST_SELLER_PRODUCTS, FLASH_PRODUCTS } from '../data/mockData';
@@ -31,10 +29,7 @@ import { CorporateOrder, Product } from '../types';
 export type ProfileTab =
   | 'visao-geral'
   | 'pedidos'
-  | 'recompra'
-  | 'empresa'
-  | 'enderecos'
-  | 'faturamento';
+  | 'recompra';
 
 interface ProfilePageProps {
   onNavigate?: (page: string) => void;
@@ -85,13 +80,6 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
     user,
     loginDemoCorporate,
     logout,
-    updateProfile,
-    addAddress,
-    removeAddress,
-    setDefaultAddress,
-    addBuyer,
-    toggleBuyer,
-    requestCreditIncrease,
   } = useAuth();
   const { addItem, setIsDrawerOpen } = useCart();
 
@@ -112,71 +100,12 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
     return map;
   });
 
-  // Editable Company Data Form
-  const [companyForm, setCompanyForm] = useState({
-    razaoSocial: user?.razaoSocial || '',
-    nomeFantasia: user?.nomeFantasia || '',
-    inscricaoEstadual: user?.inscricaoEstadual || '',
-    segment: user?.segment || '',
-    buyerName: user?.buyerName || '',
-    buyerRole: user?.buyerRole || '',
-    email: user?.email || '',
-    phone: user?.phone || '',
-    whatsappNotifications: user?.whatsappNotifications ?? true,
-  });
-
-  // New Address Form
-  const [showAddressForm, setShowAddressForm] = useState(false);
-  const [newAddress, setNewAddress] = useState({
-    label: '',
-    cep: '',
-    street: '',
-    number: '',
-    complement: '',
-    neighborhood: '',
-    city: 'São Paulo',
-    state: 'SP',
-    isDefault: false,
-  });
-
-  // New Buyer Form
-  const [showBuyerForm, setShowBuyerForm] = useState(false);
-  const [newBuyer, setNewBuyer] = useState({
-    name: '',
-    role: '',
-    email: '',
-    monthlyLimit: '5000',
-  });
-
-  // Credit Limit Request
-  const [requestedLimit, setRequestedLimit] = useState('50000');
-
-  useEffect(() => {
-    setActiveTab(initialTab);
-  }, [initialTab]);
-
-  useEffect(() => {
-    if (user) {
-      setCompanyForm({
-        razaoSocial: user.razaoSocial,
-        nomeFantasia: user.nomeFantasia,
-        inscricaoEstadual: user.inscricaoEstadual,
-        segment: user.segment,
-        buyerName: user.buyerName,
-        buyerRole: user.buyerRole,
-        email: user.email,
-        phone: user.phone,
-        whatsappNotifications: user.whatsappNotifications,
-      });
-    }
-  }, [user]);
-
   useSEO({
     title: user
-      ? `${user.nomeFantasia} — Minha Conta Corporativa | Lothus Descartáveis`
-      : 'Minha Conta Corporativa — Lothus Descartáveis',
+      ? `Meu Perfil Corporativo | ${user.buyerName || user.razaoSocial} | Lothus Descartáveis`
+      : 'Meu Perfil Corporativo | Lothus Descartáveis',
     description:
-      'Painel B2B da Lothus Descartáveis para gestão de pedidos PJ, notas fiscais (DANFE/XML), unidades de entrega, compradores e recompra rápida.',
+      'Meu Perfil Corporativo e Central do Cliente Lothus Descartáveis. Informações pessoais, dados fiscais, unidades de entrega e gestão de compras.',
     canonical: 'https://lothusdescartaveis.com.br/minha-conta',
   });
 
@@ -243,28 +172,28 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
   if (!user) {
     return (
       <div className="max-w-[720px] mx-auto px-4 py-16 text-center font-sans">
-        <div className="bg-white border border-[#E2E8F0] rounded-2xl p-8 sm:p-10 shadow-xs">
-          <Building2 className="w-9 h-9 text-[#0F668E] mx-auto mb-4" />
+        <div className="bg-white border border-[#E2E8F0] rounded-xl p-8 sm:p-10 shadow-xs">
+          <Building2 className="w-10 h-10 text-[#0F668E] mx-auto mb-4" />
           <h1 className="font-display font-bold text-xl text-[#041B38] mb-2">
-            Acesse sua Conta Corporativa
+            Acesse seu Perfil Corporativo
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 max-w-md mx-auto mb-6">
-            Faça login ou cadastre o CNPJ da sua empresa para visualizar pedidos, notas fiscais, crédito PJ e unidades de entrega.
+            Conecte-se para visualizar suas informações pessoais, endereços cadastrados, pedidos e dados fiscais.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <button
               type="button"
               onClick={() => onNavigate && onNavigate('login')}
-              className="px-6 py-3 bg-[#0F668E] hover:bg-[#0B4F6E] text-white font-display font-bold text-xs uppercase tracking-wider rounded-lg transition-colors cursor-pointer"
+              className="px-6 py-2.5 bg-[#0F668E] hover:bg-[#0B4F6E] text-white font-display font-bold text-xs uppercase tracking-wider rounded-lg transition-colors cursor-pointer"
             >
-              Ir para Login e Cadastro B2B
+              Ir para Login
             </button>
             <button
               type="button"
               onClick={() => loginDemoCorporate()}
-              className="px-6 py-3 border border-[#0F668E] text-[#0F668E] hover:bg-[#0F668E]/5 font-display font-bold text-xs uppercase tracking-wider rounded-lg transition-colors cursor-pointer"
+              className="px-6 py-2.5 border border-[#0F668E] text-[#0F668E] hover:bg-[#0F668E]/5 font-display font-bold text-xs uppercase tracking-wider rounded-lg transition-colors cursor-pointer"
             >
-              Visualizar Perfil Demo B2B
+              Acessar Perfil (José Antonio)
             </button>
           </div>
         </div>
@@ -272,1385 +201,661 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
     );
   }
 
-  const creditAvailable = Math.max(0, user.creditLimit - user.creditUsed);
-  const creditPercent =
-    user.creditLimit > 0 ? Math.min(100, Math.round((user.creditUsed / user.creditLimit) * 100)) : 0;
-  const latestOrder = user.orders[0];
-
-  const handleSaveCompany = (e: React.FormEvent) => {
-    e.preventDefault();
-    updateProfile(companyForm);
-    showNotice('Dados cadastrais e contatos da empresa atualizados com sucesso.');
-  };
-
-  const handleCreateAddress = (e: React.FormEvent) => {
-    e.preventDefault();
-    addAddress({
-      label: newAddress.label || 'Filial / Unidade',
-      cep: newAddress.cep,
-      street: newAddress.street,
-      number: newAddress.number,
-      complement: newAddress.complement,
-      neighborhood: newAddress.neighborhood,
-      city: newAddress.city,
-      state: newAddress.state.toUpperCase(),
-      isDefault: newAddress.isDefault,
-    });
-    setNewAddress({
-      label: '',
-      cep: '',
-      street: '',
-      number: '',
-      complement: '',
-      neighborhood: '',
-      city: 'São Paulo',
-      state: 'SP',
-      isDefault: false,
-    });
-    setShowAddressForm(false);
-    showNotice('Nova unidade de recebimento adicionada.');
-  };
-
-  const handleCreateBuyer = (e: React.FormEvent) => {
-    e.preventDefault();
-    addBuyer({
-      name: newBuyer.name,
-      role: newBuyer.role || 'Comprador Autorizado',
-      email: newBuyer.email,
-      monthlyLimit: Number(newBuyer.monthlyLimit) || undefined,
-      active: true,
-    });
-    setNewBuyer({ name: '', role: '', email: '', monthlyLimit: '5000' });
-    setShowBuyerForm(false);
-    showNotice('Comprador autorizado vinculado ao CNPJ.');
-  };
-
-  const handleCreditRequest = (e: React.FormEvent) => {
-    e.preventDefault();
-    const num = Number(requestedLimit) || user.creditLimit + 10000;
-    requestCreditIncrease(num);
-    showNotice(`Solicitação de limite para ${formatBRL(num)} registrada para análise financeira.`);
-  };
-
-  const initials = (user.nomeFantasia || user.razaoSocial || 'LP')
-    .split(' ')
-    .slice(0, 2)
-    .map((w) => w[0])
-    .join('')
-    .toUpperCase();
-
-  const navItems: { id: ProfileTab; label: string; icon: React.ReactNode; badge?: number }[] = [
-    { id: 'visao-geral', label: 'Visão Geral B2B', icon: <LayoutDashboard className="w-4 h-4" /> },
-    { id: 'pedidos', label: 'Meus Pedidos & NF-e', icon: <Package className="w-4 h-4" />, badge: user.orders.length },
-    { id: 'recompra', label: 'Recompra Rápida', icon: <RotateCcw className="w-4 h-4" /> },
-    { id: 'empresa', label: 'Dados da Empresa', icon: <Building2 className="w-4 h-4" /> },
-    { id: 'enderecos', label: 'Unidades & Entregas', icon: <MapPin className="w-4 h-4" />, badge: user.addresses.length },
-    { id: 'faturamento', label: 'Crédito PJ & Compradores', icon: <CreditCard className="w-4 h-4" /> },
-  ];
-
   return (
-    <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-16 py-8 font-sans">
-      {/* Breadcrumb */}
-      <div className="text-xs text-slate-400 mb-5 flex items-center gap-2">
-        <button
-          type="button"
-          onClick={() => onNavigate && onNavigate('home')}
-          className="hover:text-[#0F668E] flex items-center gap-1 cursor-pointer"
-        >
-          <ArrowLeft className="w-3.5 h-3.5" />
-          <span>Voltar para a Loja</span>
-        </button>
-        <span>/</span>
-        <span className="text-[#041B38] font-bold">Portal da Empresa & Perfil</span>
-      </div>
+    <div className="min-h-screen bg-[#F8FAFC] pb-16 font-sans text-slate-800">
+      <div className="max-w-[1160px] mx-auto px-4 sm:px-8 py-8 space-y-6">
 
-      {/* Cabeçalho Corporativo do Perfil */}
-      <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5 sm:p-7 shadow-xs mb-6 flex flex-col lg:flex-row lg:items-center justify-between gap-5">
-        <div className="flex items-start sm:items-center gap-4">
-          <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-[#0F668E] text-white font-display font-black text-lg sm:text-xl flex items-center justify-center shrink-0">
-            {initials}
+        {/* ===================================================================
+            1. BREADCRUMB (IDÊNTICO AO PAPER)
+            =================================================================== */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-[13px]">
+            <button
+              type="button"
+              onClick={() => onNavigate && onNavigate('home')}
+              className="font-medium text-[#0F668E] hover:underline flex items-center gap-1 cursor-pointer"
+            >
+              ← Voltar para Início
+            </button>
+            <span className="text-slate-400">/</span>
+            <span className="font-bold text-[#041B38]">Meu Perfil Corporativo</span>
           </div>
-          <div>
-            <div className="flex flex-wrap items-center gap-2 mb-1">
-              <span className="bg-[#0F668E]/10 text-[#0F668E] text-[10px] font-display font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full">
-                {user.accountType === 'pj' ? 'Conta Empresarial PJ' : 'Pessoa Física'}
+
+          {/* Abas Sutis de Navegação: Dados do Perfil vs Meus Pedidos */}
+          <div className="flex items-center gap-2 bg-slate-100 p-1 rounded-lg text-xs font-bold">
+            <button
+              onClick={() => setActiveTab('visao-geral')}
+              className={`px-3 py-1.5 rounded-md transition-all cursor-pointer ${
+                activeTab === 'visao-geral'
+                  ? 'bg-white text-[#041B38] shadow-xs'
+                  : 'text-slate-600 hover:text-[#041B38]'
+              }`}
+            >
+              Dados do Perfil (Paper)
+            </button>
+            <button
+              onClick={() => setActiveTab('pedidos')}
+              className={`px-3 py-1.5 rounded-md transition-all cursor-pointer flex items-center gap-1.5 ${
+                activeTab === 'pedidos'
+                  ? 'bg-white text-[#041B38] shadow-xs'
+                  : 'text-slate-600 hover:text-[#041B38]'
+              }`}
+            >
+              <span>Meus Pedidos</span>
+              <span className="text-[10px] bg-slate-200 text-slate-700 px-1.5 py-0.2 rounded-full font-mono">
+                {user.orders.length}
               </span>
-              <span
-                className={`text-[10px] font-display font-bold px-2.5 py-0.5 rounded-full ${
-                  user.creditStatus === 'Aprovado'
-                    ? 'bg-emerald-50 text-[#16A34A] border border-emerald-200'
-                    : 'bg-amber-50 text-amber-700 border border-amber-200'
-                }`}
-              >
-                Crédito B2B: {user.creditStatus}
-              </span>
-              <span className="text-[11px] font-mono text-slate-500">
-                {user.accountType === 'pj' ? `CNPJ ${user.cnpjCpf}` : `CPF ${user.cnpjCpf}`}
+            </button>
+            <button
+              onClick={() => setActiveTab('recompra')}
+              className={`px-3 py-1.5 rounded-md transition-all cursor-pointer ${
+                activeTab === 'recompra'
+                  ? 'bg-white text-[#041B38] shadow-xs'
+                  : 'text-slate-600 hover:text-[#041B38]'
+              }`}
+            >
+              Recompra Rápida
+            </button>
+            <button
+              onClick={() => {
+                logout();
+                onNavigate && onNavigate('login');
+              }}
+              title="Sair da Conta"
+              className="p-1.5 text-slate-400 hover:text-red-600 transition-colors cursor-pointer ml-1"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+
+        {/* Feedback Banner se houver */}
+        {feedbackBanner && (
+          <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-[#16A34A] shrink-0" />
+            <span>{feedbackBanner}</span>
+          </div>
+        )}
+
+        {/* ===================================================================
+            2. HEADER DO PERFIL (IDÊNTICO AO PAPER — COMPONENT AUQ-0)
+            =================================================================== */}
+        <div className="flex items-center gap-5 pt-1 pb-2">
+          {/* Avatar com Gradiente Lothus & Iniciais JA */}
+          <div
+            className="flex items-center justify-center shrink-0 rounded-full shadow-md border-[3px] border-white w-16 h-16 sm:w-17 sm:h-17"
+            style={{ backgroundImage: 'linear-gradient(135deg, #0F668E 0%, #041B38 100%)' }}
+          >
+            <span className="text-[22px] font-display font-extrabold text-white">
+              JA
+            </span>
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <div className="flex flex-wrap items-center gap-2.5">
+              <h1 className="text-[20px] sm:text-[22px] font-display font-extrabold text-[#041B38] leading-tight">
+                {user.buyerName || 'José Antonio Rodrigues Feitosa'}
+              </h1>
+              <span className="py-0.5 px-2 rounded bg-emerald-50 text-[11px] font-bold text-[#16A34A] border border-emerald-100">
+                COMPRADOR MASTER B2B
               </span>
             </div>
-
-            <h1 className="font-display font-bold text-lg sm:text-2xl text-[#041B38] leading-tight">
-              {user.nomeFantasia || user.razaoSocial}
-            </h1>
-            <p className="text-xs text-slate-500 mt-0.5">
-              {user.razaoSocial} • Responsável: <strong className="text-slate-700">{user.buyerName}</strong> ({user.buyerRole})
-            </p>
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-[13px] text-slate-500">
+              <span>{user.email || 'jose.antonio.220507@gmail.com'}</span>
+              <span className="text-slate-300">•</span>
+              <span className="font-semibold text-[#0F668E]">
+                {user.razaoSocial || 'Grupo Paulista Saúde LTDA'} (CNPJ {user.cnpjCpf || '42.198.341/0001-90'})
+              </span>
+            </div>
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2.5">
-          <button
-            type="button"
-            onClick={() => onNavigate && onNavigate('cotacao-b2b')}
-            className="px-4 py-2.5 rounded-lg bg-[#0F668E] hover:bg-[#0B4F6E] text-white font-display font-bold text-xs transition-colors cursor-pointer flex items-center gap-1.5"
-          >
-            <FileText className="w-3.5 h-3.5" />
-            <span>Nova Cotação em Lote</span>
-          </button>
+        {/* ===================================================================
+            SE ABA FOR "VISAO-GERAL" (TELA IDÊNTICA AO PAPER — ARTBOARD AT4-0)
+            =================================================================== */}
+        {activeTab === 'visao-geral' && (
+          <div className="space-y-6">
 
-          <button
-            type="button"
-            onClick={() => {
-              logout();
-              onNavigate && onNavigate('login');
-            }}
-            className="px-4 py-2.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 hover:text-red-600 font-display font-bold text-xs transition-colors cursor-pointer flex items-center gap-1.5"
-          >
-            <LogOut className="w-3.5 h-3.5" />
-            <span>Sair da Conta</span>
-          </button>
-        </div>
-      </div>
-
-      {feedbackBanner && (
-        <div className="mb-5 p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center gap-2">
-          <CheckCircle2 className="w-4 h-4 text-[#16A34A] shrink-0" />
-          <span>{feedbackBanner}</span>
-        </div>
-      )}
-
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* MENU LATERAL / NAVEGAÇÃO DO PORTAL */}
-        <aside className="lg:col-span-3 bg-white border border-[#E2E8F0] rounded-2xl p-2.5 shadow-xs">
-          <nav className="flex lg:flex-col gap-1 overflow-x-auto lg:overflow-visible">
-            {navItems.map((item) => {
-              const active = activeTab === item.id;
-              return (
-                <button
-                  key={item.id}
-                  type="button"
-                  onClick={() => setActiveTab(item.id)}
-                  className={`whitespace-nowrap flex items-center justify-between gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-display font-bold transition-all cursor-pointer shrink-0 ${
-                    active
-                      ? 'bg-[#0F668E] text-white shadow-xs'
-                      : 'text-slate-600 hover:bg-slate-50 hover:text-[#041B38]'
-                  }`}
-                >
-                  <span className="flex items-center gap-2.5">
-                    {item.icon}
-                    <span>{item.label}</span>
-                  </span>
-                  {item.badge !== undefined && (
-                    <span
-                      className={`text-[10px] px-2 py-0.5 rounded-full font-mono ${
-                        active ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'
-                      }`}
-                    >
-                      {item.badge}
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </nav>
-
-          {/* Card Atendimento Dedicado */}
-          <div className="hidden lg:block mt-4 p-4 rounded-xl bg-[#F8FAFC] border border-slate-200">
-            <span className="text-[10px] font-display font-bold uppercase tracking-wider text-[#0F668E] block mb-1">
-              Consultor B2B Dedicado
-            </span>
-            <p className="text-[11px] text-slate-600 leading-relaxed mb-3">
-              Precisa de entrega programada, pallet fechado ou alteração cadastral de CNPJ?
-            </p>
-            <a
-              href={`https://wa.me/5511977663741?text=${encodeURIComponent(
-                `Olá! Falo em nome da empresa ${user.razaoSocial} (CNPJ: ${user.cnpjCpf}) pelo Portal B2B.`
-              )}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full py-2 px-3 rounded-lg bg-[#16A34A] hover:bg-emerald-700 text-white text-[11px] font-display font-bold flex items-center justify-center gap-1.5 transition-colors"
-            >
-              <MessageCircle className="w-3.5 h-3.5" />
-              <span>Atendimento WhatsApp PJ</span>
-            </a>
-          </div>
-        </aside>
-
-        {/* CONTEÚDO PRINCIPAL */}
-        <section className="lg:col-span-9 space-y-6">
-          {/* ========================================================== */}
-          {/* ABA 1: VISÃO GERAL                                         */}
-          {/* ========================================================== */}
-          {activeTab === 'visao-geral' && (
-            <>
-              {/* KPIs Corporativos */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-                <div className="bg-white border border-[#E2E8F0] rounded-xl p-4 shadow-xs">
-                  <span className="text-[11px] text-slate-500 font-medium block">
-                    Limite B2B Disponível
-                  </span>
-                  <span className="font-display font-black text-xl text-[#041B38] block mt-1">
-                    {user.accountType === 'pj' ? formatBRL(creditAvailable) : 'PIX / Cartão'}
-                  </span>
-                  <span className="text-[10px] text-[#0F668E] font-semibold mt-1 block">
-                    {user.paymentTerms}
-                  </span>
+            {/* SEÇÃO 1: INFORMAÇÕES PESSOAIS */}
+            <div className="space-y-2">
+              <h2 className="text-[16px] font-display font-extrabold text-[#041B38]">
+                Informações pessoais
+              </h2>
+              <div className="bg-white rounded-[12px] border border-[#E2E8F0] shadow-xs divide-y divide-[#F1F5F9] overflow-hidden">
+                {/* Linha 1: Nome e Sobrenome */}
+                <div className="flex justify-between items-center py-4 px-6 hover:bg-slate-50/50 transition-colors">
+                  <div className="flex items-center gap-4">
+                    <div className="w-5 h-5 text-slate-400 shrink-0 flex items-center justify-center">
+                      <CreditCard className="w-4.5 h-4.5" />
+                    </div>
+                    <div>
+                      <div className="text-[14px] font-bold text-[#041B38]">
+                        {user.buyerName || 'Jose Antonio Rodrigues Feitosa'}
+                      </div>
+                      <div className="text-[12px] text-slate-500">
+                        Nome e sobrenome.
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center justify-center rounded-full bg-[#16A34A] text-white w-4.5 h-4.5 text-[10px] font-bold">
+                      ✓
+                    </div>
+                    <span className="text-slate-400 text-base font-light">›</span>
+                  </div>
                 </div>
 
-                <div className="bg-white border border-[#E2E8F0] rounded-xl p-4 shadow-xs">
-                  <span className="text-[11px] text-slate-500 font-medium block">
-                    Pedidos Registrados
-                  </span>
-                  <span className="font-display font-black text-xl text-[#041B38] block mt-1">
-                    {user.orders.length} {user.orders.length === 1 ? 'pedido' : 'pedidos'}
-                  </span>
-                  <span className="text-[10px] text-[#16A34A] font-semibold mt-1 block">
-                    NF-e & XML disponíveis
-                  </span>
+                {/* Linha 2: CPF / Responsável Legal */}
+                <div className="flex justify-between items-center py-4 px-6 hover:bg-slate-50/50 transition-colors">
+                  <div className="flex items-center gap-4">
+                    <div className="w-5 h-5 text-slate-400 shrink-0 flex items-center justify-center">
+                      <FileText className="w-4.5 h-4.5" />
+                    </div>
+                    <div>
+                      <div className="text-[14px] font-mono font-bold text-[#041B38]">
+                        54496086832
+                      </div>
+                      <div className="text-[12px] text-slate-500">
+                        Número do CPF / Responsável legal.
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center justify-center rounded-full bg-[#16A34A] text-white w-4.5 h-4.5 text-[10px] font-bold">
+                      ✓
+                    </div>
+                    <span className="text-slate-400 text-base font-light">›</span>
+                  </div>
                 </div>
 
-                <div className="bg-white border border-[#E2E8F0] rounded-xl p-4 shadow-xs">
-                  <span className="text-[11px] text-slate-500 font-medium block">
-                    Unidades de Recebimento
-                  </span>
-                  <span className="font-display font-black text-xl text-[#041B38] block mt-1">
-                    {user.addresses.length} {user.addresses.length === 1 ? 'local' : 'locais'}
-                  </span>
-                  <span className="text-[10px] text-slate-500 mt-1 block truncate">
-                    Padrão: {user.addresses.find((a) => a.isDefault)?.label || user.addresses[0]?.label}
-                  </span>
+                {/* Linha 3: Nome de Preferência */}
+                <div className="flex justify-between items-center py-4 px-6 hover:bg-slate-50/50 transition-colors">
+                  <div className="flex items-center gap-4">
+                    <div className="w-5 h-5 text-slate-400 shrink-0 flex items-center justify-center">
+                      <User className="w-4.5 h-4.5" />
+                    </div>
+                    <div>
+                      <div className="text-[14px] font-bold text-[#041B38]">
+                        José Antonio
+                      </div>
+                      <div className="text-[12px] text-slate-500">
+                        Nome de preferência no atendimento.
+                      </div>
+                    </div>
+                  </div>
+                  <span className="text-slate-400 text-base font-light">›</span>
                 </div>
 
-                <div className="bg-white border border-[#E2E8F0] rounded-xl p-4 shadow-xs">
-                  <span className="text-[11px] text-slate-500 font-medium block">
-                    Compradores no CNPJ
-                  </span>
-                  <span className="font-display font-black text-xl text-[#041B38] block mt-1">
-                    {user.buyers.filter((b) => b.active).length} ativos
-                  </span>
-                  <span className="text-[10px] text-slate-500 mt-1 block">
-                    Controle por centro de custo
-                  </span>
+                {/* Linha 4: Endereço Fiscal Principal */}
+                <div className="flex justify-between items-center py-4 px-6 hover:bg-slate-50/50 transition-colors">
+                  <div className="flex items-center gap-4">
+                    <div className="w-5 h-5 text-slate-400 shrink-0 flex items-center justify-center">
+                      <MapPin className="w-4.5 h-4.5" />
+                    </div>
+                    <div>
+                      <div className="text-[14px] font-bold text-[#041B38]">
+                        Avenida Sargento Geraldo Sant&apos;Ana, 683 — Jurubatuba, São Paulo / SP — CEP 04674-225
+                      </div>
+                      <div className="text-[12px] text-slate-500">
+                        Endereço fiscal principal cadastrado.
+                      </div>
+                    </div>
+                  </div>
+                  <span className="text-slate-400 text-base font-light">›</span>
+                </div>
+              </div>
+            </div>
+
+            {/* SEÇÃO 2: OCUPAÇÃO E ATIVIDADE */}
+            <div className="space-y-2">
+              <h2 className="text-[16px] font-display font-extrabold text-[#041B38]">
+                Ocupação e atividade
+              </h2>
+              <div className="bg-white rounded-[12px] border border-[#E2E8F0] shadow-xs overflow-hidden">
+                <div className="flex justify-between items-center py-4 px-6 hover:bg-slate-50/50 transition-colors">
+                  <div className="flex items-center gap-4">
+                    <div className="w-5 h-5 text-slate-400 shrink-0 flex items-center justify-center">
+                      <Briefcase className="w-4.5 h-4.5" />
+                    </div>
+                    <div>
+                      <div className="text-[14px] font-bold text-[#041B38]">
+                        Analista sistemas, desenvolvedor de software
+                      </div>
+                      <div className="text-[12px] text-slate-500">
+                        Ocupação principal / Gestor de tecnologia e suprimentos.
+                      </div>
+                    </div>
+                  </div>
+                  <span className="text-slate-400 text-base font-light">›</span>
+                </div>
+              </div>
+            </div>
+
+            {/* SEÇÃO 3: DADOS DA CONTA */}
+            <div className="space-y-2">
+              <h2 className="text-[16px] font-display font-extrabold text-[#041B38]">
+                Dados da conta
+              </h2>
+              <div className="bg-white rounded-[12px] border border-[#E2E8F0] shadow-xs divide-y divide-[#F1F5F9] overflow-hidden">
+                {/* Linha 1: E-mail */}
+                <div className="flex justify-between items-center py-4 px-6 hover:bg-slate-50/50 transition-colors">
+                  <div className="flex items-center gap-4">
+                    <div className="w-5 h-5 text-slate-400 shrink-0 flex items-center justify-center">
+                      <Mail className="w-4.5 h-4.5" />
+                    </div>
+                    <div>
+                      <div className="text-[14px] font-bold text-[#041B38]">
+                        {user.email || 'jose.antonio.220507@gmail.com'}
+                      </div>
+                      <div className="text-[12px] text-slate-500">
+                        E-mail pelo qual você recebe as comunicações fiscais e Danfe.
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center justify-center rounded-full bg-[#16A34A] text-white w-4.5 h-4.5 text-[10px] font-bold">
+                      ✓
+                    </div>
+                    <span className="text-slate-400 text-base font-light">›</span>
+                  </div>
+                </div>
+
+                {/* Linha 2: Telefone */}
+                <div className="flex justify-between items-center py-4 px-6 hover:bg-slate-50/50 transition-colors">
+                  <div className="flex items-center gap-4">
+                    <div className="w-5 h-5 text-slate-400 shrink-0 flex items-center justify-center">
+                      <Phone className="w-4.5 h-4.5" />
+                    </div>
+                    <div>
+                      <div className="text-[14px] font-bold text-[#041B38]">
+                        {user.phone || '+55 11 99252-7640'}
+                      </div>
+                      <div className="text-[12px] text-slate-500">
+                        Número pelo qual você recebe os códigos de verificação e WhatsApp.
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center justify-center rounded-full bg-[#16A34A] text-white w-4.5 h-4.5 text-[10px] font-bold">
+                      ✓
+                    </div>
+                    <span className="text-slate-400 text-base font-light">›</span>
+                  </div>
+                </div>
+
+                {/* Linha 3: Código de Usuário */}
+                <div className="flex justify-between items-center py-4 px-6 hover:bg-slate-50/50 transition-colors">
+                  <div className="flex items-center gap-4">
+                    <div className="w-5 h-5 text-slate-400 shrink-0 flex items-center justify-center">
+                      <User className="w-4.5 h-4.5" />
+                    </div>
+                    <div>
+                      <div className="text-[14px] font-mono font-bold text-[#041B38]">
+                        {user.id || 'JA20260317122747'}
+                      </div>
+                      <div className="text-[12px] text-slate-500">
+                        Código identificador do usuário na plataforma.
+                      </div>
+                    </div>
+                  </div>
+                  <span className="text-slate-400 text-base font-light">›</span>
                 </div>
               </div>
 
-              {/* Último Pedido em Andamento */}
-              <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5 sm:p-6 shadow-xs">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100 mb-5">
+              {/* Rodapé de Proteção de Dados LGPD */}
+              <div className="flex items-center py-2 px-1 gap-2.5 text-slate-500 text-xs">
+                <ShieldCheck className="w-4.5 h-4.5 text-slate-400 shrink-0" />
+                <span>
+                  Suas informações fiscais e pessoais estão sempre protegidas. Consulte nossa{' '}
+                  <span className="text-[#0F668E] font-semibold underline cursor-pointer">
+                    Política de Privacidade e LGPD
+                  </span>.
+                </span>
+              </div>
+            </div>
+
+            {/* SEÇÃO 4: ENDEREÇOS (EXATAMENTE COMO NO PAPER — COMPONENT AZX-0) */}
+            <div className="space-y-3.5 pt-2">
+              <div className="flex justify-between items-center">
+                <h2 className="text-[16px] font-display font-extrabold text-[#041B38]">
+                  Endereços
+                </h2>
+                <button
+                  type="button"
+                  onClick={() => showNotice('Modal para inclusão de novo endereço corporativo.')}
+                  className="px-4 py-2 rounded-lg bg-[#0F668E] hover:bg-[#0B4F6E] text-white font-bold text-xs transition-colors cursor-pointer"
+                >
+                  + Adicionar Endereço
+                </button>
+              </div>
+
+              {/* Card 1: Endereço Residencial e Fiscal */}
+              <div className="bg-white rounded-[12px] border border-[#E2E8F0] shadow-xs p-5 sm:p-6 space-y-1.5 hover:border-slate-300 transition-colors">
+                <div className="flex justify-between items-start">
                   <div>
-                    <h2 className="font-display font-bold text-base text-[#041B38]">
-                      Último Pedido & Rastreamento Logístico
-                    </h2>
-                    <p className="text-xs text-slate-500">
-                      Acompanhe a emissão da nota fiscal e a entrega da frota na unidade selecionada.
+                    <h3 className="text-[15px] font-bold text-[#041B38] leading-snug">
+                      Avenida Sargento Geraldo Sant&apos;Ana 683 Ap 41 BL 4
+                    </h3>
+                    <p className="text-[13px] text-slate-600">
+                      CEP 04674225 - São Paulo - São Paulo
                     </p>
                   </div>
-                  {latestOrder && (
-                    <button
-                      type="button"
-                      onClick={() => setActiveTab('pedidos')}
-                      className="text-xs font-display font-bold text-[#0F668E] hover:underline cursor-pointer self-start sm:self-center"
-                    >
-                      Ver histórico completo →
-                    </button>
-                  )}
+                  <button className="text-slate-400 hover:text-slate-700 text-lg p-1">⋮</button>
                 </div>
+                <p className="text-[12px] text-slate-500">
+                  Endereço residencial e fiscal
+                </p>
+                <p className="text-[12px] text-slate-500">
+                  Jose Antonio Rodrigues Feitosa - 11992527640
+                </p>
+                <div className="pt-1">
+                  <button
+                    onClick={() => showNotice('Editar informações adicionais')}
+                    className="text-[13px] font-bold text-[#0F668E] hover:underline cursor-pointer"
+                  >
+                    Incluir informações adicionais →
+                  </button>
+                </div>
+              </div>
 
-                {latestOrder ? (
-                  <div className="space-y-5">
-                    <div className="flex flex-wrap items-center justify-between gap-4 bg-[#F8FAFC] border border-slate-200 rounded-xl p-4">
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2">
+              {/* Card 2: Endereço Cadastral Adicional */}
+              <div className="bg-white rounded-[12px] border border-[#E2E8F0] shadow-xs p-5 sm:p-6 space-y-1.5 hover:border-slate-300 transition-colors">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="text-[15px] font-bold text-[#041B38] leading-snug">
+                      Avenida Sargento Geraldo Sant&apos;Ana 683 Apto 41 Bloco 4
+                    </h3>
+                    <p className="text-[13px] text-slate-600">
+                      CEP 04674225 - São Paulo - São Paulo
+                    </p>
+                  </div>
+                  <button className="text-slate-400 hover:text-slate-700 text-lg p-1">⋮</button>
+                </div>
+                <p className="text-[12px] text-slate-500">
+                  Endereço cadastral adicional
+                </p>
+                <p className="text-[12px] text-slate-500">
+                  José Antonio Rodrigues Feitosa - 11992527640
+                </p>
+                <div className="pt-1">
+                  <button
+                    onClick={() => showNotice('Editar informações adicionais')}
+                    className="text-[13px] font-bold text-[#0F668E] hover:underline cursor-pointer"
+                  >
+                    Incluir informações adicionais →
+                  </button>
+                </div>
+              </div>
+
+              {/* Card 3: Endereço Comercial / Entrega Rápida */}
+              <div className="bg-white rounded-[12px] border border-[#E2E8F0] shadow-xs p-5 sm:p-6 space-y-1.5 hover:border-slate-300 transition-colors">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="text-[15px] font-bold text-[#041B38] leading-snug">
+                      Avenida Rubens Montanaro de Borba 477
+                    </h3>
+                    <p className="text-[13px] text-slate-600">
+                      CEP 04811120 - São Paulo - São Paulo
+                    </p>
+                  </div>
+                  <button className="text-slate-400 hover:text-slate-700 text-lg p-1">⋮</button>
+                </div>
+                <p className="text-[12px] text-slate-500">
+                  Endereço comercial / Entrega rápida
+                </p>
+                <p className="text-[12px] text-slate-500">
+                  Jose Antonio Rodrigues Feitosa - 11992527640
+                </p>
+                <div className="pt-1">
+                  <button
+                    onClick={() => showNotice('Editar informações adicionais')}
+                    className="text-[13px] font-bold text-[#0F668E] hover:underline cursor-pointer"
+                  >
+                    Incluir informações adicionais →
+                  </button>
+                </div>
+              </div>
+
+              {/* Nota de Cancelamento */}
+              <div className="py-2 text-[12px] text-slate-400">
+                Você pode{' '}
+                <span className="text-[#0F668E] underline cursor-pointer">
+                  cancelar sua conta
+                </span>{' '}
+                quando quiser.
+              </div>
+            </div>
+
+          </div>
+        )}
+
+        {/* ===================================================================
+            SE ABA FOR "PEDIDOS" (GESTÃO DE PEDIDOS & NF-E)
+            =================================================================== */}
+        {activeTab === 'pedidos' && (
+          <div className="space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-3 bg-white p-4 rounded-xl border border-[#E2E8F0]">
+              <div className="flex items-center gap-2">
+                <Package className="w-5 h-5 text-[#0F668E]" />
+                <h2 className="font-display font-bold text-base text-[#041B38]">
+                  Meus Pedidos Corporativos ({user.orders.length})
+                </h2>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <div className="relative">
+                  <Search className="w-4 h-4 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    placeholder="Buscar por número ou produto..."
+                    value={orderSearch}
+                    onChange={(e) => setOrderSearch(e.target.value)}
+                    className="pl-8 pr-3 py-1.5 border border-slate-300 rounded-lg text-xs"
+                  />
+                </div>
+                <select
+                  value={orderStatusFilter}
+                  onChange={(e) => setOrderStatusFilter(e.target.value as any)}
+                  className="px-3 py-1.5 border border-slate-300 rounded-lg text-xs bg-white cursor-pointer"
+                >
+                  <option value="todos">Todos os status</option>
+                  <option value="andamento">Em andamento</option>
+                  <option value="entregues">Entregues</option>
+                </select>
+              </div>
+            </div>
+
+            {filteredOrders.length === 0 ? (
+              <div className="bg-white rounded-xl border border-[#E2E8F0] p-12 text-center text-slate-500">
+                <p className="font-bold text-slate-700 mb-1">Nenhum pedido encontrado</p>
+                <p className="text-xs">Faça sua primeira compra ou cotação para acompanhar aqui.</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {filteredOrders.map((order) => {
+                  const stepIdx = getStepIndex(order.status);
+                  return (
+                    <div
+                      key={order.id}
+                      className="bg-white rounded-xl border border-[#E2E8F0] shadow-xs p-5 space-y-4"
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                        <div className="flex items-center gap-2.5">
                           <span className="font-mono font-bold text-sm text-[#041B38]">
-                            #{latestOrder.id}
+                            Pedido #{order.id}
                           </span>
-                          <span className="bg-[#0F668E] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full">
-                            {latestOrder.status}
+                          <span className="text-xs text-slate-400">•</span>
+                          <span className="text-xs text-slate-500">{order.date}</span>
+                          <span className="text-xs text-slate-400">•</span>
+                          <span className="text-xs font-bold text-[#0F668E]">
+                            {order.paymentMethod}
                           </span>
                         </div>
-                        <p className="text-xs text-slate-500">
-                          Data: {latestOrder.date} • Unidade: <strong className="text-slate-700">{latestOrder.deliveryAddressLabel}</strong>
-                        </p>
+
+                        <div className="flex items-center gap-2">
+                          <span className="font-display font-bold text-sm text-[#041B38]">
+                            {formatBRL(order.total)}
+                          </span>
+                          <button
+                            onClick={() => setNfeModalOrder(order)}
+                            className="px-2.5 py-1 text-xs font-bold text-[#0F668E] bg-blue-50 rounded hover:bg-blue-100 transition-colors cursor-pointer"
+                          >
+                            Ver Danfe
+                          </button>
+                        </div>
                       </div>
 
-                      <div className="flex items-center gap-3">
-                        <div className="text-right">
-                          <span className="text-[10px] text-slate-400 block">Valor Faturado</span>
-                          <span className="font-display font-black text-base text-[#041B38]">
-                            {formatBRL(latestOrder.total)}
-                          </span>
-                        </div>
+                      {/* Timeline do Pedido */}
+                      <div className="grid grid-cols-5 gap-2 text-center text-[11px] py-1">
+                        {ORDER_STEPS.map((stepName, sIdx) => {
+                          const isDone = sIdx <= stepIdx;
+                          return (
+                            <div key={stepName} className="flex flex-col items-center">
+                              <div
+                                className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold mb-1 ${
+                                  isDone
+                                    ? 'bg-[#16A34A] text-white'
+                                    : 'bg-slate-200 text-slate-500'
+                                }`}
+                              >
+                                {isDone ? '✓' : sIdx + 1}
+                              </div>
+                              <span className={`text-[10px] ${isDone ? 'font-bold text-[#041B38]' : 'text-slate-400'}`}>
+                                {stepName}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      {/* Lista resumida de itens */}
+                      <div className="divide-y divide-slate-100 pt-1">
+                        {order.items.map((it) => (
+                          <div key={it.productId} className="py-2 flex items-center justify-between text-xs">
+                            <div className="flex items-center gap-2.5">
+                              <img src={it.image} alt={it.name} className="w-8 h-8 object-contain rounded border border-slate-100" />
+                              <span className="font-medium text-slate-800 line-clamp-1">{it.name}</span>
+                              <span className="text-slate-400">({it.quantity}x)</span>
+                            </div>
+                            <span className="font-mono font-bold text-slate-800">
+                              {formatBRL(it.unitPrice * it.quantity)}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="flex justify-between items-center pt-2 border-t border-slate-100 text-xs">
+                        <span className="text-slate-500">
+                          Entrega: <strong className="text-slate-700">{order.deliveryAddressLabel}</strong>
+                        </span>
                         <button
-                          type="button"
-                          onClick={() => handleRepeatOrder(latestOrder)}
-                          className="px-3.5 py-2 rounded-lg bg-[#0F668E] hover:bg-[#0B4F6E] text-white text-xs font-display font-bold flex items-center gap-1.5 cursor-pointer transition-colors"
+                          onClick={() => handleRepeatOrder(order)}
+                          className="px-3 py-1.5 bg-[#0F668E] text-white font-bold rounded hover:bg-[#0B4F6E] transition-colors cursor-pointer flex items-center gap-1"
                         >
                           <RotateCcw className="w-3.5 h-3.5" />
                           <span>Repetir Pedido</span>
                         </button>
                       </div>
                     </div>
-
-                    {/* Stepper Logístico */}
-                    <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
-                      {ORDER_STEPS.map((step, idx) => {
-                        const current = getStepIndex(latestOrder.status);
-                        const done = idx <= current;
-                        return (
-                          <div
-                            key={step}
-                            className={`p-2.5 rounded-lg border text-center ${
-                              done
-                                ? 'bg-[#0F668E]/10 border-[#0F668E]/30 text-[#0F668E]'
-                                : 'bg-slate-50 border-slate-200 text-slate-400'
-                            }`}
-                          >
-                            <div className="text-[10px] font-mono font-bold mb-0.5">
-                              0{idx + 1}
-                            </div>
-                            <div className="text-[11px] font-display font-bold leading-tight">
-                              {step}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ) : (
-                  <div className="py-10 text-center">
-                    <Truck className="w-10 h-10 text-slate-300 mx-auto mb-3" />
-                    <h3 className="font-display font-bold text-sm text-[#041B38] mb-1">
-                      Sua empresa ainda não possui pedidos faturados
-                    </h3>
-                    <p className="text-xs text-slate-500 max-w-md mx-auto mb-5">
-                      Explore o catálogo atacado ou monte sua primeira lista de reposição mensal com condições PJ.
-                    </p>
-                    <div className="flex flex-wrap items-center justify-center gap-3">
-                      <button
-                        type="button"
-                        onClick={() => onNavigate && onNavigate('catalogo')}
-                        className="px-5 py-2.5 rounded-lg bg-[#0F668E] text-white font-display font-bold text-xs cursor-pointer hover:bg-[#0B4F6E]"
-                      >
-                        Explorar Catálogo Atacado
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setActiveTab('recompra')}
-                        className="px-5 py-2.5 rounded-lg border border-slate-200 text-[#041B38] font-display font-bold text-xs cursor-pointer hover:bg-slate-50"
-                      >
-                        Lista Sugerida para Empresas
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Atalhos Rápidos */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('recompra')}
-                  className="bg-white border border-[#E2E8F0] hover:border-[#0F668E]/40 rounded-xl p-5 text-left transition-all cursor-pointer group"
-                >
-                  <RotateCcw className="w-5 h-5 text-[#0F668E] mb-2.5" />
-                  <h3 className="font-display font-bold text-sm text-[#041B38] group-hover:text-[#0F668E]">
-                    Abastecimento Mensal
-                  </h3>
-                  <p className="text-xs text-slate-500 mt-1">
-                    Monte seu pedido recorrente de papel toalha, sulfite, copos e limpeza em segundos.
-                  </p>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => onNavigate && onNavigate('checkout')}
-                  className="bg-white border border-[#E2E8F0] hover:border-[#0F668E]/40 rounded-xl p-5 text-left transition-all cursor-pointer group"
-                >
-                  <ShoppingCart className="w-5 h-5 text-[#FB8C00] mb-2.5" />
-                  <h3 className="font-display font-bold text-sm text-[#041B38] group-hover:text-[#0F668E]">
-                    Faturar Carrinho Atual
-                  </h3>
-                  <p className="text-xs text-slate-500 mt-1">
-                    Seus dados fiscais e endereço padrão já serão preenchidos automaticamente no checkout.
-                  </p>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('enderecos')}
-                  className="bg-white border border-[#E2E8F0] hover:border-[#0F668E]/40 rounded-xl p-5 text-left transition-all cursor-pointer group"
-                >
-                  <MapPin className="w-5 h-5 text-[#16A34A] mb-2.5" />
-                  <h3 className="font-display font-bold text-sm text-[#041B38] group-hover:text-[#0F668E]">
-                    Gerenciar Filiais e Docas
-                  </h3>
-                  <p className="text-xs text-slate-500 mt-1">
-                    Cadastre novos endereços de entrega para agilizar o recebimento do almoxarifado.
-                  </p>
-                </button>
-              </div>
-            </>
-          )}
-
-          {/* ========================================================== */}
-          {/* ABA 2: MEUS PEDIDOS & NF-E                                 */}
-          {/* ========================================================== */}
-          {activeTab === 'pedidos' && (
-            <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5 sm:p-7 shadow-xs space-y-5">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
-                <div>
-                  <h2 className="font-display font-bold text-lg text-[#041B38]">
-                    Histórico de Pedidos & Notas Fiscais
-                  </h2>
-                  <p className="text-xs text-slate-500">
-                    Consulte faturamentos, baixe DANFE/XML e repita pedidos com 1 clique.
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  {(['todos', 'andamento', 'entregues'] as const).map((status) => (
-                    <button
-                      key={status}
-                      type="button"
-                      onClick={() => setOrderStatusFilter(status)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-display font-bold cursor-pointer transition-colors ${
-                        orderStatusFilter === status
-                          ? 'bg-[#0F668E] text-white'
-                          : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                      }`}
-                    >
-                      {status === 'todos'
-                        ? 'Todos'
-                        : status === 'andamento'
-                        ? 'Em Andamento'
-                        : 'Entregues'}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="relative">
-                <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                <input
-                  type="text"
-                  value={orderSearch}
-                  onChange={(e) => setOrderSearch(e.target.value)}
-                  placeholder="Buscar por número do pedido (ex: LTS-2026), SKU ou nome do item..."
-                  className="w-full pl-10 pr-4 py-2.5 text-xs border border-slate-300 rounded-lg focus:border-[#0F668E] focus:outline-none"
-                />
-              </div>
-
-              {filteredOrders.length === 0 ? (
-                <div className="py-12 text-center border border-dashed border-slate-200 rounded-xl">
-                  <Package className="w-10 h-10 text-slate-300 mx-auto mb-3" />
-                  <p className="font-display font-bold text-sm text-[#041B38]">
-                    Nenhum pedido encontrado com esse filtro
-                  </p>
-                  <p className="text-xs text-slate-500 mt-1 mb-4">
-                    Você pode criar um pedido finalizando o carrinho ou acessando a lista de Recompra Rápida.
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => onNavigate && onNavigate('catalogo')}
-                    className="px-4 py-2 rounded-lg bg-[#0F668E] text-white text-xs font-display font-bold cursor-pointer"
-                  >
-                    Ir para o Catálogo
-                  </button>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {filteredOrders.map((order) => (
-                    <div
-                      key={order.id}
-                      className="border border-slate-200 rounded-xl overflow-hidden"
-                    >
-                      {/* Cabeçalho do Pedido */}
-                      <div className="bg-[#F8FAFC] px-4 py-3 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs">
-                        <div className="flex flex-wrap items-center gap-4">
-                          <div>
-                            <span className="text-[10px] text-slate-400 block uppercase">Pedido</span>
-                            <span className="font-mono font-bold text-[#041B38]">#{order.id}</span>
-                          </div>
-                          <div>
-                            <span className="text-[10px] text-slate-400 block uppercase">Data</span>
-                            <span className="font-semibold text-slate-700">{order.date}</span>
-                          </div>
-                          <div>
-                            <span className="text-[10px] text-slate-400 block uppercase">Pagamento</span>
-                            <span className="font-semibold text-slate-700">{order.paymentMethod}</span>
-                          </div>
-                          <div>
-                            <span className="text-[10px] text-slate-400 block uppercase">Entrega</span>
-                            <span className="font-semibold text-slate-700">{order.deliveryAddressLabel}</span>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center gap-3">
-                          <span
-                            className={`text-[10px] font-display font-bold px-2.5 py-1 rounded-full ${
-                              order.status === 'Entregue'
-                                ? 'bg-emerald-50 text-[#16A34A] border border-emerald-200'
-                                : 'bg-blue-50 text-[#0F668E] border border-[#0F668E]/20'
-                            }`}
-                          >
-                            {order.status}
-                          </span>
-                          <span className="font-display font-black text-sm text-[#041B38]">
-                            {formatBRL(order.total)}
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Itens do Pedido */}
-                      <div className="p-4 space-y-3 bg-white">
-                        {order.items.map((item) => (
-                          <div
-                            key={`${order.id}-${item.sku}`}
-                            className="flex items-center justify-between gap-3 text-xs"
-                          >
-                            <div className="flex items-center gap-3 min-w-0">
-                              <img
-                                src={item.image}
-                                alt={item.name}
-                                className="w-11 h-11 rounded-lg object-contain border border-slate-100 bg-white p-1 shrink-0"
-                              />
-                              <div className="min-w-0">
-                                <p className="font-semibold text-[#041B38] truncate">
-                                  {item.name}
-                                </p>
-                                <span className="text-[11px] text-slate-400 font-mono">
-                                  SKU: {item.sku} • {item.quantity}x {item.unit} ({formatBRL(item.unitPrice)}/un)
-                                </span>
-                              </div>
-                            </div>
-                            <span className="font-display font-bold text-[#041B38] shrink-0">
-                              {formatBRL(item.quantity * item.unitPrice)}
-                            </span>
-                          </div>
-                        ))}
-
-                        <div className="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
-                          <span className="text-[11px] text-slate-500 font-mono">
-                            NF-e nº {order.nfeNumber || 'Em processamento'}
-                          </span>
-
-                          <div className="flex flex-wrap items-center gap-2">
-                            <button
-                              type="button"
-                              onClick={() => setNfeModalOrder(order)}
-                              className="px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-display font-bold flex items-center gap-1.5 cursor-pointer"
-                            >
-                              <Download className="w-3.5 h-3.5 text-[#0F668E]" />
-                              <span>DANFE / XML</span>
-                            </button>
-
-                            <button
-                              type="button"
-                              onClick={() => handleRepeatOrder(order)}
-                              className="px-3.5 py-1.5 rounded-lg bg-[#0F668E] hover:bg-[#0B4F6E] text-white text-xs font-display font-bold flex items-center gap-1.5 cursor-pointer"
-                            >
-                              <RotateCcw className="w-3.5 h-3.5" />
-                              <span>Comprar Novamente</span>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {nfeModalOrder && (
-                <div className="p-4 rounded-xl bg-slate-50 border border-[#0F668E]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-                  <div>
-                    <span className="font-display font-bold text-[#041B38] block">
-                      Espelho Fiscal DANFE • NF-e {nfeModalOrder.nfeNumber || '000.050.112'} (Pedido #{nfeModalOrder.id})
-                    </span>
-                    <span className="text-slate-500">
-                      Destinatário: {user.razaoSocial} • CNPJ {user.cnpjCpf} • Valor: {formatBRL(nfeModalOrder.total)}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <a
-                      href={`https://wa.me/5511977663741?text=${encodeURIComponent(
-                        `Olá! Gostaria da 2ª via do PDF/XML da NF-e do pedido #${nfeModalOrder.id} (${user.razaoSocial}).`
-                      )}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-3 py-1.5 rounded-lg bg-[#0F668E] text-white font-bold flex items-center gap-1"
-                    >
-                      <ExternalLink className="w-3 h-3" />
-                      <span>Solicitar 2ª Via XML</span>
-                    </a>
-                    <button
-                      type="button"
-                      onClick={() => setNfeModalOrder(null)}
-                      className="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-600 font-bold cursor-pointer"
-                    >
-                      Fechar
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* ========================================================== */}
-          {/* ABA 3: RECOMPRA RÁPIDA B2B                                 */}
-          {/* ========================================================== */}
-          {activeTab === 'recompra' && (
-            <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5 sm:p-7 shadow-xs space-y-5">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
-                <div>
-                  <h2 className="font-display font-bold text-lg text-[#041B38]">
-                    Lista de Reposição Mensal da Empresa
-                  </h2>
-                  <p className="text-xs text-slate-500">
-                    Ajuste rapidamente as quantidades recorrentes de suprimentos e envie tudo ao carrinho em 1 clique.
-                  </p>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={handleAddAllRecompra}
-                  className="px-4 py-2.5 rounded-lg bg-[#0F668E] hover:bg-[#0B4F6E] text-white font-display font-bold text-xs flex items-center gap-2 cursor-pointer self-start sm:self-center"
-                >
-                  <ShoppingCart className="w-4 h-4" />
-                  <span>Adicionar Lista ao Carrinho</span>
-                </button>
-              </div>
-
-              <div className="divide-y divide-slate-100">
-                {RECURRING_ESSENTIALS.map((prod) => {
-                  const qty = recompraQty[prod.id] ?? 1;
-                  return (
-                    <div
-                      key={prod.id}
-                      className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
-                    >
-                      <div className="flex items-center gap-3.5 min-w-0">
-                        <img
-                          src={prod.image}
-                          alt={prod.name}
-                          className="w-14 h-14 rounded-xl object-contain border border-slate-100 bg-white p-1.5 shrink-0"
-                        />
-                        <div className="min-w-0">
-                          <span className="text-[10px] font-mono text-slate-400 block">
-                            SKU {prod.sku} • {prod.unit}
-                          </span>
-                          <h3 className="font-display font-bold text-xs sm:text-sm text-[#041B38] leading-snug">
-                            {prod.name}
-                          </h3>
-                          <span className="text-xs font-bold text-[#0F668E]">
-                            {formatBRL(prod.price)}
-                          </span>
-                          <span className="text-[11px] text-[#16A34A] ml-2 font-semibold">
-                            (-5% no PIX: {formatBRL(prod.price * 0.95)})
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-3 shrink-0">
-                        <div className="flex items-center border border-slate-300 rounded-lg overflow-hidden h-9">
-                          <button
-                            type="button"
-                            onClick={() =>
-                              setRecompraQty((prev) => ({
-                                ...prev,
-                                [prod.id]: Math.max(1, (prev[prod.id] || 1) - 1),
-                              }))
-                            }
-                            aria-label="Diminuir quantidade"
-                            className="w-8 h-full flex items-center justify-center text-slate-600 hover:bg-slate-100 cursor-pointer"
-                          >
-                            <Minus className="w-3.5 h-3.5" />
-                          </button>
-                          <span className="w-10 text-center text-xs font-mono font-bold text-[#041B38]">
-                            {qty}
-                          </span>
-                          <button
-                            type="button"
-                            onClick={() =>
-                              setRecompraQty((prev) => ({
-                                ...prev,
-                                [prod.id]: (prev[prod.id] || 1) + 1,
-                              }))
-                            }
-                            aria-label="Aumentar quantidade"
-                            className="w-8 h-full flex items-center justify-center text-slate-600 hover:bg-slate-100 cursor-pointer"
-                          >
-                            <Plus className="w-3.5 h-3.5" />
-                          </button>
-                        </div>
-
-                        <button
-                          type="button"
-                          onClick={() => {
-                            addItem(prod, qty);
-                            showNotice(`${qty}x ${prod.sku} adicionado ao carrinho.`);
-                          }}
-                          className="px-3.5 h-9 rounded-lg border border-[#0F668E] text-[#0F668E] hover:bg-[#0F668E] hover:text-white font-display font-bold text-xs transition-colors cursor-pointer"
-                        >
-                          Adicionar
-                        </button>
-                      </div>
-                    </div>
                   );
                 })}
               </div>
-            </div>
-          )}
+            )}
+          </div>
+        )}
 
-          {/* ========================================================== */}
-          {/* ABA 4: DADOS DA EMPRESA                                    */}
-          {/* ========================================================== */}
-          {activeTab === 'empresa' && (
-            <form
-              onSubmit={handleSaveCompany}
-              className="bg-white border border-[#E2E8F0] rounded-2xl p-5 sm:p-7 shadow-xs space-y-5 text-xs"
-            >
-              <div className="border-b border-slate-100 pb-4">
-                <h2 className="font-display font-bold text-lg text-[#041B38]">
-                  Dados Fiscais & Responsável de Compras
+        {/* ===================================================================
+            SE ABA FOR "RECOMPRA RÁPIDA"
+            =================================================================== */}
+        {activeTab === 'recompra' && (
+          <div className="space-y-4">
+            <div className="flex justify-between items-center bg-white p-4 rounded-xl border border-[#E2E8F0]">
+              <div>
+                <h2 className="font-display font-bold text-base text-[#041B38]">
+                  Itens de Reposição Recorrente
                 </h2>
-                <p className="text-xs text-slate-500">
-                  Mantenha os dados de faturamento atualizados para emissão automática de DANFE e XML.
-                </p>
+                <p className="text-xs text-slate-500">Produtos mais solicitados pela sua empresa com preço especial.</p>
               </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block font-bold text-slate-700 mb-1">
-                    {user.accountType === 'pj' ? 'CNPJ (Somente leitura)' : 'CPF'}
-                  </label>
-                  <input
-                    type="text"
-                    disabled
-                    value={user.cnpjCpf}
-                    className="w-full px-3.5 py-2.5 border border-slate-200 rounded-lg bg-slate-50 text-slate-500 font-mono"
-                  />
-                </div>
-                <div>
-                  <label className="block font-bold text-slate-700 mb-1">
-                    Inscrição Estadual
-                  </label>
-                  <input
-                    type="text"
-                    value={companyForm.inscricaoEstadual}
-                    onChange={(e) =>
-                      setCompanyForm({ ...companyForm, inscricaoEstadual: e.target.value })
-                    }
-                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-lg focus:border-[#0F668E] focus:outline-none"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block font-bold text-slate-700 mb-1">
-                    {user.accountType === 'pj' ? 'Razão Social *' : 'Nome Completo *'}
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={companyForm.razaoSocial}
-                    onChange={(e) =>
-                      setCompanyForm({ ...companyForm, razaoSocial: e.target.value })
-                    }
-                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-lg focus:border-[#0F668E] focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block font-bold text-slate-700 mb-1">
-                    Nome Fantasia
-                  </label>
-                  <input
-                    type="text"
-                    value={companyForm.nomeFantasia}
-                    onChange={(e) =>
-                      setCompanyForm({ ...companyForm, nomeFantasia: e.target.value })
-                    }
-                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-lg focus:border-[#0F668E] focus:outline-none"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div>
-                  <label className="block font-bold text-slate-700 mb-1">
-                    Responsável de Compras *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={companyForm.buyerName}
-                    onChange={(e) =>
-                      setCompanyForm({ ...companyForm, buyerName: e.target.value })
-                    }
-                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-lg focus:border-[#0F668E] focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block font-bold text-slate-700 mb-1">
-                    Cargo / Área
-                  </label>
-                  <input
-                    type="text"
-                    value={companyForm.buyerRole}
-                    onChange={(e) =>
-                      setCompanyForm({ ...companyForm, buyerRole: e.target.value })
-                    }
-                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-lg focus:border-[#0F668E] focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block font-bold text-slate-700 mb-1">
-                    Segmento
-                  </label>
-                  <input
-                    type="text"
-                    value={companyForm.segment}
-                    onChange={(e) =>
-                      setCompanyForm({ ...companyForm, segment: e.target.value })
-                    }
-                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-lg focus:border-[#0F668E] focus:outline-none"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block font-bold text-slate-700 mb-1">
-                    E-mail Corporativo (NF-e & XML) *
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    value={companyForm.email}
-                    onChange={(e) =>
-                      setCompanyForm({ ...companyForm, email: e.target.value })
-                    }
-                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-lg focus:border-[#0F668E] focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block font-bold text-slate-700 mb-1">
-                    WhatsApp Comercial *
-                  </label>
-                  <input
-                    type="tel"
-                    required
-                    value={companyForm.phone}
-                    onChange={(e) =>
-                      setCompanyForm({ ...companyForm, phone: e.target.value })
-                    }
-                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-lg focus:border-[#0F668E] focus:outline-none"
-                  />
-                </div>
-              </div>
-
-              <label className="flex items-center gap-2 text-slate-600 cursor-pointer pt-1">
-                <input
-                  type="checkbox"
-                  checked={companyForm.whatsappNotifications}
-                  onChange={(e) =>
-                    setCompanyForm({
-                      ...companyForm,
-                      whatsappNotifications: e.target.checked,
-                    })
-                  }
-                />
-                <span>Receber status de separação, NF-e emitida e entrega da frota via WhatsApp.</span>
-              </label>
-
-              <div className="pt-2">
-                <button
-                  type="submit"
-                  className="px-6 py-2.5 bg-[#0F668E] hover:bg-[#0B4F6E] text-white font-display font-bold text-xs uppercase tracking-wider rounded-lg transition-colors cursor-pointer"
-                >
-                  Salvar Dados da Empresa
-                </button>
-              </div>
-            </form>
-          )}
-
-          {/* ========================================================== */}
-          {/* ABA 5: UNIDADES & ENDEREÇOS DE ENTREGA                     */}
-          {/* ========================================================== */}
-          {activeTab === 'enderecos' && (
-            <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5 sm:p-7 shadow-xs space-y-5">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
-                <div>
-                  <h2 className="font-display font-bold text-lg text-[#041B38]">
-                    Unidades & Endereços de Entrega
-                  </h2>
-                  <p className="text-xs text-slate-500">
-                    Gerencie matriz, filiais, centros de custo e docas de recebimento.
-                  </p>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => setShowAddressForm((prev) => !prev)}
-                  className="px-4 py-2 rounded-lg bg-[#0F668E] hover:bg-[#0B4F6E] text-white font-display font-bold text-xs flex items-center gap-1.5 cursor-pointer self-start sm:self-center"
-                >
-                  <Plus className="w-4 h-4" />
-                  <span>Nova Unidade</span>
-                </button>
-              </div>
-
-              {showAddressForm && (
-                <form
-                  onSubmit={handleCreateAddress}
-                  className="p-4 sm:p-5 rounded-xl bg-[#F8FAFC] border border-slate-200 space-y-3.5 text-xs"
-                >
-                  <h3 className="font-display font-bold text-sm text-[#041B38]">
-                    Cadastrar Novo Ponto de Entrega
-                  </h3>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <div>
-                      <label className="block font-bold text-slate-700 mb-1">
-                        Nome da Unidade *
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        placeholder="Ex: Filial Moema / Depósito"
-                        value={newAddress.label}
-                        onChange={(e) =>
-                          setNewAddress({ ...newAddress, label: e.target.value })
-                        }
-                        className="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:border-[#0F668E] focus:outline-none"
-                      />
-                    </div>
-                    <div>
-                      <label className="block font-bold text-slate-700 mb-1">CEP *</label>
-                      <input
-                        type="text"
-                        required
-                        placeholder="00000-000"
-                        value={newAddress.cep}
-                        onChange={(e) =>
-                          setNewAddress({ ...newAddress, cep: e.target.value })
-                        }
-                        className="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white font-mono focus:border-[#0F668E] focus:outline-none"
-                      />
-                    </div>
-                    <div>
-                      <label className="block font-bold text-slate-700 mb-1">Bairro *</label>
-                      <input
-                        type="text"
-                        required
-                        value={newAddress.neighborhood}
-                        onChange={(e) =>
-                          setNewAddress({ ...newAddress, neighborhood: e.target.value })
-                        }
-                        className="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:border-[#0F668E] focus:outline-none"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-3">
-                    <div className="sm:col-span-6">
-                      <label className="block font-bold text-slate-700 mb-1">Logradouro *</label>
-                      <input
-                        type="text"
-                        required
-                        value={newAddress.street}
-                        onChange={(e) =>
-                          setNewAddress({ ...newAddress, street: e.target.value })
-                        }
-                        className="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:border-[#0F668E] focus:outline-none"
-                      />
-                    </div>
-                    <div className="sm:col-span-2">
-                      <label className="block font-bold text-slate-700 mb-1">Número *</label>
-                      <input
-                        type="text"
-                        required
-                        value={newAddress.number}
-                        onChange={(e) =>
-                          setNewAddress({ ...newAddress, number: e.target.value })
-                        }
-                        className="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:border-[#0F668E] focus:outline-none"
-                      />
-                    </div>
-                    <div className="sm:col-span-4">
-                      <label className="block font-bold text-slate-700 mb-1">Complemento</label>
-                      <input
-                        type="text"
-                        placeholder="Doca / Bloco / Sala"
-                        value={newAddress.complement}
-                        onChange={(e) =>
-                          setNewAddress({ ...newAddress, complement: e.target.value })
-                        }
-                        className="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:border-[#0F668E] focus:outline-none"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-end">
-                    <div className="sm:col-span-6">
-                      <label className="block font-bold text-slate-700 mb-1">Cidade *</label>
-                      <input
-                        type="text"
-                        required
-                        value={newAddress.city}
-                        onChange={(e) =>
-                          setNewAddress({ ...newAddress, city: e.target.value })
-                        }
-                        className="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white focus:border-[#0F668E] focus:outline-none"
-                      />
-                    </div>
-                    <div className="sm:col-span-2">
-                      <label className="block font-bold text-slate-700 mb-1">UF *</label>
-                      <input
-                        type="text"
-                        required
-                        maxLength={2}
-                        value={newAddress.state}
-                        onChange={(e) =>
-                          setNewAddress({ ...newAddress, state: e.target.value })
-                        }
-                        className="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white uppercase focus:border-[#0F668E] focus:outline-none"
-                      />
-                    </div>
-                    <div className="sm:col-span-4 flex items-center gap-2 pb-1">
-                      <input
-                        type="checkbox"
-                        id="defaultAddr"
-                        checked={newAddress.isDefault}
-                        onChange={(e) =>
-                          setNewAddress({ ...newAddress, isDefault: e.target.checked })
-                        }
-                      />
-                      <label htmlFor="defaultAddr" className="text-slate-700 font-semibold cursor-pointer">
-                        Definir como endereço padrão
-                      </label>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2 pt-1">
-                    <button
-                      type="submit"
-                      className="px-4 py-2 rounded-lg bg-[#0F668E] text-white font-display font-bold cursor-pointer"
-                    >
-                      Salvar Unidade
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setShowAddressForm(false)}
-                      className="px-4 py-2 rounded-lg border border-slate-300 bg-white text-slate-600 font-display font-bold cursor-pointer"
-                    >
-                      Cancelar
-                    </button>
-                  </div>
-                </form>
-              )}
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {user.addresses.map((addr) => (
-                  <div
-                    key={addr.id}
-                    className={`p-4 rounded-xl border transition-all flex flex-col justify-between gap-3 ${
-                      addr.isDefault
-                        ? 'border-[#0F668E] bg-[#0F668E]/[0.03]'
-                        : 'border-slate-200 bg-white'
-                    }`}
-                  >
-                    <div>
-                      <div className="flex items-center justify-between gap-2 mb-1.5">
-                        <span className="font-display font-bold text-sm text-[#041B38]">
-                          {addr.label}
-                        </span>
-                        {addr.isDefault && (
-                          <span className="bg-[#0F668E] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                            Padrão
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-xs text-slate-600 leading-relaxed">
-                        {addr.street}, {addr.number}
-                        {addr.complement ? ` — ${addr.complement}` : ''}
-                        <br />
-                        {addr.neighborhood} • {addr.city}/{addr.state}
-                        <br />
-                        <span className="font-mono text-slate-500">CEP {addr.cep}</span>
-                      </p>
-                    </div>
-
-                    <div className="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
-                      {!addr.isDefault ? (
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setDefaultAddress(addr.id);
-                            showNotice(`${addr.label} definido como endereço principal de entrega.`);
-                          }}
-                          className="font-display font-bold text-[#0F668E] hover:underline cursor-pointer"
-                        >
-                          Definir como padrão
-                        </button>
-                      ) : (
-                        <span className="text-[11px] text-[#16A34A] font-semibold">
-                          Ativo para próximos pedidos
-                        </span>
-                      )}
-
-                      {user.addresses.length > 1 && (
-                        <button
-                          type="button"
-                          onClick={() => removeAddress(addr.id)}
-                          aria-label="Excluir endereço"
-                          className="text-slate-400 hover:text-red-600 cursor-pointer"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <button
+                onClick={handleAddAllRecompra}
+                className="px-4 py-2 bg-[#0F668E] hover:bg-[#0B4F6E] text-white font-bold text-xs rounded-lg transition-colors cursor-pointer"
+              >
+                Adicionar Todos ao Carrinho
+              </button>
             </div>
-          )}
 
-          {/* ========================================================== */}
-          {/* ABA 6: CRÉDITO PJ & COMPRADORES AUTORIZADOS                */}
-          {/* ========================================================== */}
-          {activeTab === 'faturamento' && (
-            <div className="space-y-6">
-              {/* Painel de Crédito & Faturamento */}
-              <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5 sm:p-7 shadow-xs space-y-5">
-                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-4">
-                  <div>
-                    <h2 className="font-display font-bold text-lg text-[#041B38]">
-                      Limite de Crédito & Faturamento Boleto PJ
-                    </h2>
-                    <p className="text-xs text-slate-500">
-                      Condição vigente: <strong className="text-[#041B38]">{user.paymentTerms}</strong>
-                    </p>
-                  </div>
-                  <span
-                    className={`text-xs font-display font-bold px-3 py-1 rounded-full ${
-                      user.creditStatus === 'Aprovado'
-                        ? 'bg-emerald-50 text-[#16A34A] border border-emerald-200'
-                        : 'bg-amber-50 text-amber-700 border border-amber-200'
-                    }`}
-                  >
-                    Status: {user.creditStatus}
-                  </span>
-                </div>
-
-                {user.accountType === 'pj' ? (
-                  <>
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-xs">
-                        <span className="text-slate-500">
-                          Utilizado em títulos abertos: <strong className="text-[#041B38]">{formatBRL(user.creditUsed)}</strong>
-                        </span>
-                        <span className="text-slate-500">
-                          Limite Total: <strong className="text-[#041B38]">{formatBRL(user.creditLimit)}</strong>
-                        </span>
-                      </div>
-                      <div className="w-full h-3 rounded-full bg-slate-100 overflow-hidden">
-                        <div
-                          className="h-full bg-[#0F668E] rounded-full transition-all duration-300"
-                          style={{ width: `${creditPercent}%` }}
-                        />
-                      </div>
-                      <p className="text-xs font-semibold text-[#16A34A]">
-                        Disponível imediatamente para faturamento PJ: {formatBRL(creditAvailable)}
-                      </p>
-                    </div>
-
-                    <form
-                      onSubmit={handleCreditRequest}
-                      className="p-4 rounded-xl bg-[#F8FAFC] border border-slate-200 flex flex-col sm:flex-row sm:items-end gap-3 text-xs"
-                    >
-                      <div className="flex-1">
-                        <label className="block font-bold text-slate-700 mb-1">
-                          Solicitar Ampliação de Limite B2B (R$)
-                        </label>
-                        <input
-                          type="number"
-                          min={5000}
-                          step={1000}
-                          value={requestedLimit}
-                          onChange={(e) => setRequestedLimit(e.target.value)}
-                          className="w-full px-3.5 py-2 border border-slate-300 rounded-lg bg-white font-mono focus:border-[#0F668E] focus:outline-none"
-                        />
-                      </div>
-                      <button
-                        type="submit"
-                        className="px-5 py-2.5 rounded-lg bg-[#041B38] hover:bg-slate-800 text-white font-display font-bold cursor-pointer shrink-0"
-                      >
-                        Solicitar Revisão de Crédito
-                      </button>
-                    </form>
-                  </>
-                ) : (
-                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600">
-                    Sua conta está cadastrada como Pessoa Física (CPF). Para habilitar faturamento no Boleto PJ 28dd e limite de crédito corporativo, cadastre um CNPJ ou fale com nosso consultor.
-                  </div>
-                )}
-              </div>
-
-              {/* Compradores Autorizados */}
-              <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5 sm:p-7 shadow-xs space-y-5">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
-                  <div className="flex items-center gap-2.5">
-                    <Users className="w-5 h-5 text-[#0F668E]" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {RECURRING_ESSENTIALS.map((prod) => (
+                <div key={prod.id} className="bg-white p-4 rounded-xl border border-[#E2E8F0] flex items-center justify-between gap-3 text-xs">
+                  <div className="flex items-center gap-3">
+                    <img src={prod.image} alt={prod.name} className="w-12 h-12 object-contain rounded border border-slate-100" />
                     <div>
-                      <h2 className="font-display font-bold text-lg text-[#041B38]">
-                        Compradores Autorizados no CNPJ
-                      </h2>
-                      <p className="text-xs text-slate-500">
-                        Defina quais colaboradores podem solicitar pedidos pela conta da empresa.
-                      </p>
+                      <p className="font-bold text-[#041B38] line-clamp-1">{prod.name}</p>
+                      <p className="text-slate-500">{formatBRL(prod.price)} / {prod.unit}</p>
                     </div>
                   </div>
-
                   <button
-                    type="button"
-                    onClick={() => setShowBuyerForm((prev) => !prev)}
-                    className="px-4 py-2 rounded-lg bg-[#0F668E] hover:bg-[#0B4F6E] text-white font-display font-bold text-xs flex items-center gap-1.5 cursor-pointer self-start sm:self-center"
+                    onClick={() => {
+                      addItem(prod, 1);
+                      setIsDrawerOpen(true);
+                      showNotice(`${prod.name} adicionado ao carrinho.`);
+                    }}
+                    className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-[#041B38] font-bold rounded transition-colors cursor-pointer shrink-0"
                   >
-                    <UserPlus className="w-4 h-4" />
-                    <span>Autorizar Comprador</span>
+                    + Comprar
                   </button>
                 </div>
-
-                {showBuyerForm && (
-                  <form
-                    onSubmit={handleCreateBuyer}
-                    className="p-4 rounded-xl bg-[#F8FAFC] border border-slate-200 space-y-3 text-xs"
-                  >
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                      <div>
-                        <label className="block font-bold text-slate-700 mb-1">Nome *</label>
-                        <input
-                          type="text"
-                          required
-                          placeholder="Ex: Fernanda Souza"
-                          value={newBuyer.name}
-                          onChange={(e) => setNewBuyer({ ...newBuyer, name: e.target.value })}
-                          className="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white"
-                        />
-                      </div>
-                      <div>
-                        <label className="block font-bold text-slate-700 mb-1">Cargo / Unidade *</label>
-                        <input
-                          type="text"
-                          required
-                          placeholder="Ex: Supervisor Filial"
-                          value={newBuyer.role}
-                          onChange={(e) => setNewBuyer({ ...newBuyer, role: e.target.value })}
-                          className="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white"
-                        />
-                      </div>
-                      <div>
-                        <label className="block font-bold text-slate-700 mb-1">E-mail *</label>
-                        <input
-                          type="email"
-                          required
-                          placeholder="nome@empresa.com.br"
-                          value={newBuyer.email}
-                          onChange={(e) => setNewBuyer({ ...newBuyer, email: e.target.value })}
-                          className="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white"
-                        />
-                      </div>
-                      <div>
-                        <label className="block font-bold text-slate-700 mb-1">Alçada Mensal (R$)</label>
-                        <input
-                          type="number"
-                          min={500}
-                          step={500}
-                          value={newBuyer.monthlyLimit}
-                          onChange={(e) =>
-                            setNewBuyer({ ...newBuyer, monthlyLimit: e.target.value })
-                          }
-                          className="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white font-mono"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <button
-                        type="submit"
-                        className="px-4 py-2 rounded-lg bg-[#0F668E] text-white font-display font-bold cursor-pointer"
-                      >
-                        Salvar Comprador
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setShowBuyerForm(false)}
-                        className="px-4 py-2 rounded-lg border border-slate-300 bg-white text-slate-600 font-display font-bold cursor-pointer"
-                      >
-                        Cancelar
-                      </button>
-                    </div>
-                  </form>
-                )}
-
-                <div className="divide-y divide-slate-100 text-xs">
-                  {user.buyers.map((buyer) => (
-                    <div
-                      key={buyer.id}
-                      className="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
-                    >
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <span className="font-display font-bold text-sm text-[#041B38]">
-                            {buyer.name}
-                          </span>
-                          <span
-                            className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                              buyer.active
-                                ? 'bg-emerald-50 text-[#16A34A]'
-                                : 'bg-slate-100 text-slate-500'
-                            }`}
-                          >
-                            {buyer.active ? 'Ativo' : 'Suspenso'}
-                          </span>
-                        </div>
-                        <span className="text-slate-500 block mt-0.5">
-                          {buyer.role} • {buyer.email}
-                        </span>
-                      </div>
-
-                      <div className="flex items-center gap-4">
-                        {buyer.monthlyLimit !== undefined && (
-                          <span className="font-mono font-bold text-slate-700">
-                            Alçada: {formatBRL(buyer.monthlyLimit)}/mês
-                          </span>
-                        )}
-                        <button
-                          type="button"
-                          onClick={() => toggleBuyer(buyer.id)}
-                          className="px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-700 font-display font-bold cursor-pointer"
-                        >
-                          {buyer.active ? 'Desativar' : 'Reativar'}
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              ))}
             </div>
-          )}
-        </section>
+          </div>
+        )}
+
       </div>
+
+      {/* Modal Danfe Preliminar se clicado */}
+      {nfeModalOrder && (
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+          <div className="bg-white max-w-lg w-full rounded-2xl p-6 shadow-2xl space-y-4 text-xs font-sans">
+            <div className="flex justify-between items-center border-b border-slate-100 pb-3">
+              <h3 className="font-display font-bold text-base text-[#041B38]">
+                Nota Fiscal Eletrônica (Danfe) • #{nfeModalOrder.id}
+              </h3>
+              <button
+                onClick={() => setNfeModalOrder(null)}
+                className="text-slate-400 hover:text-slate-700 text-lg font-bold"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="bg-slate-50 p-3 rounded-lg border border-slate-200 font-mono text-[11px] space-y-1">
+              <p>Chave NFe: 3526.0842.1983.4100.0190.5500.1000.0498.2110.1234.5678</p>
+              <p>Destinatário: Grupo Paulista Saúde LTDA</p>
+              <p>CNPJ: 42.198.341/0001-90 • IE: 148.920.311.114</p>
+              <p>Valor Total: {formatBRL(nfeModalOrder.total)}</p>
+            </div>
+            <div className="flex justify-end gap-2 pt-2">
+              <button
+                onClick={() => {
+                  alert('Download do XML da NF-e realizado.');
+                  setNfeModalOrder(null);
+                }}
+                className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg"
+              >
+                Baixar XML
+              </button>
+              <button
+                onClick={() => {
+                  alert('Download do PDF do Danfe realizado.');
+                  setNfeModalOrder(null);
+                }}
+                className="px-4 py-2 bg-[#0F668E] hover:bg-[#0B4F6E] text-white font-bold rounded-lg"
+              >
+                Baixar Danfe PDF
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
