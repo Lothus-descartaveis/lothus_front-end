@@ -84,13 +84,15 @@ const AppContent: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F8FAFC] text-slate-800 antialiased selection:bg-[#1863DC] selection:text-white">
-      {/* Header Principal Oficial Lothus (2 linhas estilo Marketplace, não fixo ao rolar) */}
-      <Header
-        onNavigate={handleNavigate}
-        onOpenQuickQuote={() => setIsQuickQuoteOpen(true)}
-        activeCategory={selectedCategory}
-        onSelectCategory={handleSelectCategory}
-      />
+      {/* Header Principal Oficial Lothus (oculto no Checkout Focado para manter o padrão sem distrações de Mercado Livre e Magalu) */}
+      {currentPage !== 'checkout' && (
+        <Header
+          onNavigate={handleNavigate}
+          onOpenQuickQuote={() => setIsQuickQuoteOpen(true)}
+          activeCategory={selectedCategory}
+          onSelectCategory={handleSelectCategory}
+        />
+      )}
 
       {/* Roteamento de Telas da Aplicação */}
       <main className="flex-1">
@@ -147,8 +149,8 @@ const AppContent: React.FC = () => {
         )}
       </main>
 
-      {/* Rodapé Oficial em Tema Claro */}
-      <Footer />
+      {/* Rodapé Oficial em Tema Claro (oculto no Checkout Focado para seguir o funil de alta conversão) */}
+      {currentPage !== 'checkout' && <Footer />}
 
       {/* Drawer do Carrinho Atacado */}
       <CartDrawer onNavigate={handleNavigate} />

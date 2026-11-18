@@ -1,22 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Star,
-  Truck,
-  ShieldCheck,
-  CheckCircle2,
-  FileText,
-  ArrowLeft,
-  Plus,
-  Minus,
-  ShoppingBag,
-  Boxes,
-  FileCheck,
-  PackageCheck,
-  MapPin,
-  Store,
-  RotateCcw,
-  MessageCircle,
-} from 'lucide-react';
+import { Star, Truck, ShieldCheck, CheckCircle2, FileText, ArrowLeft, Plus, Minus, ShoppingBag, Boxes, FileCheck, MapPin, Store, RotateCcw, MessageCircle } from '../components/ui/Icon';
 import { FLASH_PRODUCTS } from '../data/mockData';
 import { useCart } from '../context/CartContext';
 import { Product } from '../types';
@@ -528,23 +511,6 @@ export const ProductPage: React.FC<ProductPageProps> = ({ product, onNavigate })
               <p className="text-sm text-slate-600 leading-relaxed">
                 {productDescription}
               </p>
-
-              {currentProduct.itemsIncluded && currentProduct.itemsIncluded.length > 0 && (
-                <div className="bg-[#FFF7ED] border border-[#FED7AA] rounded-xl p-4">
-                  <h3 className="font-display font-bold text-xs text-[#FB8C00] uppercase tracking-wider mb-2.5 flex items-center gap-2">
-                    <PackageCheck className="w-4 h-4 text-[#FB8C00]" />
-                    Itens Inclusos na Embalagem
-                  </h3>
-                  <ul className="space-y-1.5 text-xs text-slate-800">
-                    {currentProduct.itemsIncluded.map((item, idx) => (
-                      <li key={idx} className="flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#FB8C00] shrink-0" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
             </div>
           </div>
         </div>
@@ -555,9 +521,6 @@ export const ProductPage: React.FC<ProductPageProps> = ({ product, onNavigate })
         <section className="mt-8 bg-white border border-[#E2E8F0] rounded-xl p-6 sm:p-8 shadow-2xs">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div className="space-y-2 max-w-2xl">
-              <span className="inline-block px-2.5 py-1 bg-blue-50 text-[#1863DC] border border-blue-200 text-[10px] font-bold uppercase tracking-wider rounded-md">
-                ATENDIMENTO CORPORATIVO B2B
-              </span>
               <h3 className="font-display font-extrabold text-lg sm:text-xl text-[#041B38] leading-tight">
                 Precisa de Cotação em Lote ou Faturamento Mensal?
               </h3>

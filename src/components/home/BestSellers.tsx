@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
-import { ArrowRight, Star, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowRight, Star, Heart, ChevronLeft, ChevronRight } from '../ui/Icon';
 import { BEST_SELLER_PRODUCTS } from '../../data/mockData';
 import { useCart } from '../../context/CartContext';
 import { Product } from '../../types';

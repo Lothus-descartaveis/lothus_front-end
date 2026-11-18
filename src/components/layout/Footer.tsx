@@ -1,14 +1,5 @@
 import React, { useState } from 'react';
-import { 
-  Phone, 
-  Send, 
-  CheckCircle2, 
-  Instagram, 
-  Linkedin, 
-  Mail, 
-  MapPin, 
-  MessageCircle 
-} from 'lucide-react';
+import { Phone, Send, CheckCircle2, Instagram, Linkedin, Mail, MapPin, MessageCircle } from '../ui/Icon';
 
 export const Footer: React.FC = () => {
   const [email, setEmail] = useState('');

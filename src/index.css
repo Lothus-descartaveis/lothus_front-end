@@ -56,3 +56,55 @@ body.high-contrast a,
 body.high-contrast button {
   outline: 2px solid #FFD700 !important;
 }
+
+/* ==========================================================================
+   Remix Icon — Calibragem Ótica Global de Ícones (Equivalência 1:1 SVG Lucide)
+   Garante que os glifos font-based tenham exatamente o mesmo peso e escala visual.
+   ========================================================================== */
+i[class*="ri-"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+i[class*="ri-"].w-3, i[class*="ri-"].h-3 { font-size: 14px; }
+i[class*="ri-"].w-3\.5, i[class*="ri-"].h-3\.5 { font-size: 16px; }
+i[class*="ri-"].w-4, i[class*="ri-"].h-4 { font-size: 18px; }
+i[class*="ri-"].w-4\.5, i[class*="ri-"].h-4\.5 { font-size: 20px; }
+i[class*="ri-"].w-5, i[class*="ri-"].h-5 { font-size: 22px; }
+i[class*="ri-"].w-5\.5, i[class*="ri-"].h-5\.5 { font-size: 24px; }
+i[class*="ri-"].w-6, i[class*="ri-"].h-6 { font-size: 26px; }
+i[class*="ri-"].w-7, i[class*="ri-"].h-7 { font-size: 30px; }
+i[class*="ri-"].w-8, i[class*="ri-"].h-8 { font-size: 36px; }
+i[class*="ri-"].w-9, i[class*="ri-"].h-9 { font-size: 40px; }
+i[class*="ri-"].w-10, i[class*="ri-"].h-10 { font-size: 44px; }
+i[class*="ri-"].w-11, i[class*="ri-"].h-11 { font-size: 48px; }
+i[class*="ri-"].w-12, i[class*="ri-"].h-12 { font-size: 52px; }
+i[class*="ri-"].w-14, i[class*="ri-"].h-14 { font-size: 60px; }
+i[class*="ri-"].w-16, i[class*="ri-"].h-16 { font-size: 68px; }
+i[class*="ri-"].w-20, i[class*="ri-"].h-20 { font-size: 86px; }
+
+/* Breakpoints responsivos Tailwind */
+@media (min-width: 640px) {
+  i[class*="ri-"].sm\:w-4, i[class*="ri-"].sm\:h-4 { font-size: 18px !important; }
+  i[class*="ri-"].sm\:w-5, i[class*="ri-"].sm\:h-5 { font-size: 22px !important; }
+  i[class*="ri-"].sm\:w-6, i[class*="ri-"].sm\:h-6 { font-size: 26px !important; }
+  i[class*="ri-"].sm\:w-7, i[class*="ri-"].sm\:h-7 { font-size: 30px !important; }
+  i[class*="ri-"].sm\:w-8, i[class*="ri-"].sm\:h-8 { font-size: 36px !important; }
+  i[class*="ri-"].sm\:w-10, i[class*="ri-"].sm\:h-10 { font-size: 44px !important; }
+  i[class*="ri-"].sm\:w-12, i[class*="ri-"].sm\:h-12 { font-size: 52px !important; }
+}
+
+@media (min-width: 768px) {
+  i[class*="ri-"].md\:w-5, i[class*="ri-"].md\:h-5 { font-size: 22px !important; }
+  i[class*="ri-"].md\:w-6, i[class*="ri-"].md\:h-6 { font-size: 26px !important; }
+  i[class*="ri-"].md\:w-8, i[class*="ri-"].md\:h-8 { font-size: 36px !important; }
+}
+
+@media (min-width: 1024px) {
+  i[class*="ri-"].lg\:w-5, i[class*="ri-"].lg\:h-5 { font-size: 22px !important; }
+  i[class*="ri-"].lg\:w-6, i[class*="ri-"].lg\:h-6 { font-size: 26px !important; }
+  i[class*="ri-"].lg\:w-8, i[class*="ri-"].lg\:h-8 { font-size: 36px !important; }
+}

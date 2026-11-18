@@ -1,6 +1,6 @@
 'use client';
 
-import { Instagram, Linkedin, Twitter, Youtube } from 'lucide-react';
+import { Instagram, Linkedin, Twitter, Youtube } from './Icon';
 
 const footerColumns = [
   {

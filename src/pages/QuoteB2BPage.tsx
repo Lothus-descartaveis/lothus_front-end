@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Building2, MessageCircle, FileSpreadsheet, ArrowLeft, Send, CheckCircle2 } from 'lucide-react';
+import { Building2, MessageCircle, FileSpreadsheet, ArrowLeft, Send, CheckCircle2 } from '../components/ui/Icon';
 import { useSEO } from '../hooks/useSEO';
 import { CustomSelect } from '../components/ui/CustomSelect';
 

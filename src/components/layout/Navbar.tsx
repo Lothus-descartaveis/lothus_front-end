@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, Tag } from 'lucide-react';
+import { Sparkles, Tag } from '../ui/Icon';
 
 interface NavbarProps {
   onNavigate?: (page: string) => void;

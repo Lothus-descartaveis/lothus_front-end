@@ -1,5 +1,5 @@
 import React from 'react';
-import { Building2, Layers, MapPin } from 'lucide-react';
+import { Building2, Layers, MapPin } from '../ui/Icon';
 
 export const BenefitsBar: React.FC = () => {
   const infoItems = [

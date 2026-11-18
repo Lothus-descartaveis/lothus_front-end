@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layers, CheckCircle2 } from 'lucide-react';
+import { Layers, CheckCircle2 } from '../ui/Icon';
 import { KIT_COMBOS } from '../../data/mockData';
 import { useCart } from '../../context/CartContext';
 import { Product } from '../../types';
