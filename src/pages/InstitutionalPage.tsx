@@ -112,100 +112,38 @@ export const InstitutionalPage: React.FC<InstitutionalPageProps> = ({
 
   return (
     <div className="bg-[#F8FAFC] min-h-screen py-8 lg:py-12 font-sans text-slate-800">
-      <div className="max-w-[1240px] mx-auto px-4 sm:px-8">
+      <div className="max-w-[960px] mx-auto px-4 sm:px-6">
         
         {/* Breadcrumb Sóbrio */}
-        <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2 text-xs text-slate-500">
+        <nav aria-label="Breadcrumb" className="mb-6 flex items-center justify-between text-xs text-slate-500">
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => onNavigate && onNavigate('home')}
+              className="hover:text-[#0F668E] transition-colors cursor-pointer"
+            >
+              Início
+            </button>
+            <span className="text-slate-300">/</span>
+            <span className="text-slate-500">{currentSection.category}</span>
+            <span className="text-slate-300">/</span>
+            <span className="font-semibold text-slate-800">{currentSection.title}</span>
+          </div>
+
           <button
             type="button"
             onClick={() => onNavigate && onNavigate('home')}
-            className="hover:text-[#0F668E] transition-colors cursor-pointer"
+            className="text-xs font-semibold text-[#0F668E] hover:underline cursor-pointer hidden sm:inline-block"
           >
-            Início
+            ← Voltar para a Loja
           </button>
-          <span className="text-slate-300">/</span>
-          <span className="text-slate-500">{currentSection.category}</span>
-          <span className="text-slate-300">/</span>
-          <span className="font-semibold text-slate-800">{currentSection.title}</span>
         </nav>
 
-        {/* Layout de Duas Colunas: Índice de Documentos (Esquerda) + Documento Informativo (Direita) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
-          {/* ==================================================================
-              COLUNA ESQUERDA: ÍNDICE EDITORIAL DE CONTEÚDOS INFORMATIVOS
-              ================================================================== */}
-          <aside className="lg:col-span-4 xl:col-span-3">
-            <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-2xs sticky top-6 space-y-5">
-              <div>
-                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">
-                  Institucional
-                </h3>
-                <nav className="space-y-0.5">
-                  {SECTIONS.filter((s) => s.category === 'Institucional').map((sec) => {
-                    const isActive = activeTab === sec.id;
-                    return (
-                      <button
-                        key={sec.id}
-                        type="button"
-                        onClick={() => handleTabChange(sec.id)}
-                        className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-left transition-colors cursor-pointer ${
-                          isActive
-                            ? 'bg-[#0F668E] text-white font-semibold shadow-2xs'
-                            : 'text-slate-600 hover:bg-slate-50 hover:text-[#041B38]'
-                        }`}
-                      >
-                        <span className={isActive ? 'text-white' : 'text-slate-400'}>
-                          {sec.icon}
-                        </span>
-                        <span className="truncate">{sec.title}</span>
-                      </button>
-                    );
-                  })}
-                </nav>
-              </div>
-
-              <div className="pt-3 border-t border-slate-100">
-                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">
-                  Operação & Central do Cliente
-                </h3>
-                <nav className="space-y-0.5">
-                  {SECTIONS.filter((s) => s.category === 'Operação & Central do Cliente').map((sec) => {
-                    const isActive = activeTab === sec.id;
-                    return (
-                      <button
-                        key={sec.id}
-                        type="button"
-                        onClick={() => handleTabChange(sec.id)}
-                        className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-left transition-colors cursor-pointer ${
-                          isActive
-                            ? 'bg-[#0F668E] text-white font-semibold shadow-2xs'
-                            : 'text-slate-600 hover:bg-slate-50 hover:text-[#041B38]'
-                        }`}
-                      >
-                        <span className={isActive ? 'text-white' : 'text-slate-400'}>
-                          {sec.icon}
-                        </span>
-                        <span className="truncate">{sec.title}</span>
-                      </button>
-                    );
-                  })}
-                </nav>
-              </div>
-
-              {/* Informações Oficiais de Registro */}
-              <div className="pt-3 border-t border-slate-100 px-3 text-[11px] text-slate-500 space-y-1">
-                <p className="font-semibold text-slate-700">Lothus Descartáveis & Suprimentos</p>
-                <p>São Paulo – SP • CEP: 01310-100</p>
-                <p>Central de Atendimento: (11) 5641-1015</p>
-              </div>
-            </div>
-          </aside>
-
-          {/* ==================================================================
-              COLUNA DIREITA: DOCUMENTO INFORMATIVO FORMAL
-              ================================================================== */}
-          <main className="lg:col-span-8 xl:col-span-9 bg-white rounded-xl border border-slate-200 p-6 sm:p-10 shadow-2xs">
+        {/* ==================================================================
+            DOCUMENTO INFORMATIVO FORMAL (COLUNA ÚNICA CENTRALIZADA)
+            Acessível unicamente pelos links do rodapé (Footer)
+            ================================================================== */}
+        <main className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-12 shadow-2xs">
             
             {/* ================================================================
                 DOCUMENTO 1: SOBRE A LOTHUS DESCARTÁVEIS
@@ -811,8 +749,21 @@ export const InstitutionalPage: React.FC<InstitutionalPageProps> = ({
               </article>
             )}
 
+            {/* Rodapé Interno do Documento */}
+            <div className="mt-12 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-slate-500">
+              <div className="space-y-0.5">
+                <p className="font-semibold text-slate-700">Lothus Descartáveis & Suprimentos</p>
+                <p className="text-[11px] text-slate-400">São Paulo – SP • CEP: 01310-100 • Central de Atendimento: (11) 5641-1015</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => onNavigate && onNavigate('home')}
+                className="text-xs font-semibold text-[#0F668E] hover:underline cursor-pointer"
+              >
+                ← Voltar para a Loja
+              </button>
+            </div>
           </main>
-        </div>
       </div>
     </div>
   );
