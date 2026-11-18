@@ -37,10 +37,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   ];
 
   const legalLinks = [
-    { text: 'Termos de Uso', href: '#termos' },
-    { text: 'Política de Privacidade (LGPD)', href: '#lgpd' },
-    { text: 'Política de Cookies', href: '#cookies' },
-    { text: 'Acessibilidade', href: '#acessibilidade' },
+    { text: 'Termos de Uso', page: 'trocas-devolucoes' },
+    { text: 'Política de Privacidade (LGPD)', page: 'sobre' },
+    { text: 'Política de Entrega e Frete', page: 'entrega-frete' },
+    { text: 'Perguntas Frequentes', page: 'faq' },
   ];
 
   return (
@@ -322,13 +322,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
           <div className="flex flex-wrap justify-center gap-5 text-xs">
             {legalLinks.map((item) => (
-              <a
+              <button
                 key={item.text}
-                href={item.href}
-                className="text-slate-500 hover:text-[#1863DC] transition-colors"
+                type="button"
+                onClick={() => onNavigate && onNavigate(item.page)}
+                className="text-slate-500 hover:text-[#0F668E] transition-colors cursor-pointer"
               >
                 {item.text}
-              </a>
+              </button>
             ))}
           </div>
         </div>

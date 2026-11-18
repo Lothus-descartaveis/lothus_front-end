@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Header } from './components/layout/Header';
+import { Header, SimpleHeader } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
 import { CartDrawer } from './components/cart/CartDrawer';
 import { B2BQuickQuoteModal } from './components/b2b/B2BQuickQuoteModal';
@@ -46,10 +46,16 @@ const AppContent: React.FC = () => {
       'institucional': 'sobre',
     };
 
+    const scrollToTop = () => {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    };
+
     if (institutionalTabs[page]) {
       setInstitutionalInitialTab(institutionalTabs[page]);
       setCurrentPage('institucional');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      scrollToTop();
       return;
     }
 
@@ -61,26 +67,26 @@ const AppContent: React.FC = () => {
         setPostAuthRedirect({ page: 'perfil', tab: 'pedidos' });
         setCurrentPage('login');
       }
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      scrollToTop();
       return;
     }
 
     if (page === 'perfil') {
       setProfileInitialTab('visao-geral');
       setCurrentPage('perfil');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      scrollToTop();
       return;
     }
 
     if (page === 'login' || page === 'registro') {
       setPostAuthRedirect(null);
       setCurrentPage(page);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      scrollToTop();
       return;
     }
 
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToTop();
   };
 
   const handleAuthSuccess = () => {
@@ -111,26 +117,18 @@ const AppContent: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F8FAFC] text-slate-800 antialiased selection:bg-[#1863DC] selection:text-white">
-<<<<<<< Updated upstream
-      {/* Header Oficial Lothus: Completo na loja, Simplificado nas páginas informativas (institucional) e Oculto no Checkout */}
-      {currentPage !== 'checkout' && (
+      {/* Header Oficial Lothus: Completo na loja, Simplificado (SimpleHeader) nas páginas informativas (institucional) e Oculto no Checkout */}
+      {currentPage === 'institucional' && (
+        <SimpleHeader onNavigate={handleNavigate} />
+      )}
+      {currentPage !== 'checkout' && currentPage !== 'institucional' && (
         <Header
-          variant={currentPage === 'institucional' ? 'simple' : 'default'}
           onNavigate={handleNavigate}
           onOpenQuickQuote={() => setIsQuickQuoteOpen(true)}
           activeCategory={selectedCategory}
           onSelectCategory={handleSelectCategory}
         />
       )}
-=======
-      {/* Header Principal Oficial Lothus */}
-      <Header
-        onNavigate={handleNavigate}
-        onOpenQuickQuote={() => setIsQuickQuoteOpen(true)}
-        activeCategory={selectedCategory}
-        onSelectCategory={handleSelectCategory}
-      />
->>>>>>> Stashed changes
 
       {/* Roteamento de Telas da Aplicação */}
       <main className="flex-1">

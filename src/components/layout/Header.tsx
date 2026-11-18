@@ -54,11 +54,60 @@ const AUTOCOMPLETE_SUGGESTIONS = [
   'pratos descartáveis 15cm kerocopo',
 ];
 
+// =========================================================================
+// HEADER SIMPLIFICADO (PADRÃO CHECKOUT & DOCUMENTOS INFORMATIVOS)
+// Componente independente para evitar violação de regras de hooks do React
+// =========================================================================
+export const SimpleHeader: React.FC<{ onNavigate?: (page: string) => void }> = ({ onNavigate }) => {
+  return (
+    <header className="bg-white border-b border-[#E2E8F0]">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-16 py-3.5 flex items-center justify-between">
+        {/* Logo Oficial Lothus */}
+        <button
+          type="button"
+          onClick={() => onNavigate && onNavigate('home')}
+          className="flex items-center gap-3 select-none text-left cursor-pointer group"
+        >
+          <img
+            src="/assets/logo-lothus-header.png"
+            alt="Lothus Descartáveis & Suprimentos"
+            className="h-11 sm:h-12 w-auto object-contain transition-transform group-hover:scale-[1.02]"
+          />
+          <div className="flex flex-col">
+            <span className="font-display font-black text-xl tracking-wide text-[#041B38] leading-tight">
+              LOTHUS
+            </span>
+            <span className="text-[10px] font-semibold text-[#585858] tracking-wider leading-none uppercase">
+              DESCARTÁVEIS & SUPRIMENTOS
+            </span>
+          </div>
+        </button>
+
+        {/* Lado Direito: Voltar para a Loja & Selo Corporativo */}
+        <div className="flex items-center gap-3 sm:gap-6">
+          <button
+            type="button"
+            onClick={() => onNavigate && onNavigate('home')}
+            className="inline-flex items-center gap-2 text-xs font-bold text-slate-700 hover:text-[#0F668E] bg-slate-50 hover:bg-[#F0F7FA] border border-slate-200 hover:border-[#DCEEF5] transition-colors cursor-pointer py-2 px-3.5 rounded-lg"
+          >
+            <ArrowLeft className="w-3.5 h-3.5 text-slate-500" />
+            <span>Voltar para a Loja</span>
+          </button>
+
+          <div className="hidden sm:flex items-center gap-1.5 text-xs text-slate-500 font-medium pl-4 border-l border-slate-200">
+            <ShieldCheck className="w-4 h-4 text-[#16A34A]" />
+            <span>Ambiente Seguro SSL</span>
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+};
+
 export const Header: React.FC<HeaderProps> = ({
   onNavigate,
   activeCategory,
   onSelectCategory,
-  variant = 'default',
 }) => {
   const { totalItems, subtotal, setIsDrawerOpen } = useCart();
   const { user, isAuthenticated } = useAuth();
@@ -66,56 +115,6 @@ export const Header: React.FC<HeaderProps> = ({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
-
-  // =========================================================================
-  // HEADER SIMPLIFICADO (PADRÃO CHECKOUT & DOCUMENTOS INFORMATIVOS)
-  // Sem barra de busca, sem categorias e sem carrinho de compras
-  // =========================================================================
-  if (variant === 'simple') {
-    return (
-      <header className="bg-white border-b border-[#E2E8F0]">
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-16 py-3.5 flex items-center justify-between">
-          {/* Logo Oficial Lothus */}
-          <button
-            type="button"
-            onClick={() => onNavigate && onNavigate('home')}
-            className="flex items-center gap-3 select-none text-left cursor-pointer group"
-          >
-            <img
-              src="/assets/logo-lothus-header.png"
-              alt="Lothus Descartáveis & Suprimentos"
-              className="h-11 sm:h-12 w-auto object-contain transition-transform group-hover:scale-[1.02]"
-            />
-            <div className="flex flex-col">
-              <span className="font-display font-black text-xl tracking-wide text-[#041B38] leading-tight">
-                LOTHUS
-              </span>
-              <span className="text-[10px] font-semibold text-[#585858] tracking-wider leading-none uppercase">
-                DESCARTÁVEIS & SUPRIMENTOS
-              </span>
-            </div>
-          </button>
-
-          {/* Lado Direito: Voltar para a Loja & Selo Corporativo */}
-          <div className="flex items-center gap-3 sm:gap-6">
-            <button
-              type="button"
-              onClick={() => onNavigate && onNavigate('home')}
-              className="inline-flex items-center gap-2 text-xs font-bold text-slate-700 hover:text-[#0F668E] bg-slate-50 hover:bg-[#F0F7FA] border border-slate-200 hover:border-[#DCEEF5] transition-colors cursor-pointer py-2 px-3.5 rounded-lg"
-            >
-              <ArrowLeft className="w-3.5 h-3.5 text-slate-500" />
-              <span>Voltar para a Loja</span>
-            </button>
-
-            <div className="hidden sm:flex items-center gap-1.5 text-xs text-slate-500 font-medium pl-4 border-l border-slate-200">
-              <ShieldCheck className="w-4 h-4 text-[#16A34A]" />
-              <span>Ambiente Seguro SSL</span>
-            </div>
-          </div>
-        </div>
-      </header>
-    );
-  }
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -182,11 +181,23 @@ export const Header: React.FC<HeaderProps> = ({
             <ChevronDown className="w-3 h-3 text-slate-400" />
           </button>
 
-          {/* Info de Faturamento e Frete */}
-          <div className="hidden md:flex items-center gap-3 flex-1 min-w-0">
-            <span className="text-slate-600 text-[11px] font-medium truncate">
-              Boleto faturado em até 48h • Frete grátis Grande SP acima de R$ 350
-            </span>
+          {/* Info de Faturamento e Frete (Links Diretos para os Documentos) */}
+          <div className="hidden md:flex items-center gap-2 flex-1 min-w-0 text-[11px]">
+            <button
+              type="button"
+              onClick={() => onNavigate && onNavigate('faturamento-pj')}
+              className="text-slate-600 hover:text-[#0F668E] font-medium transition-colors cursor-pointer truncate"
+            >
+              Boleto faturado em até 48h
+            </button>
+            <span className="text-slate-300">·</span>
+            <button
+              type="button"
+              onClick={() => onNavigate && onNavigate('entrega-frete')}
+              className="text-slate-600 hover:text-[#0F668E] font-medium transition-colors cursor-pointer truncate"
+            >
+              Frete grátis Grande SP acima de R$ 350
+            </button>
           </div>
 
           {/* Contatos */}
@@ -198,9 +209,13 @@ export const Header: React.FC<HeaderProps> = ({
               </a>
             </span>
             <span className="text-slate-300">·</span>
-            <a href="#" className="hover:text-[#0F668E] transition-colors">
+            <button
+              type="button"
+              onClick={() => onNavigate && onNavigate('faq')}
+              className="hover:text-[#0F668E] transition-colors cursor-pointer"
+            >
               Central de Ajuda
-            </a>
+            </button>
             <span className="text-slate-300">·</span>
             <button
               type="button"
