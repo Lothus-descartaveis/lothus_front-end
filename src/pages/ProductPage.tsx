@@ -398,7 +398,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({ product, onNavigate })
                   <button
                     type="button"
                     onClick={handleBuyNow}
-                    className="w-full py-3 bg-[#1863DC] hover:bg-blue-700 text-white font-display font-bold text-sm rounded-lg transition-colors shadow-xs cursor-pointer"
+                    className="w-full py-3 bg-[#0F668E] hover:bg-[#0B4F6E] text-white font-display font-bold text-sm rounded-lg transition-colors shadow-xs cursor-pointer"
                   >
                     Comprar agora
                   </button>
@@ -406,7 +406,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({ product, onNavigate })
                   <button
                     type="button"
                     onClick={handleAddToCart}
-                    className="w-full py-3 bg-[#1863DC]/10 hover:bg-[#1863DC]/15 text-[#1863DC] font-display font-bold text-sm rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full py-3 bg-[#0F668E]/10 hover:bg-[#0F668E]/15 text-[#0F668E] font-display font-bold text-sm rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <ShoppingBag className="w-4 h-4" />
                     <span>Adicionar ao carrinho</span>

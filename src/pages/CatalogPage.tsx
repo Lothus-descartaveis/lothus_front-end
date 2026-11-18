@@ -256,7 +256,7 @@ export const CatalogPage: React.FC<CatalogPageProps> = ({
 
                     <button
                       onClick={() => addItem(prod, 1)}
-                      className="w-full py-2.5 bg-[#1863DC] hover:bg-blue-700 text-white font-display font-bold text-xs uppercase tracking-wider rounded-lg transition-colors cursor-pointer"
+                      className="w-full py-2.5 bg-[#0F668E] hover:bg-[#0B4F6E] text-white font-display font-bold text-xs uppercase tracking-wider rounded-lg transition-colors cursor-pointer"
                     >
                       Adicionar ao Pedido
                     </button>
@@ -306,7 +306,7 @@ export const CatalogPage: React.FC<CatalogPageProps> = ({
                     <div className="col-span-3 sm:col-span-2 text-right">
                       <button
                         onClick={() => addItem(prod, 1)}
-                        className="px-3 py-1.5 bg-[#1863DC] hover:bg-blue-700 text-white font-display font-bold text-[11px] uppercase rounded-md transition-colors"
+                        className="px-3 py-1.5 bg-[#0F668E] hover:bg-[#0B4F6E] text-white font-display font-bold text-[11px] uppercase rounded-md transition-colors"
                       >
                         Comprar
                       </button>

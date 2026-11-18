@@ -79,6 +79,12 @@ export const FLASH_PRODUCTS: Product[] = [
     },
     itemsIncluded: [
       '01 Caixa de Papel Sulfite Chamex A4 com 10 Resmas (5.000 Folhas)'
+    ],
+    stock: 48,
+    b2bPrices: [
+      { minQty: 5, price: 249.90 },
+      { minQty: 10, price: 229.90 },
+      { minQty: 20, price: 219.90 }
     ]
   },
   {
@@ -116,6 +122,12 @@ export const FLASH_PRODUCTS: Product[] = [
     },
     itemsIncluded: [
       '01 Tira selada com 100 Copos Descartáveis EcoCoppo 200ml'
+    ],
+    stock: 320,
+    b2bPrices: [
+      { minQty: 20, price: 4.80 },
+      { minQty: 50, price: 4.50 },
+      { minQty: 100, price: 4.20 }
     ]
   },
   {
@@ -157,7 +169,8 @@ export const FLASH_PRODUCTS: Product[] = [
       '01 Espremedor mecânico de alta pressão',
       '01 Cabo de alumínio 1,40m com garra Euro',
       '01 Refil Mop Líquido Loop 320g'
-    ]
+    ],
+    stock: 4
   }
 ];
 
@@ -196,6 +209,11 @@ export const BEST_SELLER_PRODUCTS: Product[] = [
     },
     itemsIncluded: [
       '01 Caixa com 50 Canetas Esferográficas BIC Cristal Azul'
+    ],
+    stock: 85,
+    b2bPrices: [
+      { minQty: 10, price: 39.90 },
+      { minQty: 25, price: 36.90 }
     ]
   },
   {
@@ -266,7 +284,8 @@ export const BEST_SELLER_PRODUCTS: Product[] = [
     },
     itemsIncluded: [
       '01 Pacote com 2 Rolos de Papel Toalha Snob Santher'
-    ]
+    ],
+    stock: 3
   },
   {
     id: 'galao-cera-pisos-shinefloor-5l',
@@ -338,7 +357,8 @@ export const BEST_SELLER_PRODUCTS: Product[] = [
     },
     itemsIncluded: [
       '01 Lixeira Coletiva 60 Litros com Pedal, Tampa e Rodas montadas'
-    ]
+    ],
+    stock: 7
   },
   {
     id: 'prato-descartavel-kerocopo-15cm',
@@ -480,7 +500,8 @@ export const BEST_SELLER_PRODUCTS: Product[] = [
       '01 Dispenser Rolão Branco Minimalista',
       '01 Chave de travamento de segurança',
       '01 Kit com buchas e parafusos para instalação'
-    ]
+    ],
+    stock: 2
   },
   {
     id: 'marca-texto-gatte-amarelo',

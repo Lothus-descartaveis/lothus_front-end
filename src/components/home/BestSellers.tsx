@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
-import { ArrowRight, Star, Heart, ChevronLeft, ChevronRight } from '../ui/Icon';
+import { ArrowRight, ChevronLeft, ChevronRight } from '../ui/Icon';
+import { ProductCard } from '../ui/ProductCard';
 import { BEST_SELLER_PRODUCTS } from '../../data/mockData';
-import { useCart } from '../../context/CartContext';
 import { Product } from '../../types';
 
 interface BestSellersProps {
@@ -10,7 +10,6 @@ interface BestSellersProps {
 }
 
 export const BestSellers: React.FC<BestSellersProps> = ({ onNavigate, onSelectProduct }) => {
-  const { addItem } = useCart();
   const trackRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -125,7 +124,7 @@ export const BestSellers: React.FC<BestSellersProps> = ({ onNavigate, onSelectPr
         </div>
       </div>
 
-      {/* Carrossel Horizontal Estilo Gimba / Ortobom */}
+      {/* Carrossel Horizontal */}
       <div className="relative">
         {/* Seta Flutuante Esquerda (Desktop) */}
         <button
@@ -157,114 +156,19 @@ export const BestSellers: React.FC<BestSellersProps> = ({ onNavigate, onSelectPr
           onScroll={updateScrollState}
           className="flex gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         >
-          {BEST_SELLER_PRODUCTS.map((prod) => {
-            const pixPrice = prod.price * (1 - prod.discountPixPercent / 100);
-            const installmentVal = prod.price / prod.installmentsMax;
-
-            return (
-              <div
-                key={prod.id}
-                className="snap-start shrink-0 w-[82%] sm:w-[calc(50%-10px)] lg:w-[calc(25%-15px)] bg-white border border-[#E2E8F0] rounded-xl p-5 flex flex-col justify-between shadow-xs hover:shadow-card hover:border-slate-300 transition-colors duration-200 relative"
-              >
-                {/* Badges superiores: Categoria + Título Comercial */}
-                <div className="flex items-center justify-between gap-2 mb-3">
-                  <div className="flex items-center gap-1.5 flex-wrap">
-                    <span className="bg-[#041B38] text-white text-[9px] font-bold uppercase px-2 py-0.5 rounded tracking-wide whitespace-nowrap">
-                      {prod.category.includes('Papelaria')
-                        ? 'Papelaria'
-                        : prod.category.includes('Descartáveis')
-                        ? 'Descartáveis'
-                        : prod.category.includes('Equipamentos')
-                        ? 'Equipamentos'
-                        : prod.category.includes('Artesanato')
-                        ? 'Artesanato'
-                        : 'Limpeza'}
-                    </span>
-                    <span
-                      className={`text-white text-[9px] font-black uppercase px-2 py-0.5 rounded tracking-wide whitespace-nowrap ${
-                        prod.badgeColor === 'orange' ? 'bg-[#FB8C00]' : 'bg-[#16A34A]'
-                      }`}
-                    >
-                      {prod.badge || 'MAIS VENDIDO'}
-                    </span>
-                  </div>
-                  <button
-                    className="text-slate-300 hover:text-red-500 transition-colors p-1 cursor-pointer"
-                    title="Salvar nos Favoritos"
-                  >
-                    <Heart className="w-4 h-4" />
-                  </button>
-                </div>
-
-                {/* Imagem do Produto */}
-                <div
-                  onClick={() => onSelectProduct ? onSelectProduct(prod) : onNavigate && onNavigate('produto')}
-                  className="w-full h-44 flex items-center justify-center p-2 mb-3 overflow-hidden cursor-pointer"
-                >
-                  <img
-                    src={prod.image}
-                    alt={prod.name}
-                    loading="lazy"
-                    className="max-h-full max-w-full object-contain"
-                  />
-                </div>
-
-                {/* Título & Avaliação */}
-                <div>
-                  <div className="flex items-center gap-1 mb-1.5">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className="w-3.5 h-3.5 text-[#FB8C00] fill-[#FB8C00]"
-                      />
-                    ))}
-                    <span className="text-[11px] font-bold text-slate-600 ml-1">
-                      {prod.rating}
-                    </span>
-                    <span className="text-[11px] text-slate-400">
-                      ({prod.reviewsCount})
-                    </span>
-                  </div>
-
-                  <h4
-                    onClick={() => onSelectProduct ? onSelectProduct(prod) : onNavigate && onNavigate('produto')}
-                    className="font-display font-bold text-xs text-[#041B38] line-clamp-2 leading-relaxed mb-3 min-h-[36px] cursor-pointer hover:text-lothus-royal transition-colors"
-                    title={prod.name}
-                  >
-                    {prod.name}
-                  </h4>
-
-                  {/* Preços */}
-                  <div className="mb-4">
-                    {prod.originalPrice && (
-                      <span className="text-[11px] text-slate-400 line-through block">
-                        De {prod.originalPrice.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-                      </span>
-                    )}
-                    <div className="flex items-baseline gap-1.5 flex-wrap">
-                      <span className="font-display font-extrabold text-lg text-[#041B38]">
-                        {pixPrice.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-                      </span>
-                      <span className="text-xs font-bold text-[#16A34A]">
-                        {prod.discountPixPercent || 10}% OFF
-                      </span>
-                    </div>
-                    <span className="text-[11px] text-slate-500 block mt-0.5">
-                      ou {prod.installmentsMax}x de {installmentVal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} sem juros
-                    </span>
-                  </div>
-                </div>
-
-                {/* Botão de Compra */}
-                <button
-                  onClick={() => addItem(prod, 1)}
-                  className="w-full py-2.5 bg-[#1863DC] hover:bg-blue-700 text-white font-display font-bold text-xs uppercase tracking-wider rounded-lg transition-colors cursor-pointer shadow-xs hover:shadow"
-                >
-                  Adicionar ao Carrinho
-                </button>
-              </div>
-            );
-          })}
+          {BEST_SELLER_PRODUCTS.map((prod) => (
+            <div
+              key={prod.id}
+              className="snap-start shrink-0 w-[82%] sm:w-[calc(50%-10px)] lg:w-[calc(25%-15px)]"
+            >
+              <ProductCard
+                product={prod}
+                onSelectProduct={onSelectProduct}
+                onNavigate={onNavigate}
+                className="h-full"
+              />
+            </div>
+          ))}
         </div>
       </div>
 

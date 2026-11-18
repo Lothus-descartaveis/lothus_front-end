@@ -26,6 +26,7 @@ export interface Product {
     minQty: number;
     price: number;
   }[];
+  stock?: number;
 }
 
 export interface CartItem {
