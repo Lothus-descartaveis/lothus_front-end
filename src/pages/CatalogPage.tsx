@@ -181,6 +181,10 @@ export const CatalogPage: React.FC<CatalogPageProps> = ({
                   product={prod}
                   onSelectProduct={onSelectProduct}
                   onNavigate={onNavigate}
+<<<<<<< Updated upstream
+=======
+                  buttonText="Adicionar ao Pedido"
+>>>>>>> Stashed changes
                 />
               ))}
             </div>

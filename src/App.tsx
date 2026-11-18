@@ -111,6 +111,7 @@ const AppContent: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F8FAFC] text-slate-800 antialiased selection:bg-[#1863DC] selection:text-white">
+<<<<<<< Updated upstream
       {/* Header Oficial Lothus: Completo na loja, Simplificado nas páginas informativas (institucional) e Oculto no Checkout */}
       {currentPage !== 'checkout' && (
         <Header
@@ -121,6 +122,15 @@ const AppContent: React.FC = () => {
           onSelectCategory={handleSelectCategory}
         />
       )}
+=======
+      {/* Header Principal Oficial Lothus */}
+      <Header
+        onNavigate={handleNavigate}
+        onOpenQuickQuote={() => setIsQuickQuoteOpen(true)}
+        activeCategory={selectedCategory}
+        onSelectCategory={handleSelectCategory}
+      />
+>>>>>>> Stashed changes
 
       {/* Roteamento de Telas da Aplicação */}
       <main className="flex-1">
@@ -184,8 +194,13 @@ const AppContent: React.FC = () => {
         )}
       </main>
 
+<<<<<<< Updated upstream
       {/* Rodapé Oficial em Tema Claro (oculto no Checkout Focado para seguir o funil de alta conversão) */}
       {currentPage !== 'checkout' && <Footer onNavigate={handleNavigate} />}
+=======
+      {/* Rodapé Oficial em Tema Claro */}
+      <Footer />
+>>>>>>> Stashed changes
 
       {/* Drawer do Carrinho Atacado */}
       <CartDrawer onNavigate={handleNavigate} />

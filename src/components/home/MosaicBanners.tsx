@@ -42,16 +42,16 @@ export const MosaicBanners: React.FC<MosaicBannersProps> = ({ onNavigate, onOpen
         </div>
 
         {/* Banner 2: Escritório & Papelaria Corporativa */}
-        <div className="relative rounded-2xl overflow-hidden min-h-[380px] flex flex-col justify-end p-8 bg-[#1863DC] text-white shadow-card group">
+        <div className="relative rounded-2xl overflow-hidden min-h-[380px] flex flex-col justify-end p-8 bg-[#0F668E] text-white shadow-card group">
           <img
             src="/assets_site_atual/escritorio-papelaria.jpg"
             alt="Escritório e Papelaria Corporativa"
             className="absolute inset-0 w-full h-full object-cover opacity-35"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0E4A7D] via-[#1863DC]/60 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0E4A7D] via-[#0F668E]/60 to-transparent"></div>
 
           <div className="relative z-10">
-            <span className="inline-flex items-center gap-1.5 bg-white text-[#1863DC] text-[10px] font-extrabold uppercase px-2.5 py-1 rounded tracking-wider mb-3">
+            <span className="inline-flex items-center gap-1.5 bg-white text-[#0F668E] text-[10px] font-extrabold uppercase px-2.5 py-1 rounded tracking-wider mb-3">
               <Briefcase className="w-3 h-3" />
               LINHA CORPORATIVA COMPLETA
             </span>
@@ -63,7 +63,7 @@ export const MosaicBanners: React.FC<MosaicBannersProps> = ({ onNavigate, onOpen
             </p>
             <button
               onClick={() => onNavigate && onNavigate('catalogo')}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-[#1863DC] font-display font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-blue-50 transition-colors shadow-sm cursor-pointer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-[#0F668E] font-display font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-blue-50 transition-colors shadow-sm cursor-pointer"
             >
               <span>Ver todos os itens</span>
               <ArrowRight className="w-3.5 h-3.5" />

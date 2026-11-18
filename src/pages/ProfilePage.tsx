@@ -1,24 +1,25 @@
 import React, { useMemo, useState } from 'react';
 import {
   ArrowLeft,
+  Briefcase,
   Building2,
   CheckCircle2,
+  ChevronRight,
   CreditCard,
   Download,
   ExternalLink,
   FileText,
   LogOut,
+  Mail,
   MapPin,
   MessageCircle,
   Package,
+  Phone,
   RotateCcw,
   Search,
   ShieldCheck,
   Truck,
   User,
-  Phone,
-  Mail,
-  Briefcase
 } from '../components/ui/Icon';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
@@ -72,6 +73,37 @@ const getStepIndex = (status: CorporateOrder['status']) => {
   }
 };
 
+/** Returns Tailwind color classes for each order status */
+const getStatusColors = (status: CorporateOrder['status']) => {
+  switch (status) {
+    case 'Em Separação':
+      return {
+        badge: 'bg-amber-50 text-amber-700 border border-amber-200',
+        border: 'border-l-amber-400',
+      };
+    case 'Faturado • NF-e Emitida':
+      return {
+        badge: 'bg-blue-50 text-blue-700 border border-blue-200',
+        border: 'border-l-blue-400',
+      };
+    case 'Em Transporte':
+      return {
+        badge: 'bg-orange-50 text-orange-700 border border-orange-200',
+        border: 'border-l-orange-400',
+      };
+    case 'Entregue':
+      return {
+        badge: 'bg-emerald-50 text-emerald-700 border border-emerald-200',
+        border: 'border-l-emerald-400',
+      };
+    default:
+      return {
+        badge: 'bg-slate-50 text-slate-600 border border-slate-200',
+        border: 'border-l-slate-300',
+      };
+  }
+};
+
 export const ProfilePage: React.FC<ProfilePageProps> = ({
   onNavigate,
   initialTab = 'visao-geral',
@@ -90,6 +122,9 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
   const [orderSearch, setOrderSearch] = useState('');
   const [orderStatusFilter, setOrderStatusFilter] = useState<'todos' | 'andamento' | 'entregues'>('todos');
   const [nfeModalOrder, setNfeModalOrder] = useState<CorporateOrder | null>(null);
+
+  // Address dropdown state
+  const [openAddressMenu, setOpenAddressMenu] = useState<number | null>(null);
 
   // Recompra quantities
   const [recompraQty, setRecompraQty] = useState<Record<string, number>>(() => {
@@ -202,131 +237,166 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
   }
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] pb-16 font-sans text-slate-800">
-      <div className="max-w-[1160px] mx-auto px-4 sm:px-8 py-8 space-y-6">
+    <div
+      className="min-h-screen bg-[#F8FAFC] pb-16 font-sans text-slate-800"
+      onClick={() => openAddressMenu !== null && setOpenAddressMenu(null)}
+    >
+      <div className="max-w-[1160px] mx-auto px-4 sm:px-8 py-8 space-y-0">
 
         {/* ===================================================================
-            1. BREADCRUMB (IDÊNTICO AO PAPER)
+            1. BREADCRUMB
             =================================================================== */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-[13px]">
-            <button
-              type="button"
-              onClick={() => onNavigate && onNavigate('home')}
-              className="font-medium text-[#0F668E] hover:underline flex items-center gap-1 cursor-pointer"
-            >
-              ← Voltar para Início
-            </button>
-            <span className="text-slate-400">/</span>
-            <span className="font-bold text-[#041B38]">Meu Perfil Corporativo</span>
-          </div>
-
-          {/* Abas Sutis de Navegação: Dados do Perfil vs Meus Pedidos */}
-          <div className="flex items-center gap-2 bg-slate-100 p-1 rounded-lg text-xs font-bold">
-            <button
-              onClick={() => setActiveTab('visao-geral')}
-              className={`px-3 py-1.5 rounded-md transition-all cursor-pointer ${
-                activeTab === 'visao-geral'
-                  ? 'bg-white text-[#041B38] shadow-xs'
-                  : 'text-slate-600 hover:text-[#041B38]'
-              }`}
-            >
-              Dados do Perfil (Paper)
-            </button>
-            <button
-              onClick={() => setActiveTab('pedidos')}
-              className={`px-3 py-1.5 rounded-md transition-all cursor-pointer flex items-center gap-1.5 ${
-                activeTab === 'pedidos'
-                  ? 'bg-white text-[#041B38] shadow-xs'
-                  : 'text-slate-600 hover:text-[#041B38]'
-              }`}
-            >
-              <span>Meus Pedidos</span>
-              <span className="text-[10px] bg-slate-200 text-slate-700 px-1.5 py-0.2 rounded-full font-mono">
-                {user.orders.length}
-              </span>
-            </button>
-            <button
-              onClick={() => setActiveTab('recompra')}
-              className={`px-3 py-1.5 rounded-md transition-all cursor-pointer ${
-                activeTab === 'recompra'
-                  ? 'bg-white text-[#041B38] shadow-xs'
-                  : 'text-slate-600 hover:text-[#041B38]'
-              }`}
-            >
-              Recompra Rápida
-            </button>
-            <button
-              onClick={() => {
-                logout();
-                onNavigate && onNavigate('login');
-              }}
-              title="Sair da Conta"
-              className="p-1.5 text-slate-400 hover:text-red-600 transition-colors cursor-pointer ml-1"
-            >
-              <LogOut className="w-3.5 h-3.5" />
-            </button>
-          </div>
+        <div className="flex items-center gap-2 text-[13px] pb-6">
+          <button
+            type="button"
+            onClick={() => onNavigate && onNavigate('home')}
+            className="font-medium text-[#0F668E] hover:underline flex items-center gap-1 cursor-pointer"
+          >
+            ← Voltar para Início
+          </button>
+          <span className="text-slate-400">/</span>
+          <span className="font-bold text-[#041B38]">Meu Perfil Corporativo</span>
         </div>
 
-        {/* Feedback Banner se houver */}
+        {/* Feedback Banner */}
         {feedbackBanner && (
-          <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center gap-2">
+          <div className="mb-4 p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4 text-[#16A34A] shrink-0" />
             <span>{feedbackBanner}</span>
           </div>
         )}
 
         {/* ===================================================================
-            2. HEADER DO PERFIL (IDÊNTICO AO PAPER — COMPONENT AUQ-0)
+            2. HEADER DO PERFIL — EXATAMENTE CONFORME O DESIGN DO PAPER
             =================================================================== */}
-        <div className="flex items-center gap-5 pt-1 pb-2">
-          {/* Avatar com Gradiente Lothus & Iniciais JA */}
-          <div
-            className="flex items-center justify-center shrink-0 rounded-full shadow-md border-[3px] border-white w-16 h-16 sm:w-17 sm:h-17"
-            style={{ backgroundImage: 'linear-gradient(135deg, #0F668E 0%, #041B38 100%)' }}
-          >
-            <span className="text-[22px] font-display font-extrabold text-white">
-              JA
-            </span>
-          </div>
-
-          <div className="flex flex-col gap-1">
-            <div className="flex flex-wrap items-center gap-2.5">
-              <h1 className="text-[20px] sm:text-[22px] font-display font-extrabold text-[#041B38] leading-tight">
-                {user.buyerName || 'José Antonio Rodrigues Feitosa'}
-              </h1>
-              <span className="py-0.5 px-2 rounded bg-emerald-50 text-[11px] font-bold text-[#16A34A] border border-emerald-100">
-                COMPRADOR MASTER B2B
+        <div className="bg-white border border-[#E2E8F0] rounded-2xl shadow-xs p-6 sm:p-7 mb-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
+            {/* Avatar Oficial com Gradiente e Borda 3px Branca */}
+            <div
+              className="flex items-center justify-center shrink-0 rounded-full border-[3px] border-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] w-[68px] h-[68px]"
+              style={{ backgroundImage: 'linear-gradient(135deg, #0F668E 0%, #041B38 100%)' }}
+            >
+              <span className="text-[22px] font-display font-extrabold text-white select-none">
+                JA
               </span>
             </div>
-            <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-[13px] text-slate-500">
-              <span>{user.email || 'jose.antonio.220507@gmail.com'}</span>
-              <span className="text-slate-300">•</span>
-              <span className="font-semibold text-[#0F668E]">
-                {user.razaoSocial || 'Grupo Paulista Saúde LTDA'} (CNPJ {user.cnpjCpf || '42.198.341/0001-90'})
-              </span>
+
+            {/* Informações do Usuário */}
+            <div className="flex flex-col gap-1 min-w-0">
+              <div className="flex flex-wrap items-center gap-2.5">
+                <h1 className="text-[22px] font-display font-extrabold text-[#041B38] leading-tight">
+                  {user.buyerName || 'José Antonio Rodrigues Feitosa'}
+                </h1>
+                {/* Badge Oficial COMPRADOR MASTER B2B */}
+                <span className="inline-flex items-center gap-1 py-0.5 px-2 rounded bg-[#DCFCE7] text-[11px] font-bold text-[#16A34A] border border-[#BBF7D0] tracking-wide uppercase">
+                  <span>✓</span>
+                  <span>COMPRADOR MASTER B2B</span>
+                </span>
+              </div>
+
+              {/* E-mail, separador e Razão Social / CNPJ */}
+              <div className="flex flex-wrap items-center gap-2.5 text-sm">
+                <span className="text-[#64748B] text-[14px]">
+                  {user.email || 'jose.antonio.220507@gmail.com'}
+                </span>
+                <span className="text-[#CBD5E1] text-[16px] select-none">•</span>
+                <span className="text-[#0F668E] text-[13px] font-semibold">
+                  {user.razaoSocial || 'Grupo Paulista Saúde LTDA'}{' '}
+                  <span className="font-normal">
+                    (CNPJ {user.cnpjCpf || '42.198.341/0001-90'})
+                  </span>
+                </span>
+              </div>
             </div>
           </div>
         </div>
 
         {/* ===================================================================
-            SE ABA FOR "VISAO-GERAL" (TELA IDÊNTICA AO PAPER — ARTBOARD AT4-0)
+            3. NAVEGAÇÃO POR ABAS — underline style, proeminente
+            =================================================================== */}
+        <div className="bg-white border border-[#E2E8F0] rounded-xl shadow-xs px-6 sm:px-8 mb-6">
+          <nav className="flex items-center overflow-x-auto scrollbar-none">
+              {/* Dados do Perfil */}
+              <button
+                onClick={() => setActiveTab('visao-geral')}
+                className={`shrink-0 flex items-center gap-2 px-1 py-4 mr-6 text-sm font-bold border-b-2 transition-all cursor-pointer ${
+                  activeTab === 'visao-geral'
+                    ? 'border-[#0F668E] text-[#041B38]'
+                    : 'border-transparent text-slate-500 hover:text-[#041B38] hover:border-slate-300'
+                }`}
+              >
+                <User className="w-4 h-4 shrink-0" />
+                Dados do Perfil
+              </button>
+
+              {/* Meus Pedidos */}
+              <button
+                onClick={() => setActiveTab('pedidos')}
+                className={`shrink-0 flex items-center gap-2 px-1 py-4 mr-6 text-sm font-bold border-b-2 transition-all cursor-pointer ${
+                  activeTab === 'pedidos'
+                    ? 'border-[#0F668E] text-[#041B38]'
+                    : 'border-transparent text-slate-500 hover:text-[#041B38] hover:border-slate-300'
+                }`}
+              >
+                <Package className="w-4 h-4 shrink-0" />
+                Meus Pedidos
+                <span className="text-[10px] bg-[#0F668E]/10 text-[#0F668E] px-1.5 py-0.5 rounded-full font-mono font-bold leading-none">
+                  {user.orders.length}
+                </span>
+              </button>
+
+              {/* Recompra Rápida */}
+              <button
+                onClick={() => setActiveTab('recompra')}
+                className={`shrink-0 flex items-center gap-2 px-1 py-4 text-sm font-bold border-b-2 transition-all cursor-pointer ${
+                  activeTab === 'recompra'
+                    ? 'border-[#0F668E] text-[#041B38]'
+                    : 'border-transparent text-slate-500 hover:text-[#041B38] hover:border-slate-300'
+                }`}
+              >
+                <RotateCcw className="w-4 h-4 shrink-0" />
+                Recompra Rápida
+              </button>
+
+              {/* Spacer + Sair */}
+              <div className="ml-auto shrink-0 pl-4">
+                <button
+                  onClick={() => {
+                    logout();
+                    onNavigate && onNavigate('login');
+                  }}
+                  title="Sair da Conta"
+                  className="flex items-center gap-1.5 py-4 text-xs font-bold text-slate-400 hover:text-red-600 transition-colors cursor-pointer"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span className="hidden sm:inline">Sair</span>
+                </button>
+              </div>
+            </nav>
+          </div>
+        </div>
+
+        {/* ===================================================================
+            ABA: VISÃO GERAL
             =================================================================== */}
         {activeTab === 'visao-geral' && (
-          <div className="space-y-6">
+          <div className="space-y-6 pt-6">
 
             {/* SEÇÃO 1: INFORMAÇÕES PESSOAIS */}
             <div className="space-y-2">
-              <h2 className="text-[16px] font-display font-extrabold text-[#041B38]">
-                Informações pessoais
+              <p className="text-[11px] uppercase tracking-widest font-bold text-slate-400 px-1">
+                Informações Pessoais
+              </p>
+              <h2 className="text-[16px] font-display font-extrabold text-[#041B38] px-1">
+                Dados do Comprador
               </h2>
               <div className="bg-white rounded-[12px] border border-[#E2E8F0] shadow-xs divide-y divide-[#F1F5F9] overflow-hidden">
+
                 {/* Linha 1: Nome e Sobrenome */}
-                <div className="flex justify-between items-center py-4 px-6 hover:bg-slate-50/50 transition-colors">
+                <div className="flex justify-between items-center py-4 px-6 hover:bg-slate-50/60 transition-colors">
                   <div className="flex items-center gap-4">
-                    <div className="w-5 h-5 text-slate-400 shrink-0 flex items-center justify-center">
-                      <CreditCard className="w-4.5 h-4.5" />
+                    <div className="bg-slate-100 p-1.5 rounded-md shrink-0">
+                      <CreditCard className="w-4 h-4 text-slate-500" />
                     </div>
                     <div>
                       <div className="text-[14px] font-bold text-[#041B38]">
@@ -337,42 +407,38 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center justify-center rounded-full bg-[#16A34A] text-white w-4.5 h-4.5 text-[10px] font-bold">
-                      ✓
-                    </div>
-                    <span className="text-slate-400 text-base font-light">›</span>
+                  <div className="flex items-center gap-3 shrink-0">
+                    <CheckCircle2 className="w-4.5 h-4.5 text-[#16A34A]" />
+                    <ChevronRight className="w-4 h-4 text-slate-300" />
                   </div>
                 </div>
 
                 {/* Linha 2: CPF / Responsável Legal */}
-                <div className="flex justify-between items-center py-4 px-6 hover:bg-slate-50/50 transition-colors">
+                <div className="flex justify-between items-center py-4 px-6 hover:bg-slate-50/60 transition-colors">
                   <div className="flex items-center gap-4">
-                    <div className="w-5 h-5 text-slate-400 shrink-0 flex items-center justify-center">
-                      <FileText className="w-4.5 h-4.5" />
+                    <div className="bg-slate-100 p-1.5 rounded-md shrink-0">
+                      <FileText className="w-4 h-4 text-slate-500" />
                     </div>
                     <div>
                       <div className="text-[14px] font-mono font-bold text-[#041B38]">
-                        54496086832
+                        544.960.868-32
                       </div>
                       <div className="text-[12px] text-slate-500">
                         Número do CPF / Responsável legal.
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center justify-center rounded-full bg-[#16A34A] text-white w-4.5 h-4.5 text-[10px] font-bold">
-                      ✓
-                    </div>
-                    <span className="text-slate-400 text-base font-light">›</span>
+                  <div className="flex items-center gap-3 shrink-0">
+                    <CheckCircle2 className="w-4.5 h-4.5 text-[#16A34A]" />
+                    <ChevronRight className="w-4 h-4 text-slate-300" />
                   </div>
                 </div>
 
                 {/* Linha 3: Nome de Preferência */}
-                <div className="flex justify-between items-center py-4 px-6 hover:bg-slate-50/50 transition-colors">
+                <div className="flex justify-between items-center py-4 px-6 hover:bg-slate-50/60 transition-colors">
                   <div className="flex items-center gap-4">
-                    <div className="w-5 h-5 text-slate-400 shrink-0 flex items-center justify-center">
-                      <User className="w-4.5 h-4.5" />
+                    <div className="bg-slate-100 p-1.5 rounded-md shrink-0">
+                      <User className="w-4 h-4 text-slate-500" />
                     </div>
                     <div>
                       <div className="text-[14px] font-bold text-[#041B38]">
@@ -383,39 +449,42 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                       </div>
                     </div>
                   </div>
-                  <span className="text-slate-400 text-base font-light">›</span>
+                  <ChevronRight className="w-4 h-4 text-slate-300 shrink-0" />
                 </div>
 
                 {/* Linha 4: Endereço Fiscal Principal */}
-                <div className="flex justify-between items-center py-4 px-6 hover:bg-slate-50/50 transition-colors">
+                <div className="flex justify-between items-center py-4 px-6 hover:bg-slate-50/60 transition-colors">
                   <div className="flex items-center gap-4">
-                    <div className="w-5 h-5 text-slate-400 shrink-0 flex items-center justify-center">
-                      <MapPin className="w-4.5 h-4.5" />
+                    <div className="bg-slate-100 p-1.5 rounded-md shrink-0">
+                      <MapPin className="w-4 h-4 text-[#0F668E]" />
                     </div>
                     <div>
                       <div className="text-[14px] font-bold text-[#041B38]">
-                        Avenida Sargento Geraldo Sant&apos;Ana, 683 — Jurubatuba, São Paulo / SP — CEP 04674-225
+                        Av. Sargento Geraldo Sant&apos;Ana, 683 — Jurubatuba, São Paulo/SP — CEP 04674-225
                       </div>
                       <div className="text-[12px] text-slate-500">
                         Endereço fiscal principal cadastrado.
                       </div>
                     </div>
                   </div>
-                  <span className="text-slate-400 text-base font-light">›</span>
+                  <ChevronRight className="w-4 h-4 text-slate-300 shrink-0" />
                 </div>
               </div>
             </div>
 
             {/* SEÇÃO 2: OCUPAÇÃO E ATIVIDADE */}
             <div className="space-y-2">
-              <h2 className="text-[16px] font-display font-extrabold text-[#041B38]">
+              <p className="text-[11px] uppercase tracking-widest font-bold text-slate-400 px-1">
+                Função &amp; Atividade
+              </p>
+              <h2 className="text-[16px] font-display font-extrabold text-[#041B38] px-1">
                 Ocupação e atividade
               </h2>
               <div className="bg-white rounded-[12px] border border-[#E2E8F0] shadow-xs overflow-hidden">
-                <div className="flex justify-between items-center py-4 px-6 hover:bg-slate-50/50 transition-colors">
+                <div className="flex justify-between items-center py-4 px-6 hover:bg-slate-50/60 transition-colors">
                   <div className="flex items-center gap-4">
-                    <div className="w-5 h-5 text-slate-400 shrink-0 flex items-center justify-center">
-                      <Briefcase className="w-4.5 h-4.5" />
+                    <div className="bg-slate-100 p-1.5 rounded-md shrink-0">
+                      <Briefcase className="w-4 h-4 text-slate-500" />
                     </div>
                     <div>
                       <div className="text-[14px] font-bold text-[#041B38]">
@@ -426,22 +495,26 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                       </div>
                     </div>
                   </div>
-                  <span className="text-slate-400 text-base font-light">›</span>
+                  <ChevronRight className="w-4 h-4 text-slate-300 shrink-0" />
                 </div>
               </div>
             </div>
 
             {/* SEÇÃO 3: DADOS DA CONTA */}
             <div className="space-y-2">
-              <h2 className="text-[16px] font-display font-extrabold text-[#041B38]">
+              <p className="text-[11px] uppercase tracking-widest font-bold text-slate-400 px-1">
+                Acesso &amp; Segurança
+              </p>
+              <h2 className="text-[16px] font-display font-extrabold text-[#041B38] px-1">
                 Dados da conta
               </h2>
               <div className="bg-white rounded-[12px] border border-[#E2E8F0] shadow-xs divide-y divide-[#F1F5F9] overflow-hidden">
-                {/* Linha 1: E-mail */}
-                <div className="flex justify-between items-center py-4 px-6 hover:bg-slate-50/50 transition-colors">
+
+                {/* E-mail */}
+                <div className="flex justify-between items-center py-4 px-6 hover:bg-slate-50/60 transition-colors">
                   <div className="flex items-center gap-4">
-                    <div className="w-5 h-5 text-slate-400 shrink-0 flex items-center justify-center">
-                      <Mail className="w-4.5 h-4.5" />
+                    <div className="bg-slate-100 p-1.5 rounded-md shrink-0">
+                      <Mail className="w-4 h-4 text-slate-500" />
                     </div>
                     <div>
                       <div className="text-[14px] font-bold text-[#041B38]">
@@ -452,19 +525,17 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center justify-center rounded-full bg-[#16A34A] text-white w-4.5 h-4.5 text-[10px] font-bold">
-                      ✓
-                    </div>
-                    <span className="text-slate-400 text-base font-light">›</span>
+                  <div className="flex items-center gap-3 shrink-0">
+                    <CheckCircle2 className="w-4.5 h-4.5 text-[#16A34A]" />
+                    <ChevronRight className="w-4 h-4 text-slate-300" />
                   </div>
                 </div>
 
-                {/* Linha 2: Telefone */}
-                <div className="flex justify-between items-center py-4 px-6 hover:bg-slate-50/50 transition-colors">
+                {/* Telefone */}
+                <div className="flex justify-between items-center py-4 px-6 hover:bg-slate-50/60 transition-colors">
                   <div className="flex items-center gap-4">
-                    <div className="w-5 h-5 text-slate-400 shrink-0 flex items-center justify-center">
-                      <Phone className="w-4.5 h-4.5" />
+                    <div className="bg-slate-100 p-1.5 rounded-md shrink-0">
+                      <Phone className="w-4 h-4 text-slate-500" />
                     </div>
                     <div>
                       <div className="text-[14px] font-bold text-[#041B38]">
@@ -475,19 +546,17 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center justify-center rounded-full bg-[#16A34A] text-white w-4.5 h-4.5 text-[10px] font-bold">
-                      ✓
-                    </div>
-                    <span className="text-slate-400 text-base font-light">›</span>
+                  <div className="flex items-center gap-3 shrink-0">
+                    <CheckCircle2 className="w-4.5 h-4.5 text-[#16A34A]" />
+                    <ChevronRight className="w-4 h-4 text-slate-300" />
                   </div>
                 </div>
 
-                {/* Linha 3: Código de Usuário */}
-                <div className="flex justify-between items-center py-4 px-6 hover:bg-slate-50/50 transition-colors">
+                {/* Código de Usuário */}
+                <div className="flex justify-between items-center py-4 px-6 hover:bg-slate-50/60 transition-colors">
                   <div className="flex items-center gap-4">
-                    <div className="w-5 h-5 text-slate-400 shrink-0 flex items-center justify-center">
-                      <User className="w-4.5 h-4.5" />
+                    <div className="bg-slate-100 p-1.5 rounded-md shrink-0">
+                      <User className="w-4 h-4 text-slate-500" />
                     </div>
                     <div>
                       <div className="text-[14px] font-mono font-bold text-[#041B38]">
@@ -498,11 +567,11 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                       </div>
                     </div>
                   </div>
-                  <span className="text-slate-400 text-base font-light">›</span>
+                  <ChevronRight className="w-4 h-4 text-slate-300 shrink-0" />
                 </div>
               </div>
 
-              {/* Rodapé de Proteção de Dados LGPD */}
+              {/* Rodapé LGPD */}
               <div className="flex items-center py-2 px-1 gap-2.5 text-slate-500 text-xs">
                 <ShieldCheck className="w-4.5 h-4.5 text-slate-400 shrink-0" />
                 <span>
@@ -514,9 +583,12 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               </div>
             </div>
 
-            {/* SEÇÃO 4: ENDEREÇOS (EXATAMENTE COMO NO PAPER — COMPONENT AZX-0) */}
+            {/* SEÇÃO 4: ENDEREÇOS */}
             <div className="space-y-3.5 pt-2">
-              <div className="flex justify-between items-center">
+              <p className="text-[11px] uppercase tracking-widest font-bold text-slate-400 px-1">
+                Locais de Entrega
+              </p>
+              <div className="flex justify-between items-center px-1">
                 <h2 className="text-[16px] font-display font-extrabold text-[#041B38]">
                   Endereços
                 </h2>
@@ -529,95 +601,151 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                 </button>
               </div>
 
-              {/* Card 1: Endereço Residencial e Fiscal */}
-              <div className="bg-white rounded-[12px] border border-[#E2E8F0] shadow-xs p-5 sm:p-6 space-y-1.5 hover:border-slate-300 transition-colors">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="text-[15px] font-bold text-[#041B38] leading-snug">
-                      Avenida Sargento Geraldo Sant&apos;Ana 683 Ap 41 BL 4
-                    </h3>
-                    <p className="text-[13px] text-slate-600">
-                      CEP 04674225 - São Paulo - São Paulo
-                    </p>
-                  </div>
-                  <button className="text-slate-400 hover:text-slate-700 text-lg p-1">⋮</button>
-                </div>
-                <p className="text-[12px] text-slate-500">
-                  Endereço residencial e fiscal
-                </p>
-                <p className="text-[12px] text-slate-500">
-                  Jose Antonio Rodrigues Feitosa - 11992527640
-                </p>
-                <div className="pt-1">
-                  <button
-                    onClick={() => showNotice('Editar informações adicionais')}
-                    className="text-[13px] font-bold text-[#0F668E] hover:underline cursor-pointer"
-                  >
-                    Incluir informações adicionais →
-                  </button>
-                </div>
-              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 
-              {/* Card 2: Endereço Cadastral Adicional */}
-              <div className="bg-white rounded-[12px] border border-[#E2E8F0] shadow-xs p-5 sm:p-6 space-y-1.5 hover:border-slate-300 transition-colors">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="text-[15px] font-bold text-[#041B38] leading-snug">
-                      Avenida Sargento Geraldo Sant&apos;Ana 683 Apto 41 Bloco 4
-                    </h3>
-                    <p className="text-[13px] text-slate-600">
-                      CEP 04674225 - São Paulo - São Paulo
-                    </p>
-                  </div>
-                  <button className="text-slate-400 hover:text-slate-700 text-lg p-1">⋮</button>
-                </div>
-                <p className="text-[12px] text-slate-500">
-                  Endereço cadastral adicional
-                </p>
-                <p className="text-[12px] text-slate-500">
-                  José Antonio Rodrigues Feitosa - 11992527640
-                </p>
-                <div className="pt-1">
-                  <button
-                    onClick={() => showNotice('Editar informações adicionais')}
-                    className="text-[13px] font-bold text-[#0F668E] hover:underline cursor-pointer"
-                  >
-                    Incluir informações adicionais →
-                  </button>
-                </div>
-              </div>
+                {/* Card 1: Principal */}
+                <div className="relative bg-white rounded-[12px] border border-[#E2E8F0] shadow-xs p-5 sm:p-6 space-y-2 hover:border-[#0F668E]/40 hover:shadow-md transition-all">
+                  {/* Badge Principal */}
+                  <span className="absolute top-4 right-12 inline-flex items-center gap-1 text-[10px] font-bold text-[#16A34A] bg-emerald-50 border border-emerald-200 rounded-full px-2 py-0.5 uppercase tracking-wide">
+                    <CheckCircle2 className="w-3 h-3" />
+                    Principal
+                  </span>
 
-              {/* Card 3: Endereço Comercial / Entrega Rápida */}
-              <div className="bg-white rounded-[12px] border border-[#E2E8F0] shadow-xs p-5 sm:p-6 space-y-1.5 hover:border-slate-300 transition-colors">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="text-[15px] font-bold text-[#041B38] leading-snug">
-                      Avenida Rubens Montanaro de Borba 477
-                    </h3>
-                    <p className="text-[13px] text-slate-600">
-                      CEP 04811120 - São Paulo - São Paulo
-                    </p>
+                  <div className="flex justify-between items-start gap-2">
+                    <div className="flex gap-3 items-start">
+                      <div className="mt-0.5 shrink-0">
+                        <MapPin className="w-5 h-5 text-[#0F668E]" />
+                      </div>
+                      <div>
+                        <h3 className="text-[14px] font-bold text-[#041B38] leading-snug">
+                          Av. Sargento Geraldo Sant&apos;Ana, 683 Ap 41 Bl 4
+                        </h3>
+                        <p className="text-[12px] text-slate-500 mt-0.5">
+                          CEP 04674-225 · São Paulo – SP
+                        </p>
+                      </div>
+                    </div>
+                    {/* Dropdown menu */}
+                    <div className="relative shrink-0">
+                      <button
+                        onClick={(e) => { e.stopPropagation(); setOpenAddressMenu(openAddressMenu === 0 ? null : 0); }}
+                        className="text-slate-400 hover:text-slate-700 text-lg p-1 rounded cursor-pointer"
+                        aria-label="Opções do endereço"
+                      >
+                        ⋮
+                      </button>
+                      {openAddressMenu === 0 && (
+                        <div className="absolute right-0 top-8 z-10 bg-white border border-[#E2E8F0] rounded-xl shadow-lg py-1 min-w-[120px]" onClick={(e) => e.stopPropagation()}>
+                          <button onClick={() => { showNotice('Editar endereço'); setOpenAddressMenu(null); }} className="w-full text-left px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 cursor-pointer">Editar</button>
+                          <button onClick={() => { showNotice('Endereço removido.'); setOpenAddressMenu(null); }} className="w-full text-left px-4 py-2 text-xs font-semibold text-red-500 hover:bg-red-50 cursor-pointer">Remover</button>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                  <button className="text-slate-400 hover:text-slate-700 text-lg p-1">⋮</button>
+
+                  <p className="text-[12px] text-slate-500">Endereço residencial e fiscal</p>
+                  <p className="text-[12px] text-slate-500">Jose Antonio Rodrigues Feitosa · (11) 99252-7640</p>
+                  <div className="pt-1">
+                    <button
+                      onClick={() => showNotice('Editar informações adicionais')}
+                      className="text-[13px] font-bold text-[#0F668E] hover:underline cursor-pointer"
+                    >
+                      Incluir informações adicionais →
+                    </button>
+                  </div>
                 </div>
-                <p className="text-[12px] text-slate-500">
-                  Endereço comercial / Entrega rápida
-                </p>
-                <p className="text-[12px] text-slate-500">
-                  Jose Antonio Rodrigues Feitosa - 11992527640
-                </p>
-                <div className="pt-1">
-                  <button
-                    onClick={() => showNotice('Editar informações adicionais')}
-                    className="text-[13px] font-bold text-[#0F668E] hover:underline cursor-pointer"
-                  >
-                    Incluir informações adicionais →
-                  </button>
+
+                {/* Card 2 */}
+                <div className="relative bg-white rounded-[12px] border border-[#E2E8F0] shadow-xs p-5 sm:p-6 space-y-2 hover:border-[#0F668E]/40 hover:shadow-md transition-all">
+                  <div className="flex justify-between items-start gap-2">
+                    <div className="flex gap-3 items-start">
+                      <div className="mt-0.5 shrink-0">
+                        <MapPin className="w-5 h-5 text-[#0F668E]" />
+                      </div>
+                      <div>
+                        <h3 className="text-[14px] font-bold text-[#041B38] leading-snug">
+                          Av. Sargento Geraldo Sant&apos;Ana, 683 Apto 41 Bloco 4
+                        </h3>
+                        <p className="text-[12px] text-slate-500 mt-0.5">
+                          CEP 04674-225 · São Paulo – SP
+                        </p>
+                      </div>
+                    </div>
+                    <div className="relative shrink-0">
+                      <button
+                        onClick={(e) => { e.stopPropagation(); setOpenAddressMenu(openAddressMenu === 1 ? null : 1); }}
+                        className="text-slate-400 hover:text-slate-700 text-lg p-1 rounded cursor-pointer"
+                        aria-label="Opções do endereço"
+                      >
+                        ⋮
+                      </button>
+                      {openAddressMenu === 1 && (
+                        <div className="absolute right-0 top-8 z-10 bg-white border border-[#E2E8F0] rounded-xl shadow-lg py-1 min-w-[120px]" onClick={(e) => e.stopPropagation()}>
+                          <button onClick={() => { showNotice('Editar endereço'); setOpenAddressMenu(null); }} className="w-full text-left px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 cursor-pointer">Editar</button>
+                          <button onClick={() => { showNotice('Endereço removido.'); setOpenAddressMenu(null); }} className="w-full text-left px-4 py-2 text-xs font-semibold text-red-500 hover:bg-red-50 cursor-pointer">Remover</button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <p className="text-[12px] text-slate-500">Endereço cadastral adicional</p>
+                  <p className="text-[12px] text-slate-500">José Antonio Rodrigues Feitosa · (11) 99252-7640</p>
+                  <div className="pt-1">
+                    <button
+                      onClick={() => showNotice('Editar informações adicionais')}
+                      className="text-[13px] font-bold text-[#0F668E] hover:underline cursor-pointer"
+                    >
+                      Incluir informações adicionais →
+                    </button>
+                  </div>
+                </div>
+
+                {/* Card 3 */}
+                <div className="relative bg-white rounded-[12px] border border-[#E2E8F0] shadow-xs p-5 sm:p-6 space-y-2 hover:border-[#0F668E]/40 hover:shadow-md transition-all">
+                  <div className="flex justify-between items-start gap-2">
+                    <div className="flex gap-3 items-start">
+                      <div className="mt-0.5 shrink-0">
+                        <MapPin className="w-5 h-5 text-[#0F668E]" />
+                      </div>
+                      <div>
+                        <h3 className="text-[14px] font-bold text-[#041B38] leading-snug">
+                          Av. Rubens Montanaro de Borba, 477
+                        </h3>
+                        <p className="text-[12px] text-slate-500 mt-0.5">
+                          CEP 04811-120 · São Paulo – SP
+                        </p>
+                      </div>
+                    </div>
+                    <div className="relative shrink-0">
+                      <button
+                        onClick={(e) => { e.stopPropagation(); setOpenAddressMenu(openAddressMenu === 2 ? null : 2); }}
+                        className="text-slate-400 hover:text-slate-700 text-lg p-1 rounded cursor-pointer"
+                        aria-label="Opções do endereço"
+                      >
+                        ⋮
+                      </button>
+                      {openAddressMenu === 2 && (
+                        <div className="absolute right-0 top-8 z-10 bg-white border border-[#E2E8F0] rounded-xl shadow-lg py-1 min-w-[120px]" onClick={(e) => e.stopPropagation()}>
+                          <button onClick={() => { showNotice('Editar endereço'); setOpenAddressMenu(null); }} className="w-full text-left px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 cursor-pointer">Editar</button>
+                          <button onClick={() => { showNotice('Endereço removido.'); setOpenAddressMenu(null); }} className="w-full text-left px-4 py-2 text-xs font-semibold text-red-500 hover:bg-red-50 cursor-pointer">Remover</button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <p className="text-[12px] text-slate-500">Endereço comercial / Entrega rápida</p>
+                  <p className="text-[12px] text-slate-500">Jose Antonio Rodrigues Feitosa · (11) 99252-7640</p>
+                  <div className="pt-1">
+                    <button
+                      onClick={() => showNotice('Editar informações adicionais')}
+                      className="text-[13px] font-bold text-[#0F668E] hover:underline cursor-pointer"
+                    >
+                      Incluir informações adicionais →
+                    </button>
+                  </div>
                 </div>
               </div>
 
               {/* Nota de Cancelamento */}
-              <div className="py-2 text-[12px] text-slate-400">
+              <div className="py-2 text-[12px] text-slate-400 px-1">
                 Você pode{' '}
                 <span className="text-[#0F668E] underline cursor-pointer">
                   cancelar sua conta
@@ -630,19 +758,27 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
         )}
 
         {/* ===================================================================
-            SE ABA FOR "PEDIDOS" (GESTÃO DE PEDIDOS & NF-E)
+            ABA: PEDIDOS
             =================================================================== */}
         {activeTab === 'pedidos' && (
-          <div className="space-y-4">
-            <div className="flex flex-wrap items-center justify-between gap-3 bg-white p-4 rounded-xl border border-[#E2E8F0]">
-              <div className="flex items-center gap-2">
-                <Package className="w-5 h-5 text-[#0F668E]" />
-                <h2 className="font-display font-bold text-base text-[#041B38]">
-                  Meus Pedidos Corporativos ({user.orders.length})
-                </h2>
+          <div className="space-y-4 pt-6">
+            {/* Header de filtros — mais limpo */}
+            <div className="flex flex-wrap items-center justify-between gap-3 bg-white p-4 sm:p-5 rounded-xl border border-[#E2E8F0] shadow-xs">
+              <div className="flex items-center gap-2.5">
+                <div className="bg-[#0F668E]/10 p-2 rounded-lg">
+                  <Package className="w-5 h-5 text-[#0F668E]" />
+                </div>
+                <div>
+                  <h2 className="font-display font-bold text-base text-[#041B38] leading-tight">
+                    Meus Pedidos Corporativos
+                  </h2>
+                  <p className="text-[11px] text-slate-400">
+                    {filteredOrders.length} de {user.orders.length} pedidos
+                  </p>
+                </div>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <div className="relative">
                   <Search className="w-4 h-4 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
                   <input
@@ -650,13 +786,13 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                     placeholder="Buscar por número ou produto..."
                     value={orderSearch}
                     onChange={(e) => setOrderSearch(e.target.value)}
-                    className="pl-8 pr-3 py-1.5 border border-slate-300 rounded-lg text-xs"
+                    className="pl-8 pr-3 py-2 border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-[#0F668E] transition-colors"
                   />
                 </div>
                 <select
                   value={orderStatusFilter}
                   onChange={(e) => setOrderStatusFilter(e.target.value as any)}
-                  className="px-3 py-1.5 border border-slate-300 rounded-lg text-xs bg-white cursor-pointer"
+                  className="px-3 py-2 border border-slate-200 rounded-lg text-xs bg-white cursor-pointer focus:outline-none focus:border-[#0F668E] transition-colors"
                 >
                   <option value="todos">Todos os status</option>
                   <option value="andamento">Em andamento</option>
@@ -674,13 +810,15 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               <div className="space-y-3">
                 {filteredOrders.map((order) => {
                   const stepIdx = getStepIndex(order.status);
+                  const statusColors = getStatusColors(order.status);
                   return (
                     <div
                       key={order.id}
-                      className="bg-white rounded-xl border border-[#E2E8F0] shadow-xs p-5 space-y-4"
+                      className={`bg-white rounded-xl border border-[#E2E8F0] border-l-4 ${statusColors.border} shadow-xs p-5 space-y-4`}
                     >
+                      {/* Cabeçalho do card */}
                       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
-                        <div className="flex items-center gap-2.5">
+                        <div className="flex flex-wrap items-center gap-2.5">
                           <span className="font-mono font-bold text-sm text-[#041B38]">
                             Pedido #{order.id}
                           </span>
@@ -690,6 +828,10 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                           <span className="text-xs font-bold text-[#0F668E]">
                             {order.paymentMethod}
                           </span>
+                          {/* Status badge colorido */}
+                          <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${statusColors.badge}`}>
+                            {order.status}
+                          </span>
                         </div>
 
                         <div className="flex items-center gap-2">
@@ -698,29 +840,31 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                           </span>
                           <button
                             onClick={() => setNfeModalOrder(order)}
-                            className="px-2.5 py-1 text-xs font-bold text-[#0F668E] bg-blue-50 rounded hover:bg-blue-100 transition-colors cursor-pointer"
+                            className="px-2.5 py-1 text-xs font-bold text-[#0F668E] bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors cursor-pointer border border-blue-100"
                           >
                             Ver Danfe
                           </button>
                         </div>
                       </div>
 
-                      {/* Timeline do Pedido */}
-                      <div className="grid grid-cols-5 gap-2 text-center text-[11px] py-1">
+                      {/* Timeline do Pedido com linha conectora */}
+                      <div className="relative grid grid-cols-5 gap-2 text-center text-[11px] py-1">
+                        {/* Linha conectora de fundo */}
+                        <div className="absolute top-[10px] left-[10%] right-[10%] h-px bg-slate-200 z-0" />
                         {ORDER_STEPS.map((stepName, sIdx) => {
                           const isDone = sIdx <= stepIdx;
                           return (
-                            <div key={stepName} className="flex flex-col items-center">
+                            <div key={stepName} className="flex flex-col items-center relative z-10">
                               <div
-                                className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold mb-1 ${
+                                className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold mb-1 border-2 ${
                                   isDone
-                                    ? 'bg-[#16A34A] text-white'
-                                    : 'bg-slate-200 text-slate-500'
+                                    ? 'bg-[#16A34A] border-[#16A34A] text-white'
+                                    : 'bg-white border-slate-200 text-slate-400'
                                 }`}
                               >
                                 {isDone ? '✓' : sIdx + 1}
                               </div>
-                              <span className={`text-[10px] ${isDone ? 'font-bold text-[#041B38]' : 'text-slate-400'}`}>
+                              <span className={`text-[10px] leading-tight ${isDone ? 'font-bold text-[#041B38]' : 'text-slate-400'}`}>
                                 {stepName}
                               </span>
                             </div>
@@ -728,7 +872,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                         })}
                       </div>
 
-                      {/* Lista resumida de itens */}
+                      {/* Lista de itens */}
                       <div className="divide-y divide-slate-100 pt-1">
                         {order.items.map((it) => (
                           <div key={it.productId} className="py-2 flex items-center justify-between text-xs">
@@ -744,13 +888,14 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                         ))}
                       </div>
 
+                      {/* Rodapé do card */}
                       <div className="flex justify-between items-center pt-2 border-t border-slate-100 text-xs">
                         <span className="text-slate-500">
                           Entrega: <strong className="text-slate-700">{order.deliveryAddressLabel}</strong>
                         </span>
                         <button
                           onClick={() => handleRepeatOrder(order)}
-                          className="px-3 py-1.5 bg-[#0F668E] text-white font-bold rounded hover:bg-[#0B4F6E] transition-colors cursor-pointer flex items-center gap-1"
+                          className="px-3 py-1.5 bg-[#0F668E] text-white font-bold rounded-lg hover:bg-[#0B4F6E] transition-colors cursor-pointer flex items-center gap-1.5"
                         >
                           <RotateCcw className="w-3.5 h-3.5" />
                           <span>Repetir Pedido</span>
@@ -765,54 +910,115 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
         )}
 
         {/* ===================================================================
-            SE ABA FOR "RECOMPRA RÁPIDA"
+            ABA: RECOMPRA RÁPIDA
             =================================================================== */}
         {activeTab === 'recompra' && (
-          <div className="space-y-4">
-            <div className="flex justify-between items-center bg-white p-4 rounded-xl border border-[#E2E8F0]">
+          <div className="space-y-4 pt-6">
+            {/* Header */}
+            <div className="flex flex-wrap justify-between items-center gap-4 bg-white p-5 rounded-xl border border-[#E2E8F0] shadow-xs">
               <div>
                 <h2 className="font-display font-bold text-base text-[#041B38]">
                   Itens de Reposição Recorrente
                 </h2>
-                <p className="text-xs text-slate-500">Produtos mais solicitados pela sua empresa com preço especial.</p>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Produtos mais solicitados pela sua empresa com preço especial.
+                </p>
               </div>
               <button
                 onClick={handleAddAllRecompra}
-                className="px-4 py-2 bg-[#0F668E] hover:bg-[#0B4F6E] text-white font-bold text-xs rounded-lg transition-colors cursor-pointer"
+                className="px-4 py-2.5 bg-[#0F668E] hover:bg-[#0B4F6E] text-white font-bold text-xs rounded-lg transition-colors cursor-pointer flex items-center gap-2"
               >
+                <Package className="w-4 h-4" />
                 Adicionar Todos ao Carrinho
               </button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {RECURRING_ESSENTIALS.map((prod) => (
-                <div key={prod.id} className="bg-white p-4 rounded-xl border border-[#E2E8F0] flex items-center justify-between gap-3 text-xs">
-                  <div className="flex items-center gap-3">
-                    <img src={prod.image} alt={prod.name} className="w-12 h-12 object-contain rounded border border-slate-100" />
-                    <div>
-                      <p className="font-bold text-[#041B38] line-clamp-1">{prod.name}</p>
-                      <p className="text-slate-500">{formatBRL(prod.price)} / {prod.unit}</p>
+            {/* Grid de produtos */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {RECURRING_ESSENTIALS.map((prod) => {
+                const qty = recompraQty[prod.id] || 1;
+                const itemTotal = prod.price * qty;
+                return (
+                  <div
+                    key={prod.id}
+                    className="bg-white p-5 rounded-xl border border-[#E2E8F0] shadow-xs hover:border-[#0F668E]/40 hover:shadow-md transition-all"
+                  >
+                    <div className="flex items-start gap-4">
+                      <img
+                        src={prod.image}
+                        alt={prod.name}
+                        className="w-14 h-14 object-contain rounded-lg border border-slate-100 shrink-0"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="font-bold text-[13px] text-[#041B38] line-clamp-2 leading-snug">
+                          {prod.name}
+                        </p>
+                        <p className="text-[12px] text-slate-500 mt-0.5">
+                          {formatBRL(prod.price)} / {prod.unit}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Controle de quantidade + total + botão */}
+                    <div className="flex items-center justify-between gap-3 mt-4 pt-3 border-t border-slate-100">
+                      {/* Botão -/+ */}
+                      <div className="flex items-center gap-0 border border-slate-200 rounded-lg overflow-hidden">
+                        <button
+                          onClick={() =>
+                            setRecompraQty((prev) => ({
+                              ...prev,
+                              [prod.id]: Math.max(1, (prev[prod.id] || 1) - 1),
+                            }))
+                          }
+                          className="px-3 py-1.5 text-sm font-bold text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer"
+                          aria-label="Diminuir quantidade"
+                        >
+                          −
+                        </button>
+                        <span className="px-3 py-1.5 text-sm font-mono font-bold text-[#041B38] border-x border-slate-200 min-w-[2.5rem] text-center">
+                          {qty}
+                        </span>
+                        <button
+                          onClick={() =>
+                            setRecompraQty((prev) => ({
+                              ...prev,
+                              [prod.id]: (prev[prod.id] || 1) + 1,
+                            }))
+                          }
+                          className="px-3 py-1.5 text-sm font-bold text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer"
+                          aria-label="Aumentar quantidade"
+                        >
+                          +
+                        </button>
+                      </div>
+
+                      {/* Total calculado */}
+                      <span className="text-[13px] font-mono font-bold text-[#041B38]">
+                        {formatBRL(itemTotal)}
+                      </span>
+
+                      {/* Botão Comprar */}
+                      <button
+                        onClick={() => {
+                          addItem(prod, qty);
+                          setIsDrawerOpen(true);
+                          showNotice(`${prod.name} (${qty}x) adicionado ao carrinho.`);
+                        }}
+                        className="px-4 py-1.5 bg-[#0F668E] hover:bg-[#0B4F6E] text-white text-xs font-bold rounded-lg transition-colors cursor-pointer"
+                      >
+                        Comprar
+                      </button>
                     </div>
                   </div>
-                  <button
-                    onClick={() => {
-                      addItem(prod, 1);
-                      setIsDrawerOpen(true);
-                      showNotice(`${prod.name} adicionado ao carrinho.`);
-                    }}
-                    className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-[#041B38] font-bold rounded transition-colors cursor-pointer shrink-0"
-                  >
-                    + Comprar
-                  </button>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
 
       </div>
 
-      {/* Modal Danfe Preliminar se clicado */}
+      {/* Modal Danfe */}
       {nfeModalOrder && (
         <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
           <div className="bg-white max-w-lg w-full rounded-2xl p-6 shadow-2xl space-y-4 text-xs font-sans">
@@ -822,7 +1028,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               </h3>
               <button
                 onClick={() => setNfeModalOrder(null)}
-                className="text-slate-400 hover:text-slate-700 text-lg font-bold"
+                className="text-slate-400 hover:text-slate-700 text-lg font-bold cursor-pointer"
               >
                 ✕
               </button>
@@ -839,7 +1045,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                   alert('Download do XML da NF-e realizado.');
                   setNfeModalOrder(null);
                 }}
-                className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg"
+                className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg cursor-pointer"
               >
                 Baixar XML
               </button>
@@ -848,7 +1054,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
                   alert('Download do PDF do Danfe realizado.');
                   setNfeModalOrder(null);
                 }}
-                className="px-4 py-2 bg-[#0F668E] hover:bg-[#0B4F6E] text-white font-bold rounded-lg"
+                className="px-4 py-2 bg-[#0F668E] hover:bg-[#0B4F6E] text-white font-bold rounded-lg cursor-pointer"
               >
                 Baixar Danfe PDF
               </button>

@@ -40,15 +40,15 @@ export const DepartmentStories: React.FC<DepartmentStoriesProps> = ({ onSelectDe
               className="flex flex-col items-center group cursor-pointer w-full max-w-[200px] text-center select-none"
             >
               {/* Círculo Uniforme (124px x 124px) */}
-              <div className="w-[124px] h-[124px] rounded-full bg-white border-[2.5px] border-[#1863DC] shadow-sm flex flex-col items-center justify-center p-3 gap-1 hover:border-[#041B38] transition-colors duration-200">
-                <Icon className="w-8 h-8 text-[#041B38] group-hover:text-lothus-royal transition-colors" />
+              <div className="w-[124px] h-[124px] rounded-full bg-white border-[2.5px] border-[#0F668E] shadow-sm flex flex-col items-center justify-center p-3 gap-1 hover:border-[#041B38] transition-colors duration-200">
+                <Icon className="w-8 h-8 text-[#041B38] group-hover:text-[#0F668E] transition-colors" />
                 <span className="font-display font-black text-xs text-[#FB8C00] tracking-tight">
                   {dept.discountBadge}
                 </span>
               </div>
 
               {/* Título do Departamento */}
-              <span className="font-display font-bold text-sm text-[#041B38] mt-3 group-hover:text-lothus-royal transition-colors leading-tight min-h-[36px] flex items-center justify-center">
+              <span className="font-display font-bold text-sm text-[#041B38] mt-3 group-hover:text-[#0F668E] transition-colors leading-tight min-h-[36px] flex items-center justify-center">
                 {dept.name}
               </span>
             </div>
