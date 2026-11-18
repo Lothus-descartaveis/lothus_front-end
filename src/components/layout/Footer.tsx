@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { Phone, Send, CheckCircle2, Instagram, Linkedin, Mail, MapPin, MessageCircle } from '../ui/Icon';
 
-export const Footer: React.FC = () => {
+interface FooterProps {
+  onNavigate?: (page: string) => void;
+}
+
+export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 
@@ -33,10 +37,10 @@ export const Footer: React.FC = () => {
   ];
 
   const legalLinks = [
-    { text: 'Termos de Uso', href: '#termos' },
-    { text: 'Política de Privacidade (LGPD)', href: '#lgpd' },
-    { text: 'Política de Cookies', href: '#cookies' },
-    { text: 'Acessibilidade', href: '#acessibilidade' },
+    { text: 'Termos de Uso', page: 'trocas-devolucoes' },
+    { text: 'Política de Privacidade (LGPD)', page: 'sobre' },
+    { text: 'Política de Entrega e Frete', page: 'entrega-frete' },
+    { text: 'Perguntas Frequentes', page: 'faq' },
   ];
 
   return (
@@ -108,24 +112,40 @@ export const Footer: React.FC = () => {
             </h4>
             <ul className="space-y-2.5 text-xs sm:text-sm">
               <li>
-                <a href="#sobre" className="text-slate-600 hover:text-[#1863DC] transition-colors">
+                <button
+                  type="button"
+                  onClick={() => onNavigate && onNavigate('sobre')}
+                  className="text-slate-600 hover:text-[#0F668E] transition-colors cursor-pointer text-left"
+                >
                   Sobre a Lothus Descartáveis
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#loja" className="text-slate-600 hover:text-[#1863DC] transition-colors">
+                <button
+                  type="button"
+                  onClick={() => onNavigate && onNavigate('loja-fisica')}
+                  className="text-slate-600 hover:text-[#0F668E] transition-colors cursor-pointer text-left"
+                >
                   Nossa Loja Física em SP
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#blog" className="text-slate-600 hover:text-[#1863DC] transition-colors">
+                <button
+                  type="button"
+                  onClick={() => onNavigate && onNavigate('blog')}
+                  className="text-slate-600 hover:text-[#0F668E] transition-colors cursor-pointer text-left"
+                >
                   Blog & Dicas de Higiene
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#fornecedores" className="text-slate-600 hover:text-[#1863DC] transition-colors">
+                <button
+                  type="button"
+                  onClick={() => onNavigate && onNavigate('parceiros')}
+                  className="text-slate-600 hover:text-[#0F668E] transition-colors cursor-pointer text-left"
+                >
                   Parceiros & Marcas Oficiais
-                </a>
+                </button>
               </li>
             </ul>
           </div>
@@ -137,29 +157,49 @@ export const Footer: React.FC = () => {
             </h4>
             <ul className="space-y-2.5 text-xs sm:text-sm">
               <li>
-                <a href="#limpeza" className="text-slate-600 hover:text-[#1863DC] transition-colors">
-                  Limpeza e Higiene Profissional
-                </a>
+                <button
+                  type="button"
+                  onClick={() => onNavigate && onNavigate('catalogo')}
+                  className="text-slate-600 hover:text-[#0F668E] transition-colors cursor-pointer text-left"
+                >
+                  Limpeza e Higiene
+                </button>
               </li>
               <li>
-                <a href="#food" className="text-slate-600 hover:text-[#1863DC] transition-colors">
-                  Food Service e Descartáveis
-                </a>
+                <button
+                  type="button"
+                  onClick={() => onNavigate && onNavigate('catalogo')}
+                  className="text-slate-600 hover:text-[#0F668E] transition-colors cursor-pointer text-left"
+                >
+                  Food Service
+                </button>
               </li>
               <li>
-                <a href="#papelaria" className="text-slate-600 hover:text-[#1863DC] transition-colors">
+                <button
+                  type="button"
+                  onClick={() => onNavigate && onNavigate('catalogo')}
+                  className="text-slate-600 hover:text-[#0F668E] transition-colors cursor-pointer text-left"
+                >
                   Escritório e Papelaria
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#equipamentos" className="text-slate-600 hover:text-[#1863DC] transition-colors">
-                  Equipamentos Bralimpia
-                </a>
+                <button
+                  type="button"
+                  onClick={() => onNavigate && onNavigate('catalogo')}
+                  className="text-slate-600 hover:text-[#0F668E] transition-colors cursor-pointer text-left"
+                >
+                  Equipamentos
+                </button>
               </li>
               <li>
-                <a href="#artesanato" className="text-slate-600 hover:text-[#1863DC] transition-colors">
-                  Artesanato, Tecidos e Festas
-                </a>
+                <button
+                  type="button"
+                  onClick={() => onNavigate && onNavigate('catalogo')}
+                  className="text-slate-600 hover:text-[#0F668E] transition-colors cursor-pointer text-left"
+                >
+                  Artesanato
+                </button>
               </li>
             </ul>
           </div>
@@ -171,29 +211,49 @@ export const Footer: React.FC = () => {
             </h4>
             <ul className="space-y-2.5 text-xs sm:text-sm">
               <li>
-                <a href="#pedidos" className="text-slate-600 hover:text-[#1863DC] transition-colors">
+                <button
+                  type="button"
+                  onClick={() => onNavigate && onNavigate('pedidos')}
+                  className="text-slate-600 hover:text-[#0F668E] transition-colors cursor-pointer text-left"
+                >
                   Meus Pedidos
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#faturamento-pj" className="text-slate-600 hover:text-[#1863DC] transition-colors">
+                <button
+                  type="button"
+                  onClick={() => onNavigate && onNavigate('faturamento-pj')}
+                  className="text-slate-600 hover:text-[#0F668E] transition-colors cursor-pointer text-left"
+                >
                   Faturamento PJ / Boleto 28 Dias
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#entrega" className="text-slate-600 hover:text-[#1863DC] transition-colors">
+                <button
+                  type="button"
+                  onClick={() => onNavigate && onNavigate('entrega-frete')}
+                  className="text-slate-600 hover:text-[#0F668E] transition-colors cursor-pointer text-left"
+                >
                   Política de Entrega e Frete
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#devolucoes" className="text-slate-600 hover:text-[#1863DC] transition-colors">
+                <button
+                  type="button"
+                  onClick={() => onNavigate && onNavigate('trocas-devolucoes')}
+                  className="text-slate-600 hover:text-[#0F668E] transition-colors cursor-pointer text-left"
+                >
                   Trocas e Devoluções
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#faq" className="text-slate-600 hover:text-[#1863DC] transition-colors">
+                <button
+                  type="button"
+                  onClick={() => onNavigate && onNavigate('faq')}
+                  className="text-slate-600 hover:text-[#0F668E] transition-colors cursor-pointer text-left"
+                >
                   Perguntas Frequentes
-                </a>
+                </button>
               </li>
             </ul>
           </div>
@@ -205,8 +265,8 @@ export const Footer: React.FC = () => {
             </h4>
             <ul className="space-y-2.5 text-xs sm:text-sm">
               <li className="flex items-center gap-2">
-                <Phone className="w-3.5 h-3.5 text-[#1863DC] shrink-0" />
-                <a href="tel:1156411015" className="text-[#041B38] font-bold hover:text-[#1863DC] transition-colors">
+                <Phone className="w-3.5 h-3.5 text-[#0F668E] shrink-0" />
+                <a href="tel:1156411015" className="text-[#041B38] font-bold hover:text-[#0F668E] transition-colors">
                   (11) 5641-1015
                 </a>
               </li>
@@ -262,13 +322,14 @@ export const Footer: React.FC = () => {
 
           <div className="flex flex-wrap justify-center gap-5 text-xs">
             {legalLinks.map((item) => (
-              <a
+              <button
                 key={item.text}
-                href={item.href}
-                className="text-slate-500 hover:text-[#1863DC] transition-colors"
+                type="button"
+                onClick={() => onNavigate && onNavigate(item.page)}
+                className="text-slate-500 hover:text-[#0F668E] transition-colors cursor-pointer"
               >
                 {item.text}
-              </a>
+              </button>
             ))}
           </div>
         </div>

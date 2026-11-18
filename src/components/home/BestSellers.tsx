@@ -131,7 +131,7 @@ export const BestSellers: React.FC<BestSellersProps> = ({ onNavigate, onSelectPr
           type="button"
           onClick={() => scrollByCard('prev')}
           aria-label="Voltar carrossel"
-          className={`hidden lg:flex absolute -left-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white border border-[#E2E8F0] shadow-md items-center justify-center text-[#041B38] hover:text-[#1863DC] hover:border-[#1863DC] transition-colors cursor-pointer ${
+          className={`hidden lg:flex absolute -left-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white border border-[#E2E8F0] shadow-md items-center justify-center text-[#041B38] hover:text-[#0F668E] hover:border-[#0F668E] transition-colors cursor-pointer ${
             !canScrollLeft ? 'opacity-70' : 'opacity-100'
           }`}
         >
@@ -143,7 +143,7 @@ export const BestSellers: React.FC<BestSellersProps> = ({ onNavigate, onSelectPr
           type="button"
           onClick={() => scrollByCard('next')}
           aria-label="Avançar carrossel"
-          className={`hidden lg:flex absolute -right-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white border border-[#E2E8F0] shadow-md items-center justify-center text-[#041B38] hover:text-[#1863DC] hover:border-[#1863DC] transition-colors cursor-pointer ${
+          className={`hidden lg:flex absolute -right-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white border border-[#E2E8F0] shadow-md items-center justify-center text-[#041B38] hover:text-[#0F668E] hover:border-[#0F668E] transition-colors cursor-pointer ${
             !canScrollRight ? 'opacity-70' : 'opacity-100'
           }`}
         >
@@ -182,7 +182,7 @@ export const BestSellers: React.FC<BestSellersProps> = ({ onNavigate, onSelectPr
             aria-label={`Ir para produto ${idx + 1}`}
             className={`h-2 rounded-full transition-all cursor-pointer ${
               activeIndex === idx
-                ? 'w-6 bg-[#1863DC]'
+                ? 'w-6 bg-[#0F668E]'
                 : 'w-2 bg-slate-300 hover:bg-slate-400'
             }`}
           />

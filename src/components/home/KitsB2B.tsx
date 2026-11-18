@@ -103,7 +103,7 @@ export const KitsB2B: React.FC = () => {
 
                     <button
                       onClick={() => handleAddCombo(combo)}
-                      className="px-4 py-2.5 bg-[#1863DC] hover:bg-blue-700 text-white font-display font-bold text-xs uppercase tracking-wider rounded-lg transition-colors shadow-xs cursor-pointer"
+                      className="px-4 py-2 bg-[#0F668E] hover:bg-[#0B4F6E] text-white font-display font-bold text-xs uppercase tracking-wider rounded-lg transition-colors shadow-xs cursor-pointer h-[38px] flex items-center justify-center"
                     >
                       Adicionar Combo
                     </button>

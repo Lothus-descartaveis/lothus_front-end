@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Header } from './components/layout/Header';
+import { Header, SimpleHeader } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
 import { CartDrawer } from './components/cart/CartDrawer';
 import { B2BQuickQuoteModal } from './components/b2b/B2BQuickQuoteModal';
+import { WhatsAppButton } from './components/ui/WhatsAppButton';
 import { HomePage } from './pages/HomePage';
 import { CatalogPage } from './pages/CatalogPage';
 import { ProductPage } from './pages/ProductPage';
@@ -10,6 +11,7 @@ import { CheckoutPage } from './pages/CheckoutPage';
 import { QuoteB2BPage } from './pages/QuoteB2BPage';
 import { LoginRegisterPage } from './pages/LoginRegisterPage';
 import { ProfilePage, ProfileTab } from './pages/ProfilePage';
+import { InstitutionalPage, InstitutionalTab } from './pages/InstitutionalPage';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { Product } from './types';
 
@@ -20,12 +22,43 @@ const AppContent: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | undefined>();
   const [isQuickQuoteOpen, setIsQuickQuoteOpen] = useState<boolean>(false);
   const [profileInitialTab, setProfileInitialTab] = useState<ProfileTab>('visao-geral');
+  const [institutionalInitialTab, setInstitutionalInitialTab] = useState<InstitutionalTab>('sobre');
   const [postAuthRedirect, setPostAuthRedirect] = useState<{
     page: string;
     tab?: ProfileTab;
   } | null>(null);
 
   const handleNavigate = (page: string) => {
+    // Rotas de Conteúdo Institucional e Central do Cliente
+    const institutionalTabs: Record<string, InstitutionalTab> = {
+      'sobre': 'sobre',
+      'loja': 'loja-fisica',
+      'loja-fisica': 'loja-fisica',
+      'blog': 'blog',
+      'parceiros': 'parceiros',
+      'faturamento': 'faturamento-pj',
+      'faturamento-pj': 'faturamento-pj',
+      'entrega': 'entrega-frete',
+      'entrega-frete': 'entrega-frete',
+      'devolucoes': 'trocas-devolucoes',
+      'trocas-devolucoes': 'trocas-devolucoes',
+      'faq': 'faq',
+      'institucional': 'sobre',
+    };
+
+    const scrollToTop = () => {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    };
+
+    if (institutionalTabs[page]) {
+      setInstitutionalInitialTab(institutionalTabs[page]);
+      setCurrentPage('institucional');
+      scrollToTop();
+      return;
+    }
+
     if (page === 'pedidos') {
       if (isAuthenticated) {
         setProfileInitialTab('pedidos');
@@ -34,26 +67,26 @@ const AppContent: React.FC = () => {
         setPostAuthRedirect({ page: 'perfil', tab: 'pedidos' });
         setCurrentPage('login');
       }
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      scrollToTop();
       return;
     }
 
     if (page === 'perfil') {
       setProfileInitialTab('visao-geral');
       setCurrentPage('perfil');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      scrollToTop();
       return;
     }
 
     if (page === 'login' || page === 'registro') {
       setPostAuthRedirect(null);
       setCurrentPage(page);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      scrollToTop();
       return;
     }
 
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToTop();
   };
 
   const handleAuthSuccess = () => {
@@ -84,8 +117,11 @@ const AppContent: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F8FAFC] text-slate-800 antialiased selection:bg-[#1863DC] selection:text-white">
-      {/* Header Principal Oficial Lothus (oculto no Checkout Focado para manter o padrão sem distrações de Mercado Livre e Magalu) */}
-      {currentPage !== 'checkout' && (
+      {/* Header Oficial Lothus: Completo na loja, Simplificado (SimpleHeader) nas páginas informativas (institucional) e Oculto no Checkout */}
+      {currentPage === 'institucional' && (
+        <SimpleHeader onNavigate={handleNavigate} />
+      )}
+      {currentPage !== 'checkout' && currentPage !== 'institucional' && (
         <Header
           onNavigate={handleNavigate}
           onOpenQuickQuote={() => setIsQuickQuoteOpen(true)}
@@ -147,10 +183,17 @@ const AppContent: React.FC = () => {
             initialTab={profileInitialTab}
           />
         )}
+
+        {currentPage === 'institucional' && (
+          <InstitutionalPage
+            initialTab={institutionalInitialTab}
+            onNavigate={handleNavigate}
+          />
+        )}
       </main>
 
       {/* Rodapé Oficial em Tema Claro (oculto no Checkout Focado para seguir o funil de alta conversão) */}
-      {currentPage !== 'checkout' && <Footer />}
+      {currentPage !== 'checkout' && <Footer onNavigate={handleNavigate} />}
 
       {/* Drawer do Carrinho Atacado */}
       <CartDrawer onNavigate={handleNavigate} />
@@ -160,6 +203,9 @@ const AppContent: React.FC = () => {
         isOpen={isQuickQuoteOpen}
         onClose={() => setIsQuickQuoteOpen(false)}
       />
+
+      {/* Botão Flutuante de Atendimento B2B via WhatsApp */}
+      <WhatsAppButton />
     </div>
   );
 };

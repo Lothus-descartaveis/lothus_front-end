@@ -331,33 +331,23 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ onNavigate }) => {
   if (orderCompleted) {
     return (
       <div className="min-h-screen bg-[#F8FAFC] font-sans text-slate-800">
-        {/* Header do Checkout — Apenas com a Logo Oficial Lothus, sem funções */}
-        <header className="bg-white border-b border-[#E2E8F0]">
-          <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-16 py-3.5 flex items-center justify-between">
-            <div className="flex items-center gap-3 select-none">
-              <img
-                src="/assets/logo-lothus-header.png"
-                alt="Lothus Descartáveis & Suprimentos"
-                className="h-11 sm:h-12 w-auto object-contain"
-              />
-              <div className="flex flex-col">
-                <span className="font-display font-black text-xl tracking-wide text-[#041B38] leading-tight">
-                  LOTHUS
-                </span>
-                <span className="text-[10px] font-semibold text-[#585858] tracking-wider leading-none uppercase">
-                  DESCARTÁVEIS & SUPRIMENTOS
-                </span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
-              <ShieldCheck className="w-4 h-4 text-[#16A34A]" />
-              <span className="hidden sm:inline">Ambiente Seguro SSL</span>
-            </div>
+        {/* Breadcrumb Oficial do Paper (AF1-0) */}
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-16 pt-6 pb-2">
+          <div className="flex items-center gap-2 text-xs">
+            <button
+              onClick={() => onNavigate && onNavigate('home')}
+              className="text-[#0F668E] font-semibold hover:underline cursor-pointer"
+            >
+              ← Voltar para Início
+            </button>
+            <span className="text-slate-500">/</span>
+            <span className="text-slate-500">Checkout</span>
+            <span className="text-slate-500">/</span>
+            <span className="text-[#041B38] font-bold">Pedido Confirmado #{orderNumber}</span>
           </div>
-        </header>
+        </div>
 
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
           {/* Card Principal de Sucesso */}
           <div className="bg-white rounded-xl border border-[#E2E8F0] shadow-card overflow-hidden">
             {/* Topo Limpo */}
@@ -644,31 +634,20 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ onNavigate }) => {
   if (items.length === 0) {
     return (
       <div className="min-h-screen bg-[#F8FAFC] font-sans">
-        {/* Header do Checkout — Apenas com a Logo Oficial Lothus, sem funções */}
-        <header className="bg-white border-b border-[#E2E8F0]">
-          <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-16 py-3.5 flex items-center justify-between">
-            <div className="flex items-center gap-3 select-none">
-              <img
-                src="/assets/logo-lothus-header.png"
-                alt="Lothus Descartáveis & Suprimentos"
-                className="h-11 sm:h-12 w-auto object-contain"
-              />
-              <div className="flex flex-col">
-                <span className="font-display font-black text-xl tracking-wide text-[#041B38] leading-tight">
-                  LOTHUS
-                </span>
-                <span className="text-[10px] font-semibold text-[#585858] tracking-wider leading-none uppercase">
-                  DESCARTÁVEIS & SUPRIMENTOS
-                </span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
-              <ShieldCheck className="w-4 h-4 text-[#16A34A]" />
-              <span className="hidden sm:inline">Ambiente Seguro SSL</span>
-            </div>
+        {/* Breadcrumb Oficial do Paper */}
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-16 pt-6 pb-2">
+          <div className="flex items-center gap-2 text-xs">
+            <button
+              onClick={() => onNavigate && onNavigate('catalogo')}
+              className="text-[#0F668E] font-semibold hover:underline cursor-pointer flex items-center gap-1"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Voltar ao Catálogo</span>
+            </button>
+            <span className="text-slate-400">/</span>
+            <span className="text-[#041B38] font-bold">Carrinho Vazio</span>
           </div>
-        </header>
+        </div>
 
         <div className="max-w-2xl mx-auto px-4 py-16 text-center">
           <div className="bg-white border border-[#E2E8F0] rounded-xl p-8 sm:p-12 shadow-xs">
