@@ -24,7 +24,7 @@ export const WhatsAppButton: React.FC = () => {
         <div className="absolute -right-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-white border-t border-r border-slate-200/90 rotate-45" />
       </div>
 
-      {/* Botão Flutuante com Símbolo Clássico do WhatsApp */}
+      {/* Botão Flutuante com Símbolo Clássico do WhatsApp (Estático, sem animações piscantes) */}
       <a
         href={whatsappUrl}
         target="_blank"
@@ -32,13 +32,10 @@ export const WhatsAppButton: React.FC = () => {
         aria-label="Solicitar Orçamento no WhatsApp"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        className="relative w-14 h-14 bg-[#25D366] hover:bg-[#20BA56] text-white rounded-full flex items-center justify-center shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer group shrink-0 ring-4 ring-white/80"
+        className="relative w-14 h-14 bg-[#25D366] hover:bg-[#20BA56] text-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer group shrink-0 ring-4 ring-white/80"
       >
-        {/* Efeito de pulso de atenção */}
-        <span className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-20 group-hover:opacity-0" />
-
         {/* Símbolo clássico oficial do WhatsApp */}
-        <WhatsApp className="w-8 h-8 text-white relative z-10 transition-transform duration-300 group-hover:scale-110" />
+        <WhatsApp className="w-8 h-8 text-white relative z-10 transition-transform duration-200 group-hover:scale-110" />
       </a>
     </aside>
   );

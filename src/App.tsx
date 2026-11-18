@@ -192,13 +192,8 @@ const AppContent: React.FC = () => {
         )}
       </main>
 
-<<<<<<< Updated upstream
       {/* Rodapé Oficial em Tema Claro (oculto no Checkout Focado para seguir o funil de alta conversão) */}
       {currentPage !== 'checkout' && <Footer onNavigate={handleNavigate} />}
-=======
-      {/* Rodapé Oficial em Tema Claro */}
-      <Footer />
->>>>>>> Stashed changes
 
       {/* Drawer do Carrinho Atacado */}
       <CartDrawer onNavigate={handleNavigate} />

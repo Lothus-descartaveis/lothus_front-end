@@ -166,7 +166,6 @@ export const BestSellers: React.FC<BestSellersProps> = ({ onNavigate, onSelectPr
                 onSelectProduct={onSelectProduct}
                 onNavigate={onNavigate}
                 className="h-full"
-                buttonText="Adicionar ao Carrinho"
               />
             </div>
           ))}
