@@ -3,7 +3,7 @@ import { Product, Department, KitCombo } from '../types';
 export const DEPARTMENTS: Department[] = [
   {
     id: 'limpeza',
-    name: 'Limpeza & Higiene',
+    name: 'Limpeza e Higiene',
     slug: 'limpeza-e-higiene',
     discountBadge: 'ATÉ 50%',
     image: '/produtos/limpeza/papel-toalha-santher-eco-et100.png',
@@ -11,7 +11,7 @@ export const DEPARTMENTS: Department[] = [
   },
   {
     id: 'food-service',
-    name: 'Food Service & Descartáveis',
+    name: 'Food Service',
     slug: 'food-service-e-descartaveis',
     discountBadge: 'ATÉ 40%',
     image: '/produtos/descartaveis/copos-descartaveis-ecocoppo.png',
@@ -19,7 +19,7 @@ export const DEPARTMENTS: Department[] = [
   },
   {
     id: 'papelaria',
-    name: 'Escritório & Papelaria',
+    name: 'Escritório e Papelaria',
     slug: 'escritorio-e-papelaria',
     discountBadge: 'ATÉ 35%',
     image: '/produtos/papelaria/papel-chamex-a4.png',
@@ -27,7 +27,7 @@ export const DEPARTMENTS: Department[] = [
   },
   {
     id: 'equipamentos',
-    name: 'Equipamentos Bralimpia',
+    name: 'Equipamentos',
     slug: 'equipamentos-de-limpeza',
     discountBadge: 'ATÉ 30%',
     image: '/produtos/limpeza/kit-limpeza-bralimpia.png',
@@ -35,7 +35,7 @@ export const DEPARTMENTS: Department[] = [
   },
   {
     id: 'artesanato',
-    name: 'Artesanato & Tecidos',
+    name: 'Artesanato',
     slug: 'artesanato-tecidos-festas',
     discountBadge: 'ATÉ 50% OFF',
     image: '/produtos/artesanato/novelos-circulo-mollet.png',

@@ -58,16 +58,20 @@ body.high-contrast button {
 }
 
 /* ==========================================================================
-   Remix Icon — Calibragem Ótica Global de Ícones (Equivalência 1:1 SVG Lucide)
+   Remix Icon & Font Awesome — Calibragem Ótica Global de Ícones
    Garante que os glifos font-based tenham exatamente o mesmo peso e escala visual.
    ========================================================================== */
-i[class*="ri-"] {
+i[class*="ri-"],
+i[class*="fa-"] {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   line-height: 1;
   vertical-align: middle;
 }
+
+i[class*="fa-"].w-7, i[class*="fa-"].h-7 { font-size: 30px; }
+i[class*="fa-"].w-8, i[class*="fa-"].h-8 { font-size: 34px; }
 
 i[class*="ri-"].w-3, i[class*="ri-"].h-3 { font-size: 14px; }
 i[class*="ri-"].w-3\.5, i[class*="ri-"].h-3\.5 { font-size: 16px; }
@@ -108,3 +112,31 @@ i[class*="ri-"].w-20, i[class*="ri-"].h-20 { font-size: 86px; }
   i[class*="ri-"].lg\:w-6, i[class*="ri-"].lg\:h-6 { font-size: 26px !important; }
   i[class*="ri-"].lg\:w-8, i[class*="ri-"].lg\:h-8 { font-size: 36px !important; }
 }
+
+/* ==========================================================================
+   Animações Customizadas de Microinteração
+   ========================================================================== */
+@keyframes truckDrive {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(2px) translateY(-0.5px);
+  }
+  50% {
+    transform: translateX(4px) translateY(0);
+  }
+  75% {
+    transform: translateX(2px) translateY(-0.5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.animate-truck-drive {
+  display: inline-flex;
+  animation: truckDrive 2s ease-in-out infinite;
+  will-change: transform;
+}
+

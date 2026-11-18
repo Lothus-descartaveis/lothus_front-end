@@ -5,6 +5,7 @@ import { useCart } from '../context/CartContext';
 import { Product } from '../types';
 import { useSEO } from '../hooks/useSEO';
 import { CustomSelect } from '../components/ui/CustomSelect';
+import { ProductCard } from '../components/ui/ProductCard';
 
 interface CatalogPageProps {
   initialCategory?: string;
@@ -174,95 +175,14 @@ export const CatalogPage: React.FC<CatalogPageProps> = ({
           {/* Visualização em Grade */}
           {viewMode === 'grid' ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filtered.map((prod) => {
-                const pixPrice = prod.price * 0.9;
-                return (
-                  <div
-                    key={prod.id}
-                    className="bg-white border border-[#E2E8F0] rounded-xl p-5 flex flex-col justify-between shadow-xs hover:shadow-card hover:border-slate-300 transition-all duration-200 group"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between gap-2 mb-2">
-                        <div className="flex items-center gap-1.5 flex-wrap">
-                          <span className="bg-[#041B38] text-white text-[9px] font-bold uppercase px-2 py-0.5 rounded tracking-wide whitespace-nowrap">
-                            {prod.category.includes('Papelaria')
-                              ? 'Papelaria'
-                              : prod.category.includes('Descartáveis')
-                              ? 'Descartáveis'
-                              : prod.category.includes('Equipamentos')
-                              ? 'Equipamentos'
-                              : prod.category.includes('Artesanato')
-                              ? 'Artesanato'
-                              : 'Limpeza'}
-                          </span>
-                          {prod.badge && (
-                            <span
-                              className={`text-white text-[9px] font-black uppercase px-2 py-0.5 rounded tracking-wide whitespace-nowrap ${
-                                prod.badgeColor === 'orange' ? 'bg-[#FB8C00]' : 'bg-[#16A34A]'
-                              }`}
-                            >
-                              {prod.badge}
-                            </span>
-                          )}
-                        </div>
-                        <button className="text-slate-300 hover:text-red-500 transition-colors p-1">
-                          <Heart className="w-4 h-4" />
-                        </button>
-                      </div>
-
-                      <div 
-                        onClick={() => onSelectProduct ? onSelectProduct(prod) : onNavigate && onNavigate('produto')}
-                        className="w-full h-44 flex items-center justify-center p-2 mb-3 cursor-pointer"
-                      >
-                        <img
-                          src={prod.image}
-                          alt={prod.name}
-                          className="max-h-full max-w-full object-contain"
-                        />
-                      </div>
-
-                      <div className="flex items-center gap-1 mb-1.5">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="w-3.5 h-3.5 text-[#FB8C00] fill-[#FB8C00]" />
-                        ))}
-                        <span className="text-[11px] font-bold text-slate-600 ml-1">
-                          {prod.rating}
-                        </span>
-                      </div>
-
-                      <h4
-                        onClick={() => onSelectProduct ? onSelectProduct(prod) : onNavigate && onNavigate('produto')}
-                        className="font-display font-bold text-xs text-[#041B38] line-clamp-2 leading-relaxed mb-3 cursor-pointer hover:text-lothus-royal"
-                      >
-                        {prod.name}
-                      </h4>
-
-                      <div className="mb-4">
-                        {prod.originalPrice && (
-                          <span className="text-[11px] text-slate-400 line-through block">
-                            De {prod.originalPrice.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-                          </span>
-                        )}
-                        <div className="flex items-baseline gap-1.5">
-                          <span className="font-display font-black text-lg text-[#041B38]">
-                            {pixPrice.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-                          </span>
-                          <span className="text-xs font-bold text-[#16A34A]">
-                            10% OFF
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <button
-                      onClick={() => addItem(prod, 1)}
-                      className="w-full py-2.5 bg-[#0F668E] hover:bg-[#0B4F6E] text-white font-display font-bold text-xs uppercase tracking-wider rounded-lg transition-colors cursor-pointer"
-                    >
-                      Adicionar ao Pedido
-                    </button>
-                  </div>
-                );
-              })}
+              {filtered.map((prod) => (
+                <ProductCard
+                  key={prod.id}
+                  product={prod}
+                  onSelectProduct={onSelectProduct}
+                  onNavigate={onNavigate}
+                />
+              ))}
             </div>
           ) : (
             /* Visualização em Lista B2B (Modo Tabela Técnica) */
