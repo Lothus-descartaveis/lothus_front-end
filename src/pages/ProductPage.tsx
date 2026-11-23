@@ -18,7 +18,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({ product, onNavigate })
     title: `${currentProduct.name} — Preço de Atacado`,
     description:
       currentProduct.description ||
-      `Compre ${currentProduct.name} com desconto progressivo por quantidade e faturamento no boleto PJ na Lothus Descartáveis. Pronta-entrega para SP.`,
+      `Consulte ${currentProduct.name} com condições para pedidos corporativos e faturamento no boleto PJ na Lothus Descartáveis. Atendimento para São Paulo e região.`,
     canonical: `https://lothusdescartaveis.com.br/produto/${currentProduct.id}`,
     type: 'product',
     image: currentProduct.image,
@@ -66,16 +66,16 @@ export const ProductPage: React.FC<ProductPageProps> = ({ product, onNavigate })
 
   const productDescription =
     currentProduct.description ||
-    `${currentProduct.name} é um item de alta durabilidade e rendimento comprovado para o segmento corporativo. Fornecido diretamente pela distribuidora Lothus Descartáveis com procedência garantida, atende aos mais exigentes padrões de higiene, conservação e rotina operacional em clínicas, hospitais, escolas, indústrias e escritórios.`;
+    `${currentProduct.name} é desenvolvido para atender às exigências de conservação e higienização em ambientes de uso contínuo. Distribuído pela Lothus Descartáveis com procedência fabril e controle de lote, atende às rotinas de estabelecimentos como clínicas, escolas, indústrias, condomínios e escritórios corporativos.`;
 
   const productFeatures =
     currentProduct.features && currentProduct.features.length > 0
       ? currentProduct.features
       : [
-          'Alto rendimento e durabilidade comprovada para uso corporativo contínuo',
-          'Fabricado sob rigorosos padrões de qualidade e conformidade sanitária',
-          'Embalagem segura e reforçada para transporte e armazenamento em estoque',
-          'Excelente custo-benefício com faturamento facilitado no boleto faturado PJ',
+          'Desenvolvido para rotinas de uso operacional contínuo',
+          'Atendimento aos padrões técnicos e parâmetros sanitários dos fabricantes',
+          'Acondicionamento adequado para transporte e estocagem em almoxarifados',
+          'Condições comerciais para fornecimento corporativo com faturamento em boleto PJ',
         ];
 
   const specs = currentProduct.specifications || {

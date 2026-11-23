@@ -20,10 +20,10 @@ export const DepartmentStories: React.FC<DepartmentStoriesProps> = ({ onSelectDe
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-8">
         <div>
           <h2 className="font-display font-extrabold text-lg sm:text-xl text-[#041B38]">
-            Escolha seu desconto por departamento
+            Categorias de Suprimentos
           </h2>
           <p className="text-slate-500 text-xs sm:text-sm mt-0.5">
-            Clique no setor corporativo e ative a condição para a sua empresa
+            Selecione o segmento e consulte produtos e condições comerciais para o seu estabelecimento
           </p>
         </div>
       </div>

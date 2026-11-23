@@ -89,7 +89,7 @@ export const MosaicBanners: React.FC<MosaicBannersProps> = ({ onNavigate, onOpen
               Abastecimento para Empresas (B2B)
             </h3>
             <p className="text-slate-300 text-xs sm:text-sm mb-6 leading-relaxed">
-              Reposição mensal programada com faturamento em boleto PJ e desconto agressivo em fardos.
+              Reposição periódica programada com faturamento em boleto PJ e condições por escala de volume.
             </p>
             <button
               onClick={() => onOpenQuickQuote ? onOpenQuickQuote() : onNavigate && onNavigate('cotacao-b2b')}

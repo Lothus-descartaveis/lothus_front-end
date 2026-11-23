@@ -60,10 +60,10 @@ export const QuoteB2BPage: React.FC<QuoteB2BPageProps> = ({ onNavigate }) => {
             <div className="py-16 text-center">
               <CheckCircle2 className="w-16 h-16 text-[#16A34A] mx-auto mb-4 animate-bounce" />
               <h2 className="font-display font-black text-xl text-[#041B38] mb-2">
-                Cotação Encaminhada com Prioridade!
+                Solicitação Encaminhada
               </h2>
               <p className="text-slate-500 text-xs sm:text-sm max-w-md mx-auto mb-6">
-                Nossa equipe comercial da Lothus Descartáveis já recebeu sua solicitação e iniciou a análise cadastral e precificação.
+                A equipe comercial da Lothus Descartáveis recebeu sua solicitação para análise cadastral e elaboração de proposta.
               </p>
               <button
                 onClick={() => setIsSent(false)}

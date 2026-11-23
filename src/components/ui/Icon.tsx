@@ -236,4 +236,22 @@ export const LayoutGrid = createIcon('ri-grid-fill', 'LayoutGrid');
 export const List = createIcon('ri-list-check-2', 'List');
 export const Filter = createIcon('ri-filter-3-line', 'Filter');
 
+// Ícones Administrativos, Gráficos e Gestão Comercial
+export const TrendingUp = createIcon('ri-arrow-right-up-line', 'TrendingUp');
+export const TrendingDown = createIcon('ri-arrow-right-down-line', 'TrendingDown');
+export const BarChart3 = createIcon('ri-bar-chart-2-line', 'BarChart3');
+export const PieChart = createIcon('ri-pie-chart-2-line', 'PieChart');
+export const LineChart = createIcon('ri-line-chart-line', 'LineChart');
+export const Settings = createIcon('ri-settings-4-line', 'Settings');
+export const UserCheck = createIcon('ri-user-follow-line', 'UserCheck');
+export const Shield = createIcon('ri-shield-user-line', 'Shield');
+export const Edit = createIcon('ri-edit-line', 'Edit');
+export const CheckCircle = createIcon('ri-checkbox-circle-line', 'CheckCircle');
+export const AlertTriangle = createIcon('ri-alert-line', 'AlertTriangle');
+export const RefreshCw = createIcon('ri-refresh-line', 'RefreshCw');
+export const Calendar = createIcon('ri-calendar-line', 'Calendar');
+export const DollarSign = createIcon('ri-money-dollar-circle-line', 'DollarSign');
+export const Bell = createIcon('ri-notification-3-line', 'Bell');
+export const ExternalLinkIcon = createIcon('ri-external-link-line', 'ExternalLinkIcon');
+
 export default Icon;

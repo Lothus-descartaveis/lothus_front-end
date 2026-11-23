@@ -37,6 +37,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   ];
 
   const legalLinks = [
+    { text: 'Painel Admin', page: 'admin' },
     { text: 'Termos de Uso', page: 'trocas-devolucoes' },
     { text: 'Política de Privacidade (LGPD)', page: 'sobre' },
     { text: 'Política de Entrega e Frete', page: 'entrega-frete' },
@@ -54,10 +55,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div className="grid items-center gap-8 md:grid-cols-2">
             <div>
               <h3 className="mb-3 text-2xl font-display font-extrabold text-[#041B38] md:text-3xl leading-tight">
-                Fique à frente com a Lothus Descartáveis
+                Receba informativos e atualizações da Lothus
               </h3>
               <p className="text-slate-600 mb-6 text-sm leading-relaxed max-w-lg">
-                Cadastre o e-mail da sua empresa para receber cotações exclusivas de atacado, avisos de fardos fechados com desconto progressivo e novidades de catálogo.
+                Cadastre o e-mail da sua empresa para receber avisos de reposição, tabelas para atacado corporativo e novidades do catálogo.
               </p>
 
               <form onSubmit={handleSubscribe} className="flex flex-col gap-3 sm:flex-row max-w-lg">
