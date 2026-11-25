@@ -17,7 +17,7 @@ export const FlashOffers: React.FC<FlashOffersProps> = ({ onNavigate, onSelectPr
         <div className="flex items-center gap-2.5">
           <Zap className="w-5 h-5 text-[#FB8C00] fill-[#FB8C00]" />
           <h2 className="font-display font-extrabold text-lg sm:text-xl text-[#041B38]">
-            Aproveite! Condições especiais para Grande São Paulo e Região
+            Condições para Grande São Paulo e Região
           </h2>
         </div>
         <button

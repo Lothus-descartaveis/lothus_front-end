@@ -23,9 +23,9 @@ interface HeroSlide {
 const HERO_SLIDES: HeroSlide[] = [
   {
     id: 0,
-    title: 'Lothus, a solução para sua falta de materiais.',
+    title: 'Suprimentos e descartáveis para o abastecimento do seu negócio.',
     description:
-      'Soluções completas em limpeza, descartáveis, papelaria e artesanato para manter sua empresa, escola ou condomínio sempre abastecido com agilidade e confiança.',
+      'Linha completa em produtos de limpeza profissional, descartáveis, papelaria corporativa e itens essenciais para empresas, escolas, condomínios e comércios.',
     product: {
       name: 'Balde com Espremedor Doblô 30L Bralimpia',
       image: '/assets/hero-showcase/balde-bralimpia.png',
@@ -35,9 +35,9 @@ const HERO_SLIDES: HeroSlide[] = [
   },
   {
     id: 1,
-    title: 'Ambientes mais limpos, seguros e produtivos todos os dias.',
+    title: 'Higiene e conservação profissional para a rotina da sua empresa.',
     description:
-      'Equipamentos profissionais e linha completa de higienização para empresas, clínicas, condomínios e instituições que exigem eficiência na rotina.',
+      'Equipamentos e insumos para higienização de ambientes corporativos, clínicas, condomínios e estabelecimentos comerciais.',
     product: {
       name: 'Balde Doblô 30 Litros Duas Águas Bralimpia',
       image: '/assets/hero-showcase/balde-bralimpia.png',
@@ -47,9 +47,9 @@ const HERO_SLIDES: HeroSlide[] = [
   },
   {
     id: 2,
-    title: 'Organização e qualidade para o dia a dia escolar e corporativo.',
+    title: 'Papelaria e materiais de escritório para demandas corporativas.',
     description:
-      'Cadernos, lápis de cor, marcadores, papéis e materiais de escritório com estoque à pronta-entrega para empresas, escolas e comércios.',
+      'Papéis para impressão, cadernos, marcadores e materiais para escritório com opções de faturamento faturado e reposição contínua.',
     product: {
       name: 'Papel Sulfite A4 Report 75g 500 Folhas',
       image: '/assets/hero-showcase/papel-a4.png',
@@ -59,9 +59,9 @@ const HERO_SLIDES: HeroSlide[] = [
   },
   {
     id: 3,
-    title: 'Cores e detalhes que dão vida às suas ideias e criações.',
+    title: 'Artigos para projetos, personalização e demandas escolares.',
     description:
-      'Do dia a dia escolar aos projetos criativos: trabalhamos com marcas consagradas para transformar cada trabalho em algo único com agilidade.',
+      'Insumos selecionados e materiais de suporte para atividades pedagógicas, oficinas, eventos e trabalhos manuais.',
     product: {
       name: 'Kit com 12 Marcadores de Quadro Branco Recarregáveis',
       image: '/assets/hero-showcase/canetas-marcador.png',

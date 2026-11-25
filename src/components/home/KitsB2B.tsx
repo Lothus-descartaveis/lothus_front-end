@@ -35,10 +35,10 @@ export const KitsB2B: React.FC = () => {
           <Layers className="w-5 h-5 text-[#FB8C00]" />
           <div>
             <h2 className="font-display font-extrabold text-lg sm:text-xl text-[#041B38]">
-              A combinação perfeita para sua empresa: Kits & Combos B2B
+              Conjuntos Prontos para Reposição: Kits & Combos B2B
             </h2>
             <p className="text-slate-500 text-xs sm:text-sm mt-0.5">
-              Packs prontos para operação com desconto cumulativo e frete consolidado em nota única
+              Packs montados para operação empresarial com condições por volume e frete consolidado em nota única
             </p>
           </div>
         </div>

@@ -42,7 +42,7 @@ export const CatalogPage: React.FC<CatalogPageProps> = ({
 
   useSEO({
     title: `Catálogo de Atacado — ${currentCategoryName}`,
-    description: `Confira a linha completa de ${currentCategoryName} com preços direto da distribuidora Lothus Descartáveis. Faturamento para empresas e descontos progressivos.`,
+    description: `Consulte a linha de ${currentCategoryName} com opções de faturamento para empresas e condições por escala de volume na Lothus Descartáveis.`,
     canonical: `https://lothusdescartaveis.com.br/catalogo?categoria=${selectedCategory}`,
     keywords: ['catálogo atacado', 'produtos de limpeza corporativa', 'descartáveis em quantidade', currentCategoryName.toLowerCase()]
   });

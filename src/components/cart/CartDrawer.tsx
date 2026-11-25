@@ -66,7 +66,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ onNavigate }) => {
                   Seu carrinho está vazio
                 </p>
                 <p className="text-xs text-slate-400 mb-4">
-                  Adicione produtos do catálogo com preço exclusivo de atacado.
+                  Consulte os itens do catálogo e adicione os produtos desejados.
                 </p>
                 <button
                   onClick={() => {

@@ -12,12 +12,22 @@ import { QuoteB2BPage } from './pages/QuoteB2BPage';
 import { LoginRegisterPage } from './pages/LoginRegisterPage';
 import { ProfilePage, ProfileTab } from './pages/ProfilePage';
 import { InstitutionalPage, InstitutionalTab } from './pages/InstitutionalPage';
+import { AdminDashboardPage } from './pages/AdminDashboardPage';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { AdminProvider } from './context/AdminContext';
 import { Product } from './types';
 
 const AppContent: React.FC = () => {
   const { isAuthenticated } = useAuth();
-  const [currentPage, setCurrentPage] = useState<string>('home');
+  const [currentPage, setCurrentPage] = useState<string>(() => {
+    // Detecta rota inicial via window.location (ex: /admin ou #admin)
+    const path = window.location.pathname.replace(/^\//, '');
+    const hash = window.location.hash.replace(/^#\/?/, '');
+    if (path === 'admin' || hash === 'admin') {
+      return 'admin';
+    }
+    return 'home';
+  });
   const [selectedCategory, setSelectedCategory] = useState<string>('todos');
   const [selectedProduct, setSelectedProduct] = useState<Product | undefined>();
   const [isQuickQuoteOpen, setIsQuickQuoteOpen] = useState<boolean>(false);
@@ -85,6 +95,17 @@ const AppContent: React.FC = () => {
       return;
     }
 
+    if (page === 'admin') {
+      window.location.hash = 'admin';
+      setCurrentPage('admin');
+      scrollToTop();
+      return;
+    }
+
+    if (currentPage === 'admin' && page !== 'admin') {
+      window.location.hash = '';
+    }
+
     setCurrentPage(page);
     scrollToTop();
   };
@@ -114,6 +135,14 @@ const AppContent: React.FC = () => {
     setCurrentPage('produto');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  if (currentPage === 'admin') {
+    return (
+      <AdminDashboardPage
+        onNavigateStore={() => handleNavigate('home')}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F8FAFC] text-slate-800 antialiased selection:bg-[#1863DC] selection:text-white">
@@ -212,7 +241,9 @@ const AppContent: React.FC = () => {
 
 export const App: React.FC = () => (
   <AuthProvider>
-    <AppContent />
+    <AdminProvider>
+      <AppContent />
+    </AdminProvider>
   </AuthProvider>
 );
 

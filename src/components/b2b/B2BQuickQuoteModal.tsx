@@ -66,7 +66,7 @@ export const B2BQuickQuoteModal: React.FC<B2BQuickQuoteModalProps> = ({ isOpen, 
               Cotação Enviada com Sucesso!
             </h4>
             <p className="text-xs text-slate-500 max-w-xs mb-4">
-              Nossa mesa de vendas e consultoria técnica já recebeu suas informações e responderá em instantes.
+              Nossa equipe comercial recebeu suas informações e iniciará a análise dos itens solicitados.
             </p>
           </div>
         ) : (
