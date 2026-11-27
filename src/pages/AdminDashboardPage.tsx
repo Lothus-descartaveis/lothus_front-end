@@ -36,6 +36,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
 
   const [currentTab, setCurrentTab] = useState<AdminTab>(initialTab);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [selectedOrderIdForDetail, setSelectedOrderIdForDetail] = useState<string | undefined>();
 
   // Tela de Login Administrativo (se não autenticado)
@@ -187,10 +188,16 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({
         onNavigateStore={onNavigateStore}
         isOpenMobile={mobileMenuOpen}
         onCloseMobile={() => setMobileMenuOpen(false)}
+        isCollapsed={sidebarCollapsed}
+        onToggleCollapse={() => setSidebarCollapsed((prev) => !prev)}
       />
 
       {/* 2. Área Principal de Conteúdo */}
-      <div className="flex-1 flex flex-col min-w-0 lg:pl-72">
+      <div
+        className={`flex-1 flex flex-col min-w-0 transition-[padding] duration-300 ease-in-out ${
+          sidebarCollapsed ? 'lg:pl-20' : 'lg:pl-72'
+        }`}
+      >
         {/* Header Superior Fixo */}
         <AdminHeader
           pageTitle={title}
